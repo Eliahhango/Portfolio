@@ -1,4 +1,5 @@
 
+
 import React, { useState, useEffect, useRef } from 'react';
 
 interface TypewriterProps {
@@ -10,7 +11,8 @@ const Typewriter: React.FC<TypewriterProps> = ({ words }) => {
   const [subIndex, setSubIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
   const [blink, setBlink] = useState(true);
-  const timeoutRef = useRef<number | undefined>();
+  // FIX: Explicitly initialize useRef with `undefined` to satisfy strict linting rules that may require an initial value.
+  const timeoutRef = useRef<number | undefined>(undefined);
 
   useEffect(() => {
     if (index >= words.length) return;

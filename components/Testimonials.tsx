@@ -32,7 +32,7 @@ const Testimonials: React.FC = () => {
                         animate="visible"
                         exit="exit"
                         transition={{ duration: 0.5 }}
-                        className="absolute w-full h-full bg-slate-100 dark:bg-gray-900/50 p-8 rounded-lg shadow-sm border border-slate-200 dark:border-gray-800 flex flex-col justify-between"
+                        className="absolute w-full h-full bg-slate-100 dark:bg-gray-950 p-8 rounded-lg shadow-sm border border-slate-200 dark:border-gray-900 flex flex-col justify-between"
                     >
                         <p className="text-slate-600 dark:text-gray-400 italic text-center md:text-lg">
                             "{TESTIMONIALS_DATA[currentIndex].quote}"
@@ -53,7 +53,7 @@ const Testimonials: React.FC = () => {
                         key={index}
                         onClick={() => setCurrentIndex(index)}
                         className={`w-3 h-3 rounded-full transition-colors ${
-                            currentIndex === index ? 'bg-blue-500' : 'bg-slate-300 dark:bg-gray-700 hover:bg-blue-300'
+                            currentIndex === index ? 'bg-blue-500' : 'bg-slate-300 dark:bg-gray-800 hover:bg-blue-300'
                         }`}
                         aria-label={`Go to testimonial ${index + 1}`}
                     />

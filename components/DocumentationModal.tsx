@@ -14,7 +14,7 @@ const DocumentationModal: React.FC<ModalProps> = ({ onClose }) => {
                     initial={{ opacity: 0, y: 50 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 50 }}
-                    className="bg-white dark:bg-gray-900 rounded-lg shadow-2xl max-w-2xl w-full relative border border-slate-200 dark:border-gray-700 p-8 max-h-[80vh] overflow-y-auto"
+                    className="bg-white dark:bg-gray-950 rounded-lg shadow-2xl max-w-2xl w-full relative border border-slate-200 dark:border-gray-800 p-8 max-h-[80vh] overflow-y-auto"
                     onClick={(e) => e.stopPropagation()}
                 >
                     <h2 className="text-2xl font-bold mb-4 text-slate-900 dark:text-white">Documentation</h2>

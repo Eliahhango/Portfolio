@@ -10,7 +10,7 @@ const StatItem: React.FC<{ stat: Stat }> = ({ stat }) => {
     
     React.useEffect(() => {
         if (isInView && ref.current) {
-            animate(0, stat.value, {
+            const controls = animate(0, stat.value, {
                 duration: 2,
                 onUpdate(value) {
                     if(ref.current) {
@@ -18,6 +18,7 @@ const StatItem: React.FC<{ stat: Stat }> = ({ stat }) => {
                     }
                 },
             });
+            return () => controls.stop();
         }
     }, [isInView, stat.value]);
 
@@ -33,7 +34,7 @@ const StatItem: React.FC<{ stat: Stat }> = ({ stat }) => {
 
 const Stats: React.FC = () => {
   return (
-    <section id="stats" className="py-20 bg-slate-100 dark:bg-gray-900/50 rounded-lg">
+    <section id="stats" className="py-20 bg-slate-100 dark:bg-gray-950 rounded-lg">
       <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
         {STATS_DATA.map((stat) => (
             <StatItem key={stat.label} stat={stat} />

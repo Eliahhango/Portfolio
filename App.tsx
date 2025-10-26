@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import About from './components/About';
@@ -15,12 +15,28 @@ import PrivacyModal from './components/PrivacyModal';
 import DocumentationModal from './components/DocumentationModal';
 import ProjectModal from './components/ProjectModal';
 import type { Project } from './types';
+import TermsModal from './components/TermsModal';
+import SecurityModal from './components/SecurityModal';
+import CookieModal from './components/CookieModal';
+import DnsmpiModal from './components/DnsmpiModal';
+import CommunityModal from './components/CommunityModal';
+import ChatbotIcon from './components/ChatbotIcon';
+import { AnimatePresence } from 'framer-motion';
+
+const Chatbot = lazy(() => import('./components/Chatbot'));
+
 
 const App: React.FC = () => {
   const [activeSection, setActiveSection] = useState('home');
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [isPrivacyModalOpen, setIsPrivacyModalOpen] = useState(false);
   const [isDocsModalOpen, setIsDocsModalOpen] = useState(false);
+  const [isTermsModalOpen, setIsTermsModalOpen] = useState(false);
+  const [isSecurityModalOpen, setIsSecurityModalOpen] = useState(false);
+  const [isCookieModalOpen, setIsCookieModalOpen] = useState(false);
+  const [isDnsmpiModalOpen, setIsDnsmpiModalOpen] = useState(false);
+  const [isCommunityModalOpen, setIsCommunityModalOpen] = useState(false);
+  const [isChatbotOpen, setIsChatbotOpen] = useState(false);
 
   useEffect(() => {
     const sections = document.querySelectorAll('section');
@@ -57,12 +73,38 @@ const App: React.FC = () => {
       <Footer 
         onPrivacyClick={() => setIsPrivacyModalOpen(true)}
         onDocsClick={() => setIsDocsModalOpen(true)}
+        onTermsClick={() => setIsTermsModalOpen(true)}
+        onSecurityClick={() => setIsSecurityModalOpen(true)}
+        onCookieClick={() => setIsCookieModalOpen(true)}
+        onDnsmpiClick={() => setIsDnsmpiModalOpen(true)}
+        onCommunityClick={() => setIsCommunityModalOpen(true)}
       />
-      <ScrollToTopButton />
+      
+      <div className="fixed bottom-5 right-5 z-50 flex flex-col gap-4">
+          <ChatbotIcon onClick={() => setIsChatbotOpen(!isChatbotOpen)} isOpen={isChatbotOpen} />
+          <ScrollToTopButton />
+      </div>
+
+      <AnimatePresence>
+        {isChatbotOpen && (
+          <Suspense fallback={
+            <div className="fixed bottom-20 right-5 z-[60] w-80 sm:w-96 h-[500px] bg-slate-100 dark:bg-gray-950 rounded-lg shadow-2xl flex items-center justify-center border border-slate-200 dark:border-gray-800">
+              <p className="text-slate-500 animate-pulse">Loading Assistant...</p>
+            </div>
+          }>
+            <Chatbot onClose={() => setIsChatbotOpen(false)} />
+          </Suspense>
+        )}
+      </AnimatePresence>
       
       {selectedProject && <ProjectModal project={selectedProject} onClose={() => setSelectedProject(null)} />}
       {isPrivacyModalOpen && <PrivacyModal onClose={() => setIsPrivacyModalOpen(false)} />}
       {isDocsModalOpen && <DocumentationModal onClose={() => setIsDocsModalOpen(false)} />}
+      {isTermsModalOpen && <TermsModal onClose={() => setIsTermsModalOpen(false)} />}
+      {isSecurityModalOpen && <SecurityModal onClose={() => setIsSecurityModalOpen(false)} />}
+      {isCookieModalOpen && <CookieModal onClose={() => setIsCookieModalOpen(false)} />}
+      {isDnsmpiModalOpen && <DnsmpiModal onClose={() => setIsDnsmpiModalOpen(false)} />}
+      {isCommunityModalOpen && <CommunityModal onClose={() => setIsCommunityModalOpen(false)} />}
     </div>
   );
 };

@@ -13,3 +13,8 @@ export interface Stat {
   value: number;
   label: string;
 }
+
+export interface Message {
+  sender: 'user' | 'ai';
+  text: string;
+}

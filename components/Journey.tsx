@@ -41,7 +41,7 @@ const Journey: React.FC = () => {
                     >
                         <div className={`md:flex ${index % 2 === 0 ? 'md:flex-row-reverse' : ''} items-center`}>
                             <div className="md:w-1/2 md:px-6">
-                                <div className="bg-slate-100 dark:bg-gray-900/50 p-6 rounded-lg shadow-md border border-slate-200 dark:border-gray-800">
+                                <div className="bg-slate-100 dark:bg-gray-950 p-6 rounded-lg shadow-md border border-slate-200 dark:border-gray-900">
                                     <p className="text-blue-500 font-semibold">{item.year}</p>
                                     <h3 className="text-xl font-bold text-slate-900 dark:text-white mt-1">{item.role}</h3>
                                     <p className="text-slate-500 dark:text-gray-400 text-sm mb-2">{item.company}</p>
@@ -49,7 +49,7 @@ const Journey: React.FC = () => {
                                 </div>
                             </div>
                             <div className="absolute left-4 md:left-1/2 transform -translate-x-1/2">
-                                <div className="w-4 h-4 bg-blue-500 rounded-full border-4 border-slate-50 dark:border-black z-10"></div>
+                                <div className="w-4 h-4 bg-blue-500 rounded-full border-4 border-slate-50 dark:border-gray-900 z-10"></div>
                             </div>
                         </div>
                     </motion.div>

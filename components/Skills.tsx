@@ -27,7 +27,7 @@ const Expertise: React.FC = () => {
                         whileInView={{ opacity: 1, scale: 1 }}
                         viewport={{ once: true, amount: 0.3 }}
                         transition={{ duration: 0.6 }}
-                        className="bg-slate-100 dark:bg-gray-900/50 p-6 rounded-lg shadow-md border border-slate-200 dark:border-gray-800"
+                        className="bg-slate-100 dark:bg-gray-950 p-6 rounded-lg shadow-md border border-slate-200 dark:border-gray-900"
                     >
                         <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-6 text-center">{category.title}</h3>
                         <div className="space-y-4">

@@ -13,7 +13,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, onClick }) => {
         <motion.div
             layoutId={`card-${project.title}`}
             onClick={onClick}
-            className="group cursor-pointer bg-white dark:bg-gray-900 rounded-lg overflow-hidden shadow-lg hover:shadow-2xl hover:shadow-blue-500/20 dark:hover:shadow-blue-500/10 transition-all duration-300 border border-slate-200 dark:border-gray-800"
+            className="group cursor-pointer bg-white dark:bg-gray-950 rounded-lg overflow-hidden shadow-lg hover:shadow-2xl hover:shadow-blue-500/20 dark:hover:shadow-blue-500/10 transition-all duration-300 border border-slate-200 dark:border-gray-900"
         >
             <div className="relative overflow-hidden">
                 <img src={project.imageUrl} alt={project.title} className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300" />

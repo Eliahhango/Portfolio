@@ -1,8 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
+const getInitialTheme = (): 'light' | 'dark' => {
+    if (typeof window !== 'undefined') {
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            return 'dark';
+        }
+    }
+    return 'light';
+};
+
 const ThemeToggle: React.FC = () => {
-    const [theme, setTheme] = useState(localStorage.getItem('theme') || 'dark');
+    const [theme, setTheme] = useState<'light' | 'dark'>(getInitialTheme());
 
     useEffect(() => {
         if (theme === 'dark') {
@@ -21,7 +30,7 @@ const ThemeToggle: React.FC = () => {
     return (
         <button
             onClick={toggleTheme}
-            className="w-10 h-10 p-2 rounded-full flex items-center justify-center bg-slate-200 dark:bg-gray-800 text-slate-600 dark:text-yellow-400 focus:outline-none"
+            className="w-10 h-10 p-2 rounded-full flex items-center justify-center bg-slate-200 dark:bg-gray-900 text-slate-600 dark:text-yellow-400 focus:outline-none"
             aria-label="Toggle theme"
         >
             <AnimatePresence mode="wait" initial={false}>

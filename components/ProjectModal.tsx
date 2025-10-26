@@ -19,7 +19,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) => {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.9 }}
                 transition={{ duration: 0.3 }}
-                className="bg-white dark:bg-gray-900 rounded-lg overflow-hidden shadow-2xl max-w-2xl w-full relative border border-slate-200 dark:border-gray-700"
+                className="bg-white dark:bg-gray-950 rounded-lg overflow-hidden shadow-2xl max-w-2xl w-full relative border border-slate-200 dark:border-gray-800"
                 onClick={(e) => e.stopPropagation()}
             >
                 <img src={project.imageUrl} alt={project.title} className="w-full h-64 object-cover" />

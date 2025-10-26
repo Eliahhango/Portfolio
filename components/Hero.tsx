@@ -34,7 +34,7 @@ const Hero: React.FC = () => {
                     <a href="#contact" className="px-10 py-4 bg-blue-500 text-white font-semibold rounded-lg shadow-lg hover:bg-blue-600 transition-all duration-300 transform hover:scale-105 w-full sm:w-auto">
                         Let's Innovate Together
                     </a>
-                    <a href="https://github.com/Eliahhango" target="_blank" rel="noopener noreferrer" className="px-10 py-4 bg-slate-200 dark:bg-gray-800 text-slate-800 dark:text-white font-semibold rounded-lg shadow-lg hover:bg-slate-300 dark:hover:bg-gray-700 transition-all duration-300 transform hover:scale-105 flex items-center justify-center gap-2 w-full sm:w-auto">
+                    <a href="https://github.com/Eliahhango" target="_blank" rel="noopener noreferrer" className="px-10 py-4 bg-slate-200 dark:bg-gray-900 text-slate-800 dark:text-white font-semibold rounded-lg shadow-lg hover:bg-slate-300 dark:hover:bg-gray-800 transition-all duration-300 transform hover:scale-105 flex items-center justify-center gap-2 w-full sm:w-auto">
                         <GithubIcon className="w-5 h-5" /> GitHub
                     </a>
                 </motion.div>

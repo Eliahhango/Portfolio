@@ -51,7 +51,7 @@ const Contact: React.FC = () => {
                     href={href} 
                     target="_blank" 
                     rel="noopener noreferrer" 
-                    className="group bg-slate-100 dark:bg-gray-900 p-6 rounded-lg flex items-center space-x-4 transition-all duration-300 hover:bg-slate-200 dark:hover:bg-gray-800 hover:shadow-lg hover:shadow-blue-500/10 border border-slate-200 dark:border-gray-800 hover:border-blue-500 transform hover:-translate-y-1"
+                    className="group bg-slate-100 dark:bg-gray-950 p-6 rounded-lg flex items-center space-x-4 transition-all duration-300 hover:bg-slate-200 dark:hover:bg-gray-800 hover:shadow-lg hover:shadow-blue-500/10 border border-slate-200 dark:border-gray-900 hover:border-blue-500 transform hover:-translate-y-1"
                 >
                     <Icon className="w-8 h-8 text-blue-500 dark:text-blue-400 group-hover:scale-110 transition-transform duration-300" />
                     <div>
