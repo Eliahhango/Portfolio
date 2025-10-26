@@ -14,7 +14,7 @@ const About: React.FC = () => {
           transition={{ duration: 0.5 }}
           className="md:w-1/3"
         >
-          <img src="https://files.catbox.moe/kh33gf.png" alt="EliTechWiz" className="rounded-full w-48 h-48 md:w-64 md:h-64 mx-auto object-cover shadow-lg border-4 border-blue-500/50" loading="lazy" />
+          <img src="https://files.catbox.moe/qgbtyt.png" alt="EliTechWiz" className="rounded-full w-48 h-48 md:w-64 md:h-64 mx-auto object-cover shadow-lg border-4 border-blue-500/50" loading="lazy" />
         </motion.div>
         <motion.div 
           initial={{ opacity: 0, x: 50 }}
