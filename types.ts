@@ -14,6 +14,7 @@ export interface Stat {
   label: string;
 }
 
+// FIX: Add the Message interface for the chatbot component.
 export interface Message {
   sender: 'user' | 'ai';
   text: string;
