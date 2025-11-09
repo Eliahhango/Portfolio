@@ -1,143 +1,191 @@
-# EliTechWiz - Professional Business Portfolio
+# 👨‍💻 EliTechWiz - Cybersecurity Expert, Software Architect & Creative Designer
 
-![Project Banner](https://images.unsplash.com/photo-1559028006-44d5a2b72bf9?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)
+<div align="center">
 
-<p align="center">
-  A sleek, modern, and fully responsive portfolio website for **EliTechWiz Company Ltd.**, built with React, TypeScript, and Tailwind CSS.
-</p>
+![Profile](https://files.catbox.moe/qgbtyt.png)
 
-<p align="center">
-  <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License">
-  <img src="https://img.shields.io/badge/React-19-blue?logo=react" alt="React">
-  <img src="https://img.shields.io/badge/TypeScript-5-blue?logo=typescript" alt="TypeScript">
-  <img src="https://img.shields.io/badge/Tailwind_CSS-3-blue?logo=tailwind-css" alt="Tailwind CSS">
-</p>
+**Visionary Technologist | Ethical Hacker | Creative Designer | CEO & Lead Architect**
+
+*Merging technology, design, and strategy to build secure, innovative, and impactful digital experiences.*
+
+[![GitHub](https://img.shields.io/badge/GitHub-Eliahhango-black?logo=github)](https://github.com/Eliahhango)
+[![YouTube](https://img.shields.io/badge/YouTube-@eliahhango-red?logo=youtube)](https://youtube.com/@eliahhango)
+[![Email](https://img.shields.io/badge/Email-contact@elitechwiz.com-blue?logo=gmail)](mailto:contact@elitechwiz.com)
+
+</div>
 
 ---
 
-## 🚀 Live Demo
+## 🎯 About Me
 
-[**[Your Live URL Here]**](https://your-live-url.com)
+I am **EliTechWiz**, a visionary technologist, hacker, and creative mind, driven by innovation and the pursuit of digital excellence. My expertise spans across multiple domains:
 
-## ✨ Features
+- 🔒 **Cybersecurity & Ethical Hacking** - Securing digital spaces and identifying vulnerabilities
+- 💻 **Software Development** - Building scalable, efficient, and beautiful applications
+- 🎨 **UI/UX Design** - Creating intuitive and visually stunning user experiences
+- 🏗️ **Architectural Design** - Crafting both digital and physical structures
+- 🚀 **Strategic Innovation** - Turning complex problems into elegant solutions
 
--   **Stunning UI/UX:** A modern, tech-inspired design with a futuristic aesthetic.
--   **Fully Responsive:** Flawless viewing experience on all devices, from mobile phones to widescreen desktops.
--   **Dark/Light Mode:** A theme toggle with local storage persistence for user preference.
--   **Interactive Animations:** Smooth, engaging animations powered by `framer-motion`.
--   **Dynamic Content:**
-    -   Animated particle background for a high-tech feel.
-    -   Engaging typewriter effect in the hero section.
-    -   Auto-counting stats that animate on scroll.
--   **Comprehensive Showcase:**
-    -   Detailed **"My Journey"** timeline to narrate your professional story.
-    -   Organized **"Expertise"** section covering Software, Cybersecurity, and Civil Engineering.
-    -   Interactive project portfolio with detailed modal pop-ups.
--   **User-Friendly Navigation:** Sticky header, active link highlighting, and a scroll-to-top button.
+As a **CEO and creator**, I thrive on building projects that push boundaries, challenge norms, and leave a lasting impression in the tech world. Whether I'm securing digital spaces, designing intuitive interfaces, or crafting visually stunning creations, my goal is to transform ideas into reality with precision, creativity, and a relentless drive for excellence.
 
-## 🛠️ Tech Stack
+> *"Let's innovate, design, and dominate the digital future together."*
 
--   **Frontend:** [React](https://react.dev/)
--   **Language:** [TypeScript](https://www.typescriptlang.org/)
--   **Styling:** [Tailwind CSS](https://tailwindcss.com/)
--   **Animations:** [Framer Motion](https://www.framer.com/motion/)
+---
 
-## ⚙️ Getting Started
+## 🛠️ Technical Expertise
 
-To get a local copy up and running, follow these simple steps.
+### 🔐 Cybersecurity & Hacking
+- Penetration Testing & Vulnerability Assessment
+- Network Security & Intrusion Detection
+- Ethical Hacking & Security Auditing
+- Custom Security Solutions Development
 
-### Prerequisites
+### 💻 Software Development
+- **Frontend:** React, TypeScript, Next.js, Tailwind CSS
+- **Backend:** Node.js, Express, Python, Django
+- **Tools:** Git, Docker, CI/CD, Testing Frameworks
+- **Architecture:** System Design, Scalable Solutions, Microservices
 
-Make sure you have [Node.js](https://nodejs.org/) (version 18 or later) installed on your machine.
+### 🎨 Design & Architecture
+- UI/UX Design (Figma, Adobe XD)
+- Graphic Design & Branding
+- 3D Modeling & Visualization (AutoCAD, Revit, 3ds Max)
+- Civil Engineering & Architectural Planning
 
-### Installation & Setup
+---
 
-1.  **Clone the repository:**
-    ```sh
-    git clone https://github.com/Eliahhango/your-repo-name.git
-    cd your-repo-name
-    ```
-2.  **Install dependencies:**
-    *(This project uses a direct CDN importmap setup for development, so no `npm install` is needed for local viewing. Simply open `index.html` in a live server.)*
+## 📈 Professional Journey
 
-### Running Locally
+### 🏢 CEO & Lead Architect | EliTechWiz Innovations
+**2020 - Present**
 
-Since this project uses ES modules and an importmap, you can run it with any local web server. A popular choice is the [Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) extension for VS Code.
+Leading a team of innovators to build next-generation security and software solutions. Overseeing all aspects from concept to deployment, driving innovation and excellence across all projects.
 
-1.  Open the project folder in VS Code.
-2.  Right-click on `index.html`.
-3.  Select "Open with Live Server".
+### 🔒 Senior Security Consultant | CyberSafe Corp
+**2018 - 2020**
 
-## 🚀 Deployment
+Conducted penetration tests and security audits for Fortune 500 companies, identifying critical vulnerabilities and designing comprehensive mitigation strategies. Delivered security solutions that protected millions of users.
 
-This project is a static site and can be deployed to any static hosting service. Here are instructions for a few popular platforms.
+### 💻 Full-Stack Developer | DevSolutions Ltd.
+**2015 - 2018**
 
-**Note:** For a production deployment, you would typically use a build tool like Vite or Create React App to bundle your TypeScript and React code into optimized static files. The following instructions assume a build process that outputs to a `dist` or `build` folder.
+Developed and maintained web applications for various clients, specializing in scalable backend systems and responsive user interfaces. Delivered high-quality solutions that exceeded client expectations.
 
-### Vercel (Recommended)
+---
 
-1.  Fork this repository to your own GitHub account.
-2.  Sign up or log in to [Vercel](https://vercel.com/).
-3.  Click "Add New..." -> "Project".
-4.  Import the forked repository from GitHub.
-5.  Vercel will automatically detect that it's a React project and configure the build settings for you.
-6.  Click **Deploy**. Your site will be live in minutes!
+## 🚀 Notable Projects
 
-### Netlify
+- **SecureAuth Platform** - Multi-factor authentication system for enterprise applications
+- **DataViz Dashboard** - Interactive data visualization tool for business intelligence
+- **E-commerce Redesign** - Complete UI/UX overhaul for major online retailers
+- **Network Intrusion Detection** - Custom Snort-based IDS for corporate networks
+- **Architectural Visualization** - 3D modeling and rendering of modern residential complexes
+- **Portfolio Website** - Modern, responsive portfolio showcasing skills and projects
 
-1.  Fork this repository.
-2.  Sign up or log in to [Netlify](https://www.netlify.com/).
-3.  Click "Add new site" -> "Import an existing project".
-4.  Connect to your Git provider (e.g., GitHub) and select the forked repository.
-5.  Netlify will likely auto-detect the settings. If not, configure as follows:
-    -   **Build command:** `npm run build` (or your build script)
-    -   **Publish directory:** `dist` (or your output directory)
-6.  Click **Deploy site**.
+---
 
-### Render
+## 📊 Achievements & Stats
 
-1.  Fork this repository.
-2.  Sign up or log in to [Render](https://render.com/).
-3.  Click "New +" -> "Static Site".
-4.  Connect your GitHub account and select the forked repository.
-5.  Configure the settings:
-    -   **Build command:** `npm run build`
-    -   **Publish directory:** `./dist`
-6.  Click **Create Static Site**.
+- ✅ **10+ Years** of Professional Experience
+- 🎯 **50+ Projects** Successfully Completed
+- 😊 **100+ Happy Clients** Served
+- 🏆 Recognized for Excellence in Cybersecurity & Software Development
 
-### Heroku
+---
 
-While Heroku is primarily for backend applications, you can deploy a static site using a buildpack.
+## 💬 What People Say
 
-1.  Install the [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli).
-2.  Log in to Heroku: `heroku login`.
-3.  Create a new Heroku app: `heroku create your-app-name`.
-4.  Set the static buildpack for your app:
-    ```sh
-    heroku buildpacks:set https://github.com/heroku/heroku-buildpack-static.git
-    ```
-5.  Create a file named `static.json` in the root of your project with the following content (assuming a `build` output folder):
-    ```json
-    {
-      "root": "build/",
-      "routes": {
-        "/**": "index.html"
-      }
-    }
-    ```
-6.  Commit the `static.json` file and push to Heroku:
-    ```sh
-    git add .
-    git commit -m "Add static.json for Heroku deployment"
-    git push heroku main
-    ```
+> *"EliTechWiz's development skill is exceptional. The project was delivered on time and exceeded our expectations in every way. A true professional."*  
+> **— sirtheprogrammer, Lead Developer @ codeskytz**
 
-## 🙏 Acknowledgements
+> *"When it comes to cybersecurity, there's no one I trust more. EliTechWiz identified critical vulnerabilities that others missed. Absolutely essential for any serious company."*  
+> **— Mrcyber, Security Analyst**
 
--   Fonts from [Google Fonts](https://fonts.google.com/).
--   Icons from various open-source libraries.
--   Images from [Unsplash](https://unsplash.com/).
+> *"The user interface they designed was not only beautiful but also incredibly intuitive. Our user engagement has skyrocketed since the redesign. Fantastic work!"*  
+> **— Maria, UX Director at Creative Minds**
+
+---
+
+## 📱 Connect With Me
+
+I'm always open to discussing new projects, creative ideas, or opportunities to be part of your visions. Feel free to reach out!
+
+- 📧 **Email:** [contact@elitechwiz.com](mailto:contact@elitechwiz.com)
+- 📱 **Phone:** +255 688 164 510
+- 💬 **WhatsApp:** +255 742 631 101
+- 🐙 **GitHub:** [@Eliahhango](https://github.com/Eliahhango)
+- 📺 **YouTube:** [@eliahhango](https://youtube.com/@eliahhango)
+
+---
+
+## 🎨 Portfolio Website
+
+This repository contains my professional portfolio website, built with modern web technologies:
+
+### 🛠️ Tech Stack
+- **Frontend:** React 19 + TypeScript
+- **Styling:** Tailwind CSS
+- **Animations:** Framer Motion
+- **Build Tool:** Vite
+- **Deployment:** Ready for Vercel, Netlify, or any static hosting
+
+### ✨ Features
+- 🌓 Dark/Light Mode Toggle
+- 📱 Fully Responsive Design
+- 🎭 Smooth Animations & Transitions
+- 🎯 Interactive Project Showcase
+- 📊 Animated Statistics
+- 🗺️ Professional Journey Timeline
+- 💬 Testimonials Section
+- 📧 Contact Integration
+
+### 🚀 Quick Start
+
+```bash
+# Clone the repository
+git clone https://github.com/Eliahhango/Portfolio.git
+cd Portfolio
+
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+
+# Build for production
+npm run build
+```
+
+### 📦 Deployment
+
+This portfolio is a static site and can be deployed to:
+- **Vercel** (Recommended) - Automatic deployments from GitHub
+- **Netlify** - Easy drag-and-drop or Git integration
+- **Render** - Static site hosting
+- **GitHub Pages** - Free hosting for public repos
+
+---
 
 ## 📄 License
 
-This project is licensed under the MIT License.
+This project is licensed under the MIT License - feel free to use it as inspiration for your own portfolio!
+
+---
+
+## 🙏 Acknowledgments
+
+- Fonts from [Google Fonts](https://fonts.google.com/)
+- Icons from various open-source libraries
+- Images from [Unsplash](https://unsplash.com/) and [Pexels](https://pexels.com/)
+
+---
+
+<div align="center">
+
+**Built with ❤️ by EliTechWiz**
+
+*Innovating the digital future, one project at a time.*
+
+⭐ Star this repo if you find it helpful!
+
+</div>
