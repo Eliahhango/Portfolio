@@ -170,11 +170,14 @@ const CookieModal: React.FC<ModalProps> = ({ onClose }) => {
                         <section className="mb-8">
                             <h2 className="text-xl font-bold mb-4 text-slate-900 dark:text-white">More Information</h2>
                             <p className="text-sm text-slate-600 dark:text-gray-400 mb-4 leading-relaxed">
-                                For more detailed information about how we use cookies, please review our{' '}
+                                Cookies help us provide better service experiences and understand how visitors interact with our website. For more detailed information about how we use cookies and handle your data, please review our{' '}
                                 <a href="#" className="text-blue-500 hover:underline" onClick={(e) => { e.preventDefault(); onClose(); }}>
                                     Privacy Policy
                                 </a>
                                 . You can change your cookie preferences at any time by visiting this page again.
+                            </p>
+                            <p className="text-sm text-slate-600 dark:text-gray-400 leading-relaxed">
+                                As cybersecurity professionals, we take data privacy seriously and use cookies responsibly to enhance your experience while maintaining your privacy and security.
                             </p>
                         </section>
 

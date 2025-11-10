@@ -9,14 +9,41 @@ interface ServiceStatus {
     name: string;
     status: 'operational' | 'degraded' | 'down';
     uptime: string;
+    description: string;
 }
 
 const StatusModal: React.FC<ModalProps> = ({ onClose }) => {
     const [services, setServices] = useState<ServiceStatus[]>([
-        { name: 'Website', status: 'operational', uptime: '99.9%' },
-        { name: 'API Services', status: 'operational', uptime: '99.8%' },
-        { name: 'AI Chatbot', status: 'operational', uptime: '99.7%' },
-        { name: 'Email Service', status: 'operational', uptime: '99.9%' },
+        { 
+            name: 'Cybersecurity Services', 
+            status: 'operational', 
+            uptime: '99.9%',
+            description: 'Penetration testing, vulnerability assessments, and security consulting'
+        },
+        { 
+            name: 'Software Development', 
+            status: 'operational', 
+            uptime: '99.8%',
+            description: 'Custom application development and system integration services'
+        },
+        { 
+            name: 'Design Services', 
+            status: 'operational', 
+            uptime: '99.9%',
+            description: 'UI/UX design and system architecture services'
+        },
+        { 
+            name: 'Consulting Services', 
+            status: 'operational', 
+            uptime: '99.7%',
+            description: 'Technology strategy and security planning consultations'
+        },
+        { 
+            name: 'Client Communication', 
+            status: 'operational', 
+            uptime: '99.9%',
+            description: 'Email, phone, and project management systems'
+        },
     ]);
 
     const getStatusColor = (status: string) => {
@@ -39,7 +66,7 @@ const StatusModal: React.FC<ModalProps> = ({ onClose }) => {
             case 'degraded':
                 return 'Degraded Performance';
             case 'down':
-                return 'Service Down';
+                return 'Service Unavailable';
             default:
                 return 'Unknown';
         }
@@ -66,15 +93,15 @@ const StatusModal: React.FC<ModalProps> = ({ onClose }) => {
                     <div className="prose prose-slate dark:prose-invert max-w-none">
                         <h1 className="text-3xl font-bold mb-2 text-slate-900 dark:text-white">Service Status</h1>
                         <p className="text-slate-600 dark:text-gray-400 mb-6">
-                            Real-time status of all our services and systems.
+                            Current status of EliTechWiz professional services and systems.
                         </p>
 
                         <div className="mb-6 p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg">
                             <div className="flex items-center gap-3">
                                 <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
                                 <div>
-                                    <p className="font-semibold text-green-800 dark:text-green-300">All Systems Operational</p>
-                                    <p className="text-sm text-green-700 dark:text-green-400">All services are running normally</p>
+                                    <p className="font-semibold text-green-800 dark:text-green-300">All Services Operational</p>
+                                    <p className="text-sm text-green-700 dark:text-green-400">All services are running normally and accepting new engagements</p>
                                 </div>
                             </div>
                         </div>
@@ -85,20 +112,23 @@ const StatusModal: React.FC<ModalProps> = ({ onClose }) => {
                                 {services.map((service, index) => (
                                     <div
                                         key={index}
-                                        className="flex items-center justify-between p-4 bg-slate-50 dark:bg-gray-900 rounded-lg border border-slate-200 dark:border-gray-800"
+                                        className="p-4 bg-slate-50 dark:bg-gray-900 rounded-lg border border-slate-200 dark:border-gray-800"
                                     >
-                                        <div className="flex items-center gap-3">
-                                            <div className={`w-3 h-3 rounded-full ${getStatusColor(service.status)}`}></div>
-                                            <div>
-                                                <h3 className="font-semibold text-slate-800 dark:text-gray-200">{service.name}</h3>
-                                                <p className="text-sm text-slate-600 dark:text-gray-400">
-                                                    {getStatusText(service.status)}
-                                                </p>
+                                        <div className="flex items-start justify-between gap-4">
+                                            <div className="flex items-start gap-3 flex-1">
+                                                <div className={`w-3 h-3 rounded-full ${getStatusColor(service.status)} mt-1.5 flex-shrink-0`}></div>
+                                                <div className="flex-1">
+                                                    <h3 className="font-semibold text-slate-800 dark:text-gray-200 mb-1">{service.name}</h3>
+                                                    <p className="text-sm text-slate-600 dark:text-gray-400 mb-2">{service.description}</p>
+                                                    <p className="text-xs text-slate-500 dark:text-gray-500">
+                                                        Status: <span className="font-medium">{getStatusText(service.status)}</span>
+                                                    </p>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div className="text-right">
-                                            <p className="text-sm font-medium text-slate-700 dark:text-gray-300">Uptime</p>
-                                            <p className="text-sm text-slate-600 dark:text-gray-400">{service.uptime}</p>
+                                            <div className="text-right flex-shrink-0">
+                                                <p className="text-sm font-medium text-slate-700 dark:text-gray-300">Uptime</p>
+                                                <p className="text-sm text-slate-600 dark:text-gray-400">{service.uptime}</p>
+                                            </div>
                                         </div>
                                     </div>
                                 ))}
@@ -106,10 +136,25 @@ const StatusModal: React.FC<ModalProps> = ({ onClose }) => {
                         </section>
 
                         <section className="mb-8">
+                            <h2 className="text-2xl font-bold mb-4 text-slate-900 dark:text-white">Service Availability</h2>
+                            <div className="bg-slate-50 dark:bg-gray-900 p-4 rounded-lg">
+                                <p className="text-slate-600 dark:text-gray-400 mb-2">
+                                    <strong>Business Hours:</strong> Monday - Friday, 9:00 AM - 6:00 PM EAT
+                                </p>
+                                <p className="text-slate-600 dark:text-gray-400 mb-2">
+                                    <strong>Emergency Support:</strong> Available 24/7 for critical security incidents
+                                </p>
+                                <p className="text-slate-600 dark:text-gray-400">
+                                    <strong>Response Time:</strong> We aim to respond to all inquiries within 24 hours during business days
+                                </p>
+                            </div>
+                        </section>
+
+                        <section className="mb-8">
                             <h2 className="text-2xl font-bold mb-4 text-slate-900 dark:text-white">Recent Incidents</h2>
                             <div className="bg-slate-50 dark:bg-gray-900 p-4 rounded-lg">
                                 <p className="text-slate-600 dark:text-gray-400 text-center py-4">
-                                    No incidents reported in the last 90 days.
+                                    No service disruptions reported in the last 90 days.
                                 </p>
                             </div>
                         </section>
@@ -118,7 +163,7 @@ const StatusModal: React.FC<ModalProps> = ({ onClose }) => {
                             <h2 className="text-2xl font-bold mb-4 text-slate-900 dark:text-white">Scheduled Maintenance</h2>
                             <div className="bg-slate-50 dark:bg-gray-900 p-4 rounded-lg">
                                 <p className="text-slate-600 dark:text-gray-400 text-center py-4">
-                                    No scheduled maintenance at this time.
+                                    No scheduled maintenance at this time. All maintenance is performed during off-peak hours with advance notice.
                                 </p>
                             </div>
                         </section>
@@ -131,7 +176,7 @@ const StatusModal: React.FC<ModalProps> = ({ onClose }) => {
                                     <div>
                                         <h3 className="font-semibold text-slate-800 dark:text-gray-200">Operational</h3>
                                         <p className="text-sm text-slate-600 dark:text-gray-400">
-                                            Service is functioning normally with no known issues.
+                                            Service is fully functional and accepting new engagements. All systems operating normally.
                                         </p>
                                     </div>
                                 </div>
@@ -140,16 +185,16 @@ const StatusModal: React.FC<ModalProps> = ({ onClose }) => {
                                     <div>
                                         <h3 className="font-semibold text-slate-800 dark:text-gray-200">Degraded Performance</h3>
                                         <p className="text-sm text-slate-600 dark:text-gray-400">
-                                            Service is operational but experiencing performance issues or partial outages.
+                                            Service is operational but experiencing delays or limited capacity. We're working to restore full functionality.
                                         </p>
                                     </div>
                                 </div>
                                 <div className="flex items-start gap-3 p-3 bg-slate-50 dark:bg-gray-900 rounded-lg">
                                     <div className="w-3 h-3 bg-red-500 rounded-full mt-1.5 flex-shrink-0"></div>
                                     <div>
-                                        <h3 className="font-semibold text-slate-800 dark:text-gray-200">Service Down</h3>
+                                        <h3 className="font-semibold text-slate-800 dark:text-gray-200">Service Unavailable</h3>
                                         <p className="text-sm text-slate-600 dark:text-gray-400">
-                                            Service is currently unavailable or experiencing a major outage.
+                                            Service is temporarily unavailable. We're actively working to resolve the issue and will provide updates.
                                         </p>
                                     </div>
                                 </div>
@@ -157,13 +202,19 @@ const StatusModal: React.FC<ModalProps> = ({ onClose }) => {
                         </section>
 
                         <section className="mb-8">
-                            <h2 className="text-2xl font-bold mb-4 text-slate-900 dark:text-white">Subscribe to Updates</h2>
+                            <h2 className="text-2xl font-bold mb-4 text-slate-900 dark:text-white">Contact & Support</h2>
                             <p className="mb-4 text-slate-600 dark:text-gray-400 leading-relaxed">
-                                Get notified about service status updates and incidents via email.
+                                For service inquiries or to report issues:
                             </p>
                             <div className="bg-slate-100 dark:bg-gray-900 p-4 rounded-lg mb-4">
+                                <p className="text-slate-700 dark:text-gray-300 mb-2">
+                                    <strong>Email:</strong> <a href="mailto:contact@elitechwiz.com" className="text-blue-500 hover:underline">contact@elitechwiz.com</a>
+                                </p>
+                                <p className="text-slate-700 dark:text-gray-300 mb-2">
+                                    <strong>Phone:</strong> <a href="tel:+255688164510" className="text-blue-500 hover:underline">+255 688 164 510</a>
+                                </p>
                                 <p className="text-slate-700 dark:text-gray-300">
-                                    <strong>Email:</strong> <a href="mailto:status@elitechwiz.com" className="text-blue-500 hover:underline">status@elitechwiz.com</a>
+                                    <strong>Emergency Security:</strong> <a href="mailto:security@elitechwiz.com" className="text-blue-500 hover:underline">security@elitechwiz.com</a>
                                 </p>
                             </div>
                         </section>
@@ -175,4 +226,3 @@ const StatusModal: React.FC<ModalProps> = ({ onClose }) => {
 };
 
 export default StatusModal;
-

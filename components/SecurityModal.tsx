@@ -25,172 +25,130 @@ const SecurityModal: React.FC<ModalProps> = ({ onClose }) => {
                     </button>
 
                     <div className="prose prose-slate dark:prose-invert max-w-none">
-                        <h1 className="text-3xl font-bold mb-6 text-slate-900 dark:text-white">Security Information</h1>
+                        <h1 className="text-3xl font-bold mb-6 text-slate-900 dark:text-white">Security Services & Practices</h1>
                         
                         <p className="text-sm text-slate-500 dark:text-gray-400 mb-6">
                             <strong>Last Updated:</strong> {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
                         </p>
 
                         <section className="mb-8">
-                            <h2 className="text-2xl font-bold mt-6 mb-4 text-slate-900 dark:text-white">Our Commitment to Security</h2>
+                            <h2 className="text-2xl font-bold mt-6 mb-4 text-slate-900 dark:text-white">Our Security Services</h2>
                             <p className="mb-4 text-slate-600 dark:text-gray-400 leading-relaxed">
-                                At EliTechWiz, we take the security of your data and our systems very seriously. We implement industry-standard security measures and continuously work to improve our security posture to protect against threats and vulnerabilities.
+                                EliTechWiz provides comprehensive cybersecurity services to help protect your business, systems, and data from threats. Our security expertise includes:
                             </p>
+                            <ul className="list-disc pl-6 mb-4 text-slate-600 dark:text-gray-400 space-y-2">
+                                <li><strong>Penetration Testing:</strong> Simulated attacks to identify vulnerabilities before malicious actors exploit them</li>
+                                <li><strong>Vulnerability Assessments:</strong> Comprehensive scanning and analysis of your systems for security weaknesses</li>
+                                <li><strong>Security Audits:</strong> In-depth reviews of your security policies, procedures, and infrastructure</li>
+                                <li><strong>Network Security:</strong> Design and implementation of secure network architectures and firewalls</li>
+                                <li><strong>Ethical Hacking:</strong> Authorized security testing to find and fix vulnerabilities</li>
+                                <li><strong>Security Consulting:</strong> Strategic guidance on building robust security postures</li>
+                                <li><strong>Incident Response:</strong> Assistance with security incident investigation and remediation</li>
+                            </ul>
                         </section>
 
                         <section className="mb-8">
-                            <h2 className="text-2xl font-bold mt-6 mb-4 text-slate-900 dark:text-white">1. Data Encryption</h2>
-                            <h3 className="text-xl font-semibold mt-4 mb-2 text-slate-800 dark:text-gray-200">Encryption in Transit</h3>
+                            <h2 className="text-2xl font-bold mt-6 mb-4 text-slate-900 dark:text-white">How We Protect Your Data</h2>
                             <p className="mb-4 text-slate-600 dark:text-gray-400 leading-relaxed">
-                                All data transmitted between your browser and our servers is encrypted using Transport Layer Security (TLS) 1.2 or higher. This ensures that your information cannot be intercepted or read by unauthorized parties during transmission.
+                                When you engage our services, we implement rigorous security measures to protect your information:
                             </p>
                             
-                            <h3 className="text-xl font-semibold mt-4 mb-2 text-slate-800 dark:text-gray-200">Encryption at Rest</h3>
-                            <p className="mb-4 text-slate-600 dark:text-gray-400 leading-relaxed">
-                                Sensitive data stored on our servers is encrypted using Advanced Encryption Standard (AES-256), one of the strongest encryption algorithms available. This protects your data even if physical access to our storage systems is compromised.
-                            </p>
-                        </section>
-
-                        <section className="mb-8">
-                            <h2 className="text-2xl font-bold mt-6 mb-4 text-slate-900 dark:text-white">2. Access Controls</h2>
-                            <p className="mb-4 text-slate-600 dark:text-gray-400 leading-relaxed">
-                                We implement strict access controls to ensure that only authorized personnel can access your data:
-                            </p>
+                            <h3 className="text-xl font-semibold mt-4 mb-2 text-slate-800 dark:text-gray-200">Encryption</h3>
                             <ul className="list-disc pl-6 mb-4 text-slate-600 dark:text-gray-400 space-y-2">
-                                <li>Multi-factor authentication (MFA) for all administrative accounts</li>
-                                <li>Role-based access control (RBAC) to limit access based on job function</li>
-                                <li>Regular access reviews and audits</li>
-                                <li>Principle of least privilege - users only have access to data necessary for their role</li>
-                                <li>Secure password policies requiring strong, unique passwords</li>
+                                <li>All data in transit is encrypted using TLS 1.2+ protocols</li>
+                                <li>Sensitive data at rest is encrypted using AES-256 encryption</li>
+                                <li>Credentials and access tokens are stored in encrypted vaults</li>
+                            </ul>
+
+                            <h3 className="text-xl font-semibold mt-4 mb-2 text-slate-800 dark:text-gray-200">Access Controls</h3>
+                            <ul className="list-disc pl-6 mb-4 text-slate-600 dark:text-gray-400 space-y-2">
+                                <li>Multi-factor authentication (MFA) for all administrative access</li>
+                                <li>Role-based access control (RBAC) limiting access to necessary data only</li>
+                                <li>Regular access reviews and credential rotation</li>
+                                <li>Principle of least privilege enforced</li>
+                            </ul>
+
+                            <h3 className="text-xl font-semibold mt-4 mb-2 text-slate-800 dark:text-gray-200">Secure Infrastructure</h3>
+                            <ul className="list-disc pl-6 mb-4 text-slate-600 dark:text-gray-400 space-y-2">
+                                <li>Secure hosting on enterprise-grade infrastructure</li>
+                                <li>Regular security patches and updates</li>
+                                <li>Network segmentation and firewall protection</li>
+                                <li>Intrusion detection and monitoring systems</li>
                             </ul>
                         </section>
 
                         <section className="mb-8">
-                            <h2 className="text-2xl font-bold mt-6 mb-4 text-slate-900 dark:text-white">3. Vulnerability Management</h2>
+                            <h2 className="text-2xl font-bold mt-6 mb-4 text-slate-900 dark:text-white">Security Assessment Process</h2>
                             <p className="mb-4 text-slate-600 dark:text-gray-400 leading-relaxed">
-                                We maintain a comprehensive vulnerability management program:
+                                When conducting security assessments, we follow a structured, professional process:
+                            </p>
+                            <ol className="list-decimal pl-6 mb-4 text-slate-600 dark:text-gray-400 space-y-2">
+                                <li><strong>Planning & Authorization:</strong> Define scope, obtain written authorization, and establish testing boundaries</li>
+                                <li><strong>Reconnaissance:</strong> Gather information about target systems (authorized methods only)</li>
+                                <li><strong>Vulnerability Scanning:</strong> Use automated and manual techniques to identify weaknesses</li>
+                                <li><strong>Exploitation:</strong> Safely test identified vulnerabilities (within agreed scope)</li>
+                                <li><strong>Reporting:</strong> Document findings with detailed reports including risk ratings and remediation recommendations</li>
+                                <li><strong>Remediation Support:</strong> Assist with fixing identified vulnerabilities</li>
+                                <li><strong>Re-testing:</strong> Verify that vulnerabilities have been properly addressed</li>
+                            </ol>
+                        </section>
+
+                        <section className="mb-8">
+                            <h2 className="text-2xl font-bold mt-6 mb-4 text-slate-900 dark:text-white">Responsible Disclosure</h2>
+                            <p className="mb-4 text-slate-600 dark:text-gray-400 leading-relaxed">
+                                We follow responsible disclosure practices:
                             </p>
                             <ul className="list-disc pl-6 mb-4 text-slate-600 dark:text-gray-400 space-y-2">
-                                <li>Regular security scans and assessments of our systems</li>
-                                <li>Automated dependency updates to patch known vulnerabilities</li>
-                                <li>Penetration testing conducted by third-party security experts</li>
-                                <li>Bug bounty program for responsible disclosure of security issues</li>
-                                <li>Rapid response to security advisories and patches</li>
+                                <li>Vulnerabilities are reported privately to clients first</li>
+                                <li>We provide reasonable time for remediation before public disclosure</li>
+                                <li>All findings remain confidential until authorized for disclosure</li>
+                                <li>We work collaboratively with clients to address security issues</li>
                             </ul>
                         </section>
 
                         <section className="mb-8">
-                            <h2 className="text-2xl font-bold mt-6 mb-4 text-slate-900 dark:text-white">4. Network Security</h2>
+                            <h2 className="text-2xl font-bold mt-6 mb-4 text-slate-900 dark:text-white">Continuous Security Improvement</h2>
                             <p className="mb-4 text-slate-600 dark:text-gray-400 leading-relaxed">
-                                Our network infrastructure is protected by multiple layers of security:
+                                We continuously improve our security practices through:
                             </p>
                             <ul className="list-disc pl-6 mb-4 text-slate-600 dark:text-gray-400 space-y-2">
-                                <li>Firewalls and intrusion detection/prevention systems (IDS/IPS)</li>
-                                <li>DDoS protection and mitigation services</li>
-                                <li>Network segmentation to isolate critical systems</li>
-                                <li>Regular monitoring and analysis of network traffic</li>
-                                <li>Secure VPN access for remote administration</li>
+                                <li>Regular security training and certifications</li>
+                                <li>Staying current with latest threats and vulnerabilities</li>
+                                <li>Regular internal security audits</li>
+                                <li>Participation in security research and bug bounty programs</li>
+                                <li>Following industry best practices and frameworks (OWASP, NIST, etc.)</li>
                             </ul>
                         </section>
 
                         <section className="mb-8">
-                            <h2 className="text-2xl font-bold mt-6 mb-4 text-slate-900 dark:text-white">5. Incident Response</h2>
+                            <h2 className="text-2xl font-bold mt-6 mb-4 text-slate-900 dark:text-white">Reporting Security Issues</h2>
                             <p className="mb-4 text-slate-600 dark:text-gray-400 leading-relaxed">
-                                We have a documented incident response plan to quickly address and mitigate security incidents:
-                            </p>
-                            <ul className="list-disc pl-6 mb-4 text-slate-600 dark:text-gray-400 space-y-2">
-                                <li>24/7 security monitoring and alerting</li>
-                                <li>Rapid incident detection and response procedures</li>
-                                <li>Regular security incident drills and tabletop exercises</li>
-                                <li>Post-incident reviews and improvements</li>
-                                <li>Compliance with data breach notification requirements</li>
-                            </ul>
-                        </section>
-
-                        <section className="mb-8">
-                            <h2 className="text-2xl font-bold mt-6 mb-4 text-slate-900 dark:text-white">6. Secure Development Practices</h2>
-                            <p className="mb-4 text-slate-600 dark:text-gray-400 leading-relaxed">
-                                Security is built into our development process:
-                            </p>
-                            <ul className="list-disc pl-6 mb-4 text-slate-600 dark:text-gray-400 space-y-2">
-                                <li>Secure coding practices and training for developers</li>
-                                <li>Code reviews focused on security vulnerabilities</li>
-                                <li>Automated security testing in CI/CD pipelines</li>
-                                <li>Dependency scanning for known vulnerabilities</li>
-                                <li>Regular security training and awareness programs</li>
-                            </ul>
-                        </section>
-
-                        <section className="mb-8">
-                            <h2 className="text-2xl font-bold mt-6 mb-4 text-slate-900 dark:text-white">7. Third-Party Security</h2>
-                            <p className="mb-4 text-slate-600 dark:text-gray-400 leading-relaxed">
-                                We carefully vet and monitor third-party services and vendors:
-                            </p>
-                            <ul className="list-disc pl-6 mb-4 text-slate-600 dark:text-gray-400 space-y-2">
-                                <li>Security assessments of third-party vendors</li>
-                                <li>Contracts requiring security standards compliance</li>
-                                <li>Regular reviews of third-party security practices</li>
-                                <li>Limiting data sharing to what is necessary</li>
-                            </ul>
-                        </section>
-
-                        <section className="mb-8">
-                            <h2 className="text-2xl font-bold mt-6 mb-4 text-slate-900 dark:text-white">8. Compliance and Certifications</h2>
-                            <p className="mb-4 text-slate-600 dark:text-gray-400 leading-relaxed">
-                                We strive to maintain compliance with relevant security standards and regulations:
-                            </p>
-                            <ul className="list-disc pl-6 mb-4 text-slate-600 dark:text-gray-400 space-y-2">
-                                <li>GDPR compliance for European users</li>
-                                <li>CCPA compliance for California residents</li>
-                                <li>Industry best practices and frameworks</li>
-                                <li>Regular security audits and assessments</li>
-                            </ul>
-                        </section>
-
-                        <section className="mb-8">
-                            <h2 className="text-2xl font-bold mt-6 mb-4 text-slate-900 dark:text-white">9. Reporting Security Issues</h2>
-                            <p className="mb-4 text-slate-600 dark:text-gray-400 leading-relaxed">
-                                If you discover a security vulnerability, we appreciate your responsible disclosure. Please report security issues to:
+                                If you discover a security vulnerability in our services or systems, please report it responsibly:
                             </p>
                             <div className="bg-slate-100 dark:bg-gray-900 p-4 rounded-lg mb-4">
                                 <p className="text-slate-700 dark:text-gray-300 mb-2">
                                     <strong>Security Email:</strong> <a href="mailto:security@elitechwiz.com" className="text-blue-500 hover:underline">security@elitechwiz.com</a>
                                 </p>
                                 <p className="text-slate-700 dark:text-gray-300 text-sm">
-                                    Please include detailed information about the vulnerability, steps to reproduce, and potential impact. We will respond within 48 hours and work with you to resolve the issue.
+                                    Please include: detailed description, steps to reproduce, potential impact, and your contact information. We will respond within 48 hours and work with you to resolve the issue responsibly.
                                 </p>
                             </div>
-                            <p className="mb-4 text-slate-600 dark:text-gray-400 leading-relaxed">
-                                <strong>Please do not:</strong> Access or modify data that does not belong to you, perform any actions that could harm our users or services, or publicly disclose the vulnerability before we have had a chance to address it.
-                            </p>
                         </section>
 
                         <section className="mb-8">
-                            <h2 className="text-2xl font-bold mt-6 mb-4 text-slate-900 dark:text-white">10. Your Role in Security</h2>
+                            <h2 className="text-2xl font-bold mt-6 mb-4 text-slate-900 dark:text-white">Contact Us</h2>
                             <p className="mb-4 text-slate-600 dark:text-gray-400 leading-relaxed">
-                                Security is a shared responsibility. You can help protect your information by:
-                            </p>
-                            <ul className="list-disc pl-6 mb-4 text-slate-600 dark:text-gray-400 space-y-2">
-                                <li>Using strong, unique passwords</li>
-                                <li>Enabling two-factor authentication when available</li>
-                                <li>Keeping your devices and browsers updated</li>
-                                <li>Being cautious of phishing attempts</li>
-                                <li>Not sharing your account credentials</li>
-                                <li>Reporting suspicious activity immediately</li>
-                            </ul>
-                        </section>
-
-                        <section className="mb-8">
-                            <h2 className="text-2xl font-bold mt-6 mb-4 text-slate-900 dark:text-white">11. Contact Us</h2>
-                            <p className="mb-4 text-slate-600 dark:text-gray-400 leading-relaxed">
-                                If you have questions about our security practices, please contact us:
+                                To learn more about our security services or discuss your security needs:
                             </p>
                             <div className="bg-slate-100 dark:bg-gray-900 p-4 rounded-lg mb-4">
                                 <p className="text-slate-700 dark:text-gray-300 mb-2">
-                                    <strong>Security Team:</strong> <a href="mailto:security@elitechwiz.com" className="text-blue-500 hover:underline">security@elitechwiz.com</a>
+                                    <strong>Email:</strong> <a href="mailto:security@elitechwiz.com" className="text-blue-500 hover:underline">security@elitechwiz.com</a>
                                 </p>
                                 <p className="text-slate-700 dark:text-gray-300 mb-2">
                                     <strong>General Contact:</strong> <a href="mailto:contact@elitechwiz.com" className="text-blue-500 hover:underline">contact@elitechwiz.com</a>
+                                </p>
+                                <p className="text-slate-700 dark:text-gray-300">
+                                    <strong>Phone:</strong> <a href="tel:+255688164510" className="text-blue-500 hover:underline">+255 688 164 510</a>
                                 </p>
                             </div>
                         </section>

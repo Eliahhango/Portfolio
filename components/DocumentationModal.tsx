@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { GithubIcon, ExternalLinkIcon } from '../constants';
+import { GithubIcon, ExternalLinkIcon, MailIcon } from '../constants';
 
 interface ModalProps {
     onClose: () => void;
@@ -26,153 +26,126 @@ const DocumentationModal: React.FC<ModalProps> = ({ onClose }) => {
                     </button>
 
                     <div className="prose prose-slate dark:prose-invert max-w-none">
-                        <h1 className="text-3xl font-bold mb-6 text-slate-900 dark:text-white">Documentation</h1>
+                        <h1 className="text-3xl font-bold mb-6 text-slate-900 dark:text-white">Service Documentation</h1>
                         
                         <section className="mb-8">
-                            <h2 className="text-2xl font-bold mt-6 mb-4 text-slate-900 dark:text-white">About This Portfolio</h2>
+                            <h2 className="text-2xl font-bold mt-6 mb-4 text-slate-900 dark:text-white">About Our Services</h2>
                             <p className="mb-4 text-slate-600 dark:text-gray-400 leading-relaxed">
-                                This is a modern, responsive portfolio website built with React, TypeScript, and Tailwind CSS. It showcases professional work, skills, and experience in cybersecurity, software development, and design.
+                                EliTechWiz provides professional technology services including cybersecurity consulting, software development, system architecture, and design services. This documentation provides information about our service offerings, processes, and how to engage with us.
                             </p>
+                        </section>
+
+                        <section className="mb-8">
+                            <h2 className="text-2xl font-bold mt-6 mb-4 text-slate-900 dark:text-white">Service Offerings</h2>
+                            
+                            <div className="space-y-4">
+                                <div className="bg-slate-100 dark:bg-gray-900 p-4 rounded-lg">
+                                    <h3 className="text-xl font-semibold mb-2 text-slate-800 dark:text-gray-200">Cybersecurity Services</h3>
+                                    <ul className="text-sm text-slate-600 dark:text-gray-400 space-y-1 list-disc pl-5">
+                                        <li>Penetration Testing & Vulnerability Assessments</li>
+                                        <li>Security Audits & Compliance Reviews</li>
+                                        <li>Network Security Design & Implementation</li>
+                                        <li>Ethical Hacking & Security Testing</li>
+                                        <li>Incident Response & Forensics</li>
+                                        <li>Security Consulting & Strategy</li>
+                                    </ul>
+                                </div>
+
+                                <div className="bg-slate-100 dark:bg-gray-900 p-4 rounded-lg">
+                                    <h3 className="text-xl font-semibold mb-2 text-slate-800 dark:text-gray-200">Software Development</h3>
+                                    <ul className="text-sm text-slate-600 dark:text-gray-400 space-y-1 list-disc pl-5">
+                                        <li>Custom Web & Mobile Application Development</li>
+                                        <li>System Integration & API Development</li>
+                                        <li>Software Architecture & Design</li>
+                                        <li>Legacy System Modernization</li>
+                                        <li>Full-Stack Development (React, Node.js, Python, etc.)</li>
+                                    </ul>
+                                </div>
+
+                                <div className="bg-slate-100 dark:bg-gray-900 p-4 rounded-lg">
+                                    <h3 className="text-xl font-semibold mb-2 text-slate-800 dark:text-gray-200">Design Services</h3>
+                                    <ul className="text-sm text-slate-600 dark:text-gray-400 space-y-1 list-disc pl-5">
+                                        <li>UI/UX Design & User Experience Optimization</li>
+                                        <li>System Architecture Design</li>
+                                        <li>Graphic Design & Branding</li>
+                                        <li>Prototyping & Wireframing</li>
+                                        <li>Design System Development</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section className="mb-8">
+                            <h2 className="text-2xl font-bold mt-6 mb-4 text-slate-900 dark:text-white">Service Engagement Process</h2>
+                            
+                            <ol className="list-decimal pl-6 mb-4 text-slate-600 dark:text-gray-400 space-y-3">
+                                <li>
+                                    <strong>Initial Consultation:</strong> Discuss your needs, requirements, and objectives. We'll assess your situation and provide initial recommendations.
+                                </li>
+                                <li>
+                                    <strong>Proposal & Agreement:</strong> We'll provide a detailed proposal including scope, timeline, deliverables, and pricing. Once approved, we'll formalize the agreement.
+                                </li>
+                                <li>
+                                    <strong>Project Kickoff:</strong> Establish communication channels, access requirements, and project management processes.
+                                </li>
+                                <li>
+                                    <strong>Service Delivery:</strong> Execute the agreed-upon services with regular updates and communication.
+                                </li>
+                                <li>
+                                    <strong>Reporting & Deliverables:</strong> Provide comprehensive reports, documentation, and deliverables as specified.
+                                </li>
+                                <li>
+                                    <strong>Follow-up & Support:</strong> Address questions, provide clarifications, and offer ongoing support as needed.
+                                </li>
+                            </ol>
+                        </section>
+
+                        <section className="mb-8">
+                            <h2 className="text-2xl font-bold mt-6 mb-4 text-slate-900 dark:text-white">Security Assessment Methodology</h2>
+                            <p className="mb-4 text-slate-600 dark:text-gray-400 leading-relaxed">
+                                For cybersecurity services, we follow industry-standard methodologies:
+                            </p>
+                            <ul className="list-disc pl-6 mb-4 text-slate-600 dark:text-gray-400 space-y-2">
+                                <li><strong>OWASP Top 10:</strong> Testing against common web application vulnerabilities</li>
+                                <li><strong>PTES (Penetration Testing Execution Standard):</strong> Comprehensive penetration testing framework</li>
+                                <li><strong>NIST Framework:</strong> Alignment with NIST Cybersecurity Framework</li>
+                                <li><strong>ISO 27001:</strong> Information security management standards</li>
+                                <li><strong>Custom Methodologies:</strong> Tailored approaches based on specific requirements</li>
+                            </ul>
                         </section>
 
                         <section className="mb-8">
                             <h2 className="text-2xl font-bold mt-6 mb-4 text-slate-900 dark:text-white">Technology Stack</h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                                 <div className="bg-slate-100 dark:bg-gray-900 p-4 rounded-lg">
-                                    <h3 className="font-semibold text-slate-800 dark:text-gray-200 mb-2">Frontend</h3>
+                                    <h3 className="font-semibold text-slate-800 dark:text-gray-200 mb-2">Security Tools</h3>
                                     <ul className="text-sm text-slate-600 dark:text-gray-400 space-y-1">
-                                        <li>• React 19.2.0</li>
-                                        <li>• TypeScript 5.8.2</li>
-                                        <li>• Tailwind CSS</li>
-                                        <li>• Framer Motion</li>
+                                        <li>• Burp Suite, OWASP ZAP</li>
+                                        <li>• Metasploit, Nmap</li>
+                                        <li>• Custom security scripts</li>
                                     </ul>
                                 </div>
                                 <div className="bg-slate-100 dark:bg-gray-900 p-4 rounded-lg">
-                                    <h3 className="font-semibold text-slate-800 dark:text-gray-200 mb-2">Build Tools</h3>
+                                    <h3 className="font-semibold text-slate-800 dark:text-gray-200 mb-2">Development</h3>
                                     <ul className="text-sm text-slate-600 dark:text-gray-400 space-y-1">
-                                        <li>• Vite 6.2.0</li>
-                                        <li>• ESBuild</li>
-                                        <li>• PostCSS</li>
+                                        <li>• React, TypeScript, Node.js</li>
+                                        <li>• Python, Django, Flask</li>
+                                        <li>• Modern development frameworks</li>
                                     </ul>
                                 </div>
                             </div>
                         </section>
 
                         <section className="mb-8">
-                            <h2 className="text-2xl font-bold mt-6 mb-4 text-slate-900 dark:text-white">Getting Started</h2>
-                            
-                            <h3 className="text-xl font-semibold mt-4 mb-2 text-slate-800 dark:text-gray-200">Prerequisites</h3>
+                            <h2 className="text-2xl font-bold mt-6 mb-4 text-slate-900 dark:text-white">Deliverables</h2>
                             <p className="mb-4 text-slate-600 dark:text-gray-400 leading-relaxed">
-                                Before you begin, ensure you have the following installed:
+                                Typical deliverables include:
                             </p>
                             <ul className="list-disc pl-6 mb-4 text-slate-600 dark:text-gray-400 space-y-2">
-                                <li>Node.js (v18 or higher)</li>
-                                <li>npm or yarn package manager</li>
-                                <li>Git</li>
-                            </ul>
-
-                            <h3 className="text-xl font-semibold mt-4 mb-2 text-slate-800 dark:text-gray-200">Installation</h3>
-                            <div className="bg-slate-900 dark:bg-black p-4 rounded-lg mb-4 overflow-x-auto">
-                                <pre className="text-green-400 text-sm">
-                                    <code>{`# Clone the repository
-git clone https://github.com/Eliahhango/Portfolio.git
-cd Portfolio
-
-# Install dependencies
-npm install
-
-# Start development server
-npm run dev
-
-# Build for production
-npm run build
-
-# Preview production build
-npm run preview`}</code>
-                                </pre>
-                            </div>
-                        </section>
-
-                        <section className="mb-8">
-                            <h2 className="text-2xl font-bold mt-6 mb-4 text-slate-900 dark:text-white">Project Structure</h2>
-                            <div className="bg-slate-100 dark:bg-gray-900 p-4 rounded-lg mb-4">
-                                <pre className="text-sm text-slate-700 dark:text-gray-300 overflow-x-auto">
-                                    <code>{`Portfolio/
-├── components/          # React components
-│   ├── Header.tsx
-│   ├── Hero.tsx
-│   ├── About.tsx
-│   └── ...
-├── App.tsx              # Main application component
-├── index.tsx            # Application entry point
-├── index.html           # HTML template
-├── vite.config.ts       # Vite configuration
-├── tsconfig.json        # TypeScript configuration
-├── package.json         # Dependencies and scripts
-└── constants.tsx        # Constants and data`}</code>
-                                </pre>
-                            </div>
-                        </section>
-
-                        <section className="mb-8">
-                            <h2 className="text-2xl font-bold mt-6 mb-4 text-slate-900 dark:text-white">Key Features</h2>
-                            <ul className="list-disc pl-6 mb-4 text-slate-600 dark:text-gray-400 space-y-2">
-                                <li><strong>Responsive Design:</strong> Fully responsive layout that works on all devices</li>
-                                <li><strong>Dark Mode:</strong> Built-in dark/light theme toggle with system preference detection</li>
-                                <li><strong>Animations:</strong> Smooth animations using Framer Motion</li>
-                                <li><strong>AI Chatbot:</strong> Interactive AI assistant powered by Google Gemini</li>
-                                <li><strong>Performance:</strong> Optimized for fast loading and smooth interactions</li>
-                                <li><strong>Accessibility:</strong> WCAG compliant with proper ARIA labels</li>
-                            </ul>
-                        </section>
-
-                        <section className="mb-8">
-                            <h2 className="text-2xl font-bold mt-6 mb-4 text-slate-900 dark:text-white">Configuration</h2>
-                            
-                            <h3 className="text-xl font-semibold mt-4 mb-2 text-slate-800 dark:text-gray-200">Environment Variables</h3>
-                            <p className="mb-4 text-slate-600 dark:text-gray-400 leading-relaxed">
-                                Create a <code className="bg-slate-200 dark:bg-gray-800 px-2 py-1 rounded">.env</code> file in the root directory:
-                            </p>
-                            <div className="bg-slate-900 dark:bg-black p-4 rounded-lg mb-4 overflow-x-auto">
-                                <pre className="text-green-400 text-sm">
-                                    <code>{`# Google Gemini API Key (for chatbot)
-GEMINI_API_KEY=your_api_key_here`}</code>
-                                </pre>
-                            </div>
-
-                            <h3 className="text-xl font-semibold mt-4 mb-2 text-slate-800 dark:text-gray-200">Customization</h3>
-                            <p className="mb-4 text-slate-600 dark:text-gray-400 leading-relaxed">
-                                Most content can be customized in <code className="bg-slate-200 dark:bg-gray-800 px-2 py-1 rounded">constants.tsx</code>:
-                            </p>
-                            <ul className="list-disc pl-6 mb-4 text-slate-600 dark:text-gray-400 space-y-2">
-                                <li>Navigation links</li>
-                                <li>Projects and portfolio items</li>
-                                <li>Skills and expertise</li>
-                                <li>Testimonials</li>
-                                <li>Contact information</li>
-                            </ul>
-                        </section>
-
-                        <section className="mb-8">
-                            <h2 className="text-2xl font-bold mt-6 mb-4 text-slate-900 dark:text-white">Deployment</h2>
-                            
-                            <h3 className="text-xl font-semibold mt-4 mb-2 text-slate-800 dark:text-gray-200">Vercel (Recommended)</h3>
-                            <ol className="list-decimal pl-6 mb-4 text-slate-600 dark:text-gray-400 space-y-2">
-                                <li>Push your code to GitHub</li>
-                                <li>Import your repository in Vercel</li>
-                                <li>Add environment variables in Vercel dashboard</li>
-                                <li>Deploy automatically on every push</li>
-                            </ol>
-
-                            <h3 className="text-xl font-semibold mt-4 mb-2 text-slate-800 dark:text-gray-200">Other Platforms</h3>
-                            <p className="mb-4 text-slate-600 dark:text-gray-400 leading-relaxed">
-                                This is a static site and can be deployed to:
-                            </p>
-                            <ul className="list-disc pl-6 mb-4 text-slate-600 dark:text-gray-400 space-y-2">
-                                <li>Netlify</li>
-                                <li>GitHub Pages</li>
-                                <li>Cloudflare Pages</li>
-                                <li>Any static hosting service</li>
+                                <li><strong>Security Assessments:</strong> Detailed vulnerability reports with risk ratings, proof-of-concept exploits, and remediation recommendations</li>
+                                <li><strong>Software Development:</strong> Source code, documentation, deployment guides, and technical specifications</li>
+                                <li><strong>Design Services:</strong> Design files, style guides, prototypes, and implementation specifications</li>
+                                <li><strong>Consulting:</strong> Strategic recommendations, architecture diagrams, and implementation roadmaps</li>
                             </ul>
                         </section>
 
@@ -180,31 +153,21 @@ GEMINI_API_KEY=your_api_key_here`}</code>
                             <h2 className="text-2xl font-bold mt-6 mb-4 text-slate-900 dark:text-white">Resources</h2>
                             <div className="space-y-3">
                                 <a 
-                                    href="https://github.com/Eliahhango/Portfolio" 
+                                    href="https://github.com/Eliahhango" 
                                     target="_blank" 
                                     rel="noopener noreferrer"
                                     className="flex items-center gap-2 p-3 bg-slate-100 dark:bg-gray-800 rounded-lg hover:bg-slate-200 dark:hover:bg-gray-700 transition-colors"
                                 >
                                     <GithubIcon className="w-5 h-5 text-slate-700 dark:text-gray-300" />
-                                    <span className="text-slate-700 dark:text-gray-300">View Source Code on GitHub</span>
+                                    <span className="text-slate-700 dark:text-gray-300">View Projects on GitHub</span>
                                     <ExternalLinkIcon className="w-4 h-4 ml-auto text-slate-500 dark:text-gray-400" />
                                 </a>
                                 <a 
-                                    href="https://react.dev" 
-                                    target="_blank" 
-                                    rel="noopener noreferrer"
+                                    href="mailto:contact@elitechwiz.com" 
                                     className="flex items-center gap-2 p-3 bg-slate-100 dark:bg-gray-800 rounded-lg hover:bg-slate-200 dark:hover:bg-gray-700 transition-colors"
                                 >
-                                    <span className="text-slate-700 dark:text-gray-300">React Documentation</span>
-                                    <ExternalLinkIcon className="w-4 h-4 ml-auto text-slate-500 dark:text-gray-400" />
-                                </a>
-                                <a 
-                                    href="https://tailwindcss.com" 
-                                    target="_blank" 
-                                    rel="noopener noreferrer"
-                                    className="flex items-center gap-2 p-3 bg-slate-100 dark:bg-gray-800 rounded-lg hover:bg-slate-200 dark:hover:bg-gray-700 transition-colors"
-                                >
-                                    <span className="text-slate-700 dark:text-gray-300">Tailwind CSS Documentation</span>
+                                    <MailIcon className="w-5 h-5 text-slate-700 dark:text-gray-300" />
+                                    <span className="text-slate-700 dark:text-gray-300">Contact for Service Inquiries</span>
                                     <ExternalLinkIcon className="w-4 h-4 ml-auto text-slate-500 dark:text-gray-400" />
                                 </a>
                             </div>
@@ -213,14 +176,17 @@ GEMINI_API_KEY=your_api_key_here`}</code>
                         <section className="mb-8">
                             <h2 className="text-2xl font-bold mt-6 mb-4 text-slate-900 dark:text-white">Support</h2>
                             <p className="mb-4 text-slate-600 dark:text-gray-400 leading-relaxed">
-                                If you have questions or need help, feel free to reach out:
+                                For questions about our services, documentation, or to discuss your project needs:
                             </p>
                             <div className="bg-slate-100 dark:bg-gray-900 p-4 rounded-lg mb-4">
                                 <p className="text-slate-700 dark:text-gray-300 mb-2">
                                     <strong>Email:</strong> <a href="mailto:contact@elitechwiz.com" className="text-blue-500 hover:underline">contact@elitechwiz.com</a>
                                 </p>
+                                <p className="text-slate-700 dark:text-gray-300 mb-2">
+                                    <strong>Phone:</strong> <a href="tel:+255688164510" className="text-blue-500 hover:underline">+255 688 164 510</a>
+                                </p>
                                 <p className="text-slate-700 dark:text-gray-300">
-                                    <strong>GitHub Issues:</strong> <a href="https://github.com/Eliahhango/Portfolio/issues" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">Report an issue</a>
+                                    <strong>Security Inquiries:</strong> <a href="mailto:security@elitechwiz.com" className="text-blue-500 hover:underline">security@elitechwiz.com</a>
                                 </p>
                             </div>
                         </section>
