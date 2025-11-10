@@ -1,5 +1,6 @@
 import React from 'react';
 import { MailIcon, GithubIcon, PhoneIcon, WhatsappIcon, YoutubeIcon } from '../constants';
+import ContactForm from './ContactForm';
 
 const CONTACT_INFO = [
     {
@@ -44,7 +45,7 @@ const Contact: React.FC = () => {
           I'm always open to discussing new projects, creative ideas, or opportunities to be part of your visions. Feel free to reach out to me through any of the platforms below.
         </p>
         
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8 mb-12">
             {CONTACT_INFO.map(({ Icon, label, value, href }) => (
                 <a 
                     key={label}
@@ -60,6 +61,11 @@ const Contact: React.FC = () => {
                     </div>
                 </a>
             ))}
+        </div>
+        
+        {/* Contact Form */}
+        <div className="max-w-4xl mx-auto">
+          <ContactForm />
         </div>
       </div>
     </section>

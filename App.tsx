@@ -11,6 +11,9 @@ import Contact from './components/Contact';
 import Footer from './components/Footer';
 import ScrollToTopButton from './components/ScrollToTopButton';
 import AnimatedParticles from './components/AnimatedParticles';
+import TopBar from './components/TopBar';
+import Newsletter from './components/Newsletter';
+import CTA from './components/CTA';
 import PrivacyModal from './components/PrivacyModal';
 import DocumentationModal from './components/DocumentationModal';
 import ProjectModal from './components/ProjectModal';
@@ -51,6 +54,7 @@ const App: React.FC = () => {
   return (
     <div className="bg-slate-50 dark:bg-black text-slate-600 dark:text-gray-300 min-h-screen" style={{ overflowX: 'hidden' }}>
       <AnimatedParticles />
+      <TopBar />
       <Header 
         activeSection={activeSection} 
       />
@@ -62,8 +66,10 @@ const App: React.FC = () => {
         <Journey />
         <Projects onProjectClick={setSelectedProject} />
         <Testimonials />
+        <CTA />
         <Contact />
       </main>
+      <Newsletter />
       <Footer 
         onPrivacyClick={() => setIsPrivacyModalOpen(true)}
         onDocsClick={() => setIsDocsModalOpen(true)}
