@@ -6,7 +6,11 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "server:dev": "cd server && npm run dev",
+    "server:install": "cd server && npm install",
+    "server:build": "cd server && npm run build",
+    "server:start": "cd server && npm start"
   },
   "dependencies": {
     "react-dom": "^19.2.0",

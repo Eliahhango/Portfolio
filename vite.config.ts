@@ -29,6 +29,10 @@ export default defineConfig(({ mode }) => {
         cssMinify: true,
         sourcemap: false,
         rollupOptions: {
+          input: {
+            main: './index.html',
+            admin: './admin.html',
+          },
           output: {
             manualChunks: {
               'react-vendor': ['react', 'react-dom'],
