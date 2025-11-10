@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useCallback, lazy, Suspense } from 'react';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import About from './components/About';
@@ -11,18 +11,20 @@ import Contact from './components/Contact';
 import Footer from './components/Footer';
 import ScrollToTopButton from './components/ScrollToTopButton';
 import AnimatedParticles from './components/AnimatedParticles';
-import TopBar from './components/TopBar';
 import Newsletter from './components/Newsletter';
 import CTA from './components/CTA';
-import PrivacyModal from './components/PrivacyModal';
-import DocumentationModal from './components/DocumentationModal';
 import ProjectModal from './components/ProjectModal';
 import type { Project } from './types';
-import TermsModal from './components/TermsModal';
-import SecurityModal from './components/SecurityModal';
-import CookieModal from './components/CookieModal';
-import DnsmpiModal from './components/DnsmpiModal';
-import CommunityModal from './components/CommunityModal';
+
+// Lazy load modals for better performance
+const PrivacyModal = lazy(() => import('./components/PrivacyModal'));
+const DocumentationModal = lazy(() => import('./components/DocumentationModal'));
+const TermsModal = lazy(() => import('./components/TermsModal'));
+const SecurityModal = lazy(() => import('./components/SecurityModal'));
+const CookieModal = lazy(() => import('./components/CookieModal'));
+const DnsmpiModal = lazy(() => import('./components/DnsmpiModal'));
+const CommunityModal = lazy(() => import('./components/CommunityModal'));
+const StatusModal = lazy(() => import('./components/StatusModal'));
 
 const App: React.FC = () => {
   const [activeSection, setActiveSection] = useState('home');
@@ -34,6 +36,7 @@ const App: React.FC = () => {
   const [isCookieModalOpen, setIsCookieModalOpen] = useState(false);
   const [isDnsmpiModalOpen, setIsDnsmpiModalOpen] = useState(false);
   const [isCommunityModalOpen, setIsCommunityModalOpen] = useState(false);
+  const [isStatusModalOpen, setIsStatusModalOpen] = useState(false);
 
   useEffect(() => {
     const sections = document.querySelectorAll('section');
@@ -51,10 +54,32 @@ const App: React.FC = () => {
     return () => validSections.forEach(section => observer.unobserve(section));
   }, []);
 
+  // Memoize modal handlers to prevent unnecessary re-renders
+  const modalHandlers = {
+    privacy: useCallback(() => setIsPrivacyModalOpen(true), []),
+    docs: useCallback(() => setIsDocsModalOpen(true), []),
+    terms: useCallback(() => setIsTermsModalOpen(true), []),
+    security: useCallback(() => setIsSecurityModalOpen(true), []),
+    cookie: useCallback(() => setIsCookieModalOpen(true), []),
+    dnsmpi: useCallback(() => setIsDnsmpiModalOpen(true), []),
+    community: useCallback(() => setIsCommunityModalOpen(true), []),
+    status: useCallback(() => setIsStatusModalOpen(true), []),
+  };
+
+  const modalCloseHandlers = {
+    privacy: useCallback(() => setIsPrivacyModalOpen(false), []),
+    docs: useCallback(() => setIsDocsModalOpen(false), []),
+    terms: useCallback(() => setIsTermsModalOpen(false), []),
+    security: useCallback(() => setIsSecurityModalOpen(false), []),
+    cookie: useCallback(() => setIsCookieModalOpen(false), []),
+    dnsmpi: useCallback(() => setIsDnsmpiModalOpen(false), []),
+    community: useCallback(() => setIsCommunityModalOpen(false), []),
+    status: useCallback(() => setIsStatusModalOpen(false), []),
+  };
+
   return (
     <div className="bg-slate-50 dark:bg-black text-slate-600 dark:text-gray-300 min-h-screen" style={{ overflowX: 'hidden' }}>
       <AnimatedParticles />
-      <TopBar />
       <Header 
         activeSection={activeSection} 
       />
@@ -71,13 +96,14 @@ const App: React.FC = () => {
       </main>
       <Newsletter />
       <Footer 
-        onPrivacyClick={() => setIsPrivacyModalOpen(true)}
-        onDocsClick={() => setIsDocsModalOpen(true)}
-        onTermsClick={() => setIsTermsModalOpen(true)}
-        onSecurityClick={() => setIsSecurityModalOpen(true)}
-        onCookieClick={() => setIsCookieModalOpen(true)}
-        onDnsmpiClick={() => setIsDnsmpiModalOpen(true)}
-        onCommunityClick={() => setIsCommunityModalOpen(true)}
+        onPrivacyClick={modalHandlers.privacy}
+        onDocsClick={modalHandlers.docs}
+        onTermsClick={modalHandlers.terms}
+        onSecurityClick={modalHandlers.security}
+        onCookieClick={modalHandlers.cookie}
+        onDnsmpiClick={modalHandlers.dnsmpi}
+        onCommunityClick={modalHandlers.community}
+        onStatusClick={modalHandlers.status}
       />
       
       <div className="fixed bottom-5 right-5 z-50">
@@ -85,13 +111,16 @@ const App: React.FC = () => {
       </div>
       
       {selectedProject && <ProjectModal project={selectedProject} onClose={() => setSelectedProject(null)} />}
-      {isPrivacyModalOpen && <PrivacyModal onClose={() => setIsPrivacyModalOpen(false)} />}
-      {isDocsModalOpen && <DocumentationModal onClose={() => setIsDocsModalOpen(false)} />}
-      {isTermsModalOpen && <TermsModal onClose={() => setIsTermsModalOpen(false)} />}
-      {isSecurityModalOpen && <SecurityModal onClose={() => setIsSecurityModalOpen(false)} />}
-      {isCookieModalOpen && <CookieModal onClose={() => setIsCookieModalOpen(false)} />}
-      {isDnsmpiModalOpen && <DnsmpiModal onClose={() => setIsDnsmpiModalOpen(false)} />}
-      {isCommunityModalOpen && <CommunityModal onClose={() => setIsCommunityModalOpen(false)} />}
+      <Suspense fallback={null}>
+        {isPrivacyModalOpen && <PrivacyModal onClose={modalCloseHandlers.privacy} />}
+        {isDocsModalOpen && <DocumentationModal onClose={modalCloseHandlers.docs} />}
+        {isTermsModalOpen && <TermsModal onClose={modalCloseHandlers.terms} />}
+        {isSecurityModalOpen && <SecurityModal onClose={modalCloseHandlers.security} />}
+        {isCookieModalOpen && <CookieModal onClose={modalCloseHandlers.cookie} />}
+        {isDnsmpiModalOpen && <DnsmpiModal onClose={modalCloseHandlers.dnsmpi} />}
+        {isCommunityModalOpen && <CommunityModal onClose={modalCloseHandlers.community} />}
+        {isStatusModalOpen && <StatusModal onClose={modalCloseHandlers.status} />}
+      </Suspense>
     </div>
   );
 };

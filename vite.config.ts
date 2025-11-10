@@ -20,6 +20,26 @@ export default defineConfig(({ mode }) => {
         alias: {
           '@': path.resolve(__dirname, '.'),
         }
-      }
+      },
+      build: {
+        // Performance optimizations
+        target: 'esnext',
+        minify: 'esbuild',
+        cssMinify: true,
+        sourcemap: false,
+        rollupOptions: {
+          output: {
+            manualChunks: {
+              'react-vendor': ['react', 'react-dom'],
+              'framer-motion': ['framer-motion'],
+              'google-genai': ['@google/genai'],
+            },
+          },
+        },
+        chunkSizeWarningLimit: 1000,
+      },
+      optimizeDeps: {
+        include: ['react', 'react-dom', 'framer-motion'],
+      },
     };
 });

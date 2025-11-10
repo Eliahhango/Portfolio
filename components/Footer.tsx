@@ -9,13 +9,14 @@ interface FooterProps {
   onCookieClick: () => void;
   onDnsmpiClick: () => void;
   onCommunityClick: () => void;
+  onStatusClick: () => void;
 }
 
 const FOOTER_LINKS_DATA = [
     { name: "Terms", type: 'modal', action: 'onTermsClick' as keyof FooterProps },
     { name: "Privacy", type: 'modal', action: 'onPrivacyClick' as keyof FooterProps },
     { name: "Security", type: 'modal', action: 'onSecurityClick' as keyof FooterProps },
-    { name: "Status", type: 'link', href: '#' },
+    { name: "Status", type: 'modal', action: 'onStatusClick' as keyof FooterProps },
     { name: "Community", type: 'modal', action: 'onCommunityClick' as keyof FooterProps },
     { name: "Docs", type: 'modal', action: 'onDocsClick' as keyof FooterProps },
     { name: "Contact", type: 'link', href: '#contact' },
