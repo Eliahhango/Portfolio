@@ -49,7 +49,7 @@ const App: React.FC = () => {
   }, []);
 
   return (
-    <div className="bg-slate-50 dark:bg-black text-slate-600 dark:text-gray-300">
+    <div className="bg-slate-50 dark:bg-black text-slate-600 dark:text-gray-300 min-h-screen" style={{ overflowX: 'hidden' }}>
       <AnimatedParticles />
       <Header 
         activeSection={activeSection} 

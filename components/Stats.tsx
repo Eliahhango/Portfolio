@@ -24,8 +24,8 @@ const StatItem: React.FC<{ stat: Stat }> = ({ stat }) => {
 
     return (
         <div className="text-center">
-            <div className="text-4xl md:text-5xl font-bold text-blue-500 dark:text-blue-400">
-                <span ref={ref}>0</span>+
+            <div className="text-4xl md:text-5xl font-bold text-blue-500 dark:text-blue-400 min-h-[3rem] flex items-center justify-center">
+                <span ref={ref} style={{ display: 'inline-block', minWidth: '2ch' }}>0</span>+
             </div>
             <p className="mt-2 text-sm md:text-base font-semibold text-slate-500 dark:text-gray-400 uppercase tracking-widest">{stat.label}</p>
         </div>

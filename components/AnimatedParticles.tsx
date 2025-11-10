@@ -15,12 +15,26 @@ const AnimatedParticles: React.FC = () => {
         const particleCount = 50;
 
         const setCanvasSize = () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
         };
 
         setCanvasSize();
-        window.addEventListener('resize', setCanvasSize);
+        
+        let resizeTimeout: number;
+        const handleResize = () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = window.setTimeout(() => {
+                setCanvasSize();
+                // Reinitialize particles on resize to prevent layout issues
+                particles.length = 0;
+                init();
+            }, 150);
+        };
+        
+        window.addEventListener('resize', handleResize, { passive: true });
         
         class Particle {
             x: number;
@@ -94,13 +108,14 @@ const AnimatedParticles: React.FC = () => {
         animate();
 
         return () => {
-            window.removeEventListener('resize', setCanvasSize);
+            window.removeEventListener('resize', handleResize);
             cancelAnimationFrame(animationFrameId);
+            if (resizeTimeout) clearTimeout(resizeTimeout);
         };
 
     }, []);
 
-    return <canvas ref={canvasRef} className="fixed top-0 left-0 w-full h-full z-0 dark:opacity-50 opacity-20" />;
+    return <canvas ref={canvasRef} className="fixed top-0 left-0 w-full h-full z-0 dark:opacity-50 opacity-20 pointer-events-none" style={{ willChange: 'transform' }} />;
 };
 
 export default AnimatedParticles;
