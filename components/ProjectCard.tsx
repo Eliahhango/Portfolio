@@ -21,12 +21,12 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, onClick }) => {
                     <p className="text-white text-lg font-semibold">View Details</p>
                 </div>
             </div>
-            <div className="p-6">
-                <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">{project.title}</h3>
-                <p className="text-slate-600 dark:text-gray-400 text-sm mb-4 h-10">{project.description}</p>
+            <div className="p-4 sm:p-6">
+                <h3 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-white mb-2">{project.title}</h3>
+                <p className="text-slate-600 dark:text-gray-400 text-xs sm:text-sm mb-4 min-h-[2.5rem]">{project.description}</p>
                 <div className="flex flex-wrap gap-2 mt-4">
                     {project.tags.map((tag, index) => (
-                        <span key={index} className="bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-300 text-xs font-semibold px-2.5 py-1 rounded-full">
+                        <span key={index} className="bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-300 text-xs font-semibold px-2 sm:px-2.5 py-1 rounded-full">
                             {tag}
                         </span>
                     ))}

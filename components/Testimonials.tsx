@@ -20,10 +20,10 @@ const Testimonials: React.FC = () => {
     };
 
     return (
-        <section id="testimonials" className="py-20">
-            <h2 className="text-3xl font-bold text-center text-slate-900 dark:text-white mb-4">What They Say</h2>
-            <div className="w-20 h-1 bg-blue-500 mx-auto mb-12"></div>
-            <div className="max-w-3xl mx-auto relative h-64">
+        <section id="testimonials" className="py-12 sm:py-16 md:py-20">
+            <h2 className="text-2xl sm:text-3xl font-bold text-center text-slate-900 dark:text-white mb-4 px-4">What They Say</h2>
+            <div className="w-20 h-1 bg-blue-500 mx-auto mb-8 sm:mb-12"></div>
+            <div className="max-w-3xl mx-auto relative h-56 sm:h-64 px-4 sm:px-6">
                 <AnimatePresence mode="wait">
                     <motion.div
                         key={currentIndex}
@@ -32,16 +32,16 @@ const Testimonials: React.FC = () => {
                         animate="visible"
                         exit="exit"
                         transition={{ duration: 0.5 }}
-                        className="absolute w-full h-full bg-slate-100 dark:bg-gray-950 p-8 rounded-lg shadow-sm border border-slate-200 dark:border-gray-900 flex flex-col justify-between"
+                        className="absolute w-full h-full bg-slate-100 dark:bg-gray-950 p-4 sm:p-6 md:p-8 rounded-lg shadow-sm border border-slate-200 dark:border-gray-900 flex flex-col justify-between"
                     >
-                        <p className="text-slate-600 dark:text-gray-400 italic text-center md:text-lg">
+                        <p className="text-sm sm:text-base md:text-lg text-slate-600 dark:text-gray-400 italic text-center">
                             "{TESTIMONIALS_DATA[currentIndex].quote}"
                         </p>
                         <div className="flex items-center self-end mt-4">
-                            <img src={TESTIMONIALS_DATA[currentIndex].avatarUrl} alt={TESTIMONIALS_DATA[currentIndex].name} className="w-12 h-12 rounded-full mr-4 object-cover" />
+                            <img src={TESTIMONIALS_DATA[currentIndex].avatarUrl} alt={TESTIMONIALS_DATA[currentIndex].name} className="w-10 h-10 sm:w-12 sm:h-12 rounded-full mr-3 sm:mr-4 object-cover" />
                             <div>
-                                <h4 className="font-bold text-slate-900 dark:text-white">{TESTIMONIALS_DATA[currentIndex].name}</h4>
-                                <p className="text-sm text-slate-500 dark:text-gray-500">{TESTIMONIALS_DATA[currentIndex].company}</p>
+                                <h4 className="text-sm sm:text-base font-bold text-slate-900 dark:text-white">{TESTIMONIALS_DATA[currentIndex].name}</h4>
+                                <p className="text-xs sm:text-sm text-slate-500 dark:text-gray-500">{TESTIMONIALS_DATA[currentIndex].company}</p>
                             </div>
                         </div>
                     </motion.div>

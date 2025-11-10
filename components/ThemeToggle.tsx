@@ -14,17 +14,30 @@ const ThemeToggle: React.FC = () => {
     const [theme, setTheme] = useState<'light' | 'dark'>(getInitialTheme());
 
     useEffect(() => {
+        const root = document.documentElement;
         if (theme === 'dark') {
-            document.documentElement.classList.add('dark');
+            root.classList.add('dark');
             localStorage.setItem('theme', 'dark');
         } else {
-            document.documentElement.classList.remove('dark');
+            root.classList.remove('dark');
             localStorage.setItem('theme', 'light');
         }
     }, [theme]);
 
     const toggleTheme = () => {
-        setTheme(theme === 'dark' ? 'light' : 'dark');
+        setTheme(prevTheme => {
+            const newTheme = prevTheme === 'dark' ? 'light' : 'dark';
+            // Immediately update DOM for instant feedback
+            const root = document.documentElement;
+            if (newTheme === 'dark') {
+                root.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                root.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+            }
+            return newTheme;
+        });
     };
 
     return (

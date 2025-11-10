@@ -25,10 +25,10 @@ const FOOTER_LINKS_DATA = [
 
 const Footer: React.FC<FooterProps> = (props) => {
   return (
-    <footer className="bg-slate-100 dark:bg-black py-8 px-4 sm:px-6 lg:px-8 relative z-10">
+    <footer className="bg-slate-100 dark:bg-black py-6 sm:py-8 px-4 sm:px-6 lg:px-8 relative z-10">
       <div className="max-w-7xl mx-auto">
-        <div className="flex flex-col sm:flex-row justify-between items-center text-center sm:text-left gap-4 mb-6">
-          <p className="text-slate-500 dark:text-gray-400 text-sm">
+        <div className="flex flex-col sm:flex-row justify-between items-center text-center sm:text-left gap-4 mb-4 sm:mb-6">
+          <p className="text-xs sm:text-sm text-slate-500 dark:text-gray-400">
             &copy; {new Date().getFullYear()} EliTechWiz. All rights reserved.
           </p>
           <div className="flex items-center space-x-4">
@@ -41,14 +41,14 @@ const Footer: React.FC<FooterProps> = (props) => {
           </div>
         </div>
 
-        <div className="border-t border-slate-200 dark:border-gray-700 pt-6 flex flex-wrap justify-center sm:justify-start gap-x-6 gap-y-2">
+        <div className="border-t border-slate-200 dark:border-gray-700 pt-4 sm:pt-6 flex flex-wrap justify-center sm:justify-start gap-x-4 sm:gap-x-6 gap-y-2">
             {FOOTER_LINKS_DATA.map(link => {
                 if (link.type === 'modal' && link.action) {
                     return (
                         <button 
                             key={link.name} 
                             onClick={props[link.action]}
-                            className="text-slate-500 dark:text-gray-400 hover:text-blue-500 text-sm transition-colors text-left"
+                            className="text-xs sm:text-sm text-slate-500 dark:text-gray-400 hover:text-blue-500 transition-colors text-left"
                         >
                             {link.name}
                         </button>
@@ -59,7 +59,7 @@ const Footer: React.FC<FooterProps> = (props) => {
                          <a 
                             key={link.name} 
                             href={link.href}
-                            className="text-slate-500 dark:text-gray-400 hover:text-blue-500 text-sm transition-colors text-left"
+                            className="text-xs sm:text-sm text-slate-500 dark:text-gray-400 hover:text-blue-500 transition-colors text-left"
                         >
                             {link.name}
                         </a>

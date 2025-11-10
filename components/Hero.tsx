@@ -5,13 +5,13 @@ import { GithubIcon } from '../constants';
 
 const Hero: React.FC = () => {
     return (
-        <section id="home" className="min-h-screen flex items-center justify-center text-center -mt-20">
-            <div className="max-w-4xl">
+        <section id="home" className="min-h-[85vh] sm:min-h-[90vh] flex items-center justify-center text-center pt-20 pb-12">
+            <div className="max-w-4xl px-4 sm:px-6">
                 <motion.h1 
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8 }}
-                    className="text-5xl md:text-7xl font-extrabold text-slate-900 dark:text-white tracking-tighter"
+                    className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-slate-900 dark:text-white tracking-tighter leading-tight"
                 >
                     I Am EliTechWiz
                     <br />
@@ -21,7 +21,7 @@ const Hero: React.FC = () => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8, delay: 0.2 }}
-                    className="mt-6 text-lg md:text-xl text-slate-600 dark:text-gray-400 max-w-2xl mx-auto"
+                    className="mt-4 sm:mt-6 text-base sm:text-lg md:text-xl text-slate-600 dark:text-gray-400 max-w-2xl mx-auto px-4"
                 >
                    Merging technology, design, and strategy to build secure, innovative, and impactful digital experiences.
                 </motion.p>
@@ -29,12 +29,12 @@ const Hero: React.FC = () => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8, delay: 0.4 }}
-                    className="mt-10 flex flex-col sm:flex-row justify-center items-center gap-4"
+                    className="mt-8 sm:mt-10 flex flex-col sm:flex-row justify-center items-center gap-4 px-4"
                 >
-                    <a href="#contact" className="px-10 py-4 bg-blue-500 text-white font-semibold rounded-lg shadow-lg hover:bg-blue-600 transition-all duration-300 transform hover:scale-105 w-full sm:w-auto">
+                    <a href="#contact" className="px-8 sm:px-10 py-3 sm:py-4 bg-blue-500 text-white font-semibold rounded-lg shadow-lg hover:bg-blue-600 transition-all duration-300 transform hover:scale-105 w-full sm:w-auto text-sm sm:text-base">
                         Let's Innovate Together
                     </a>
-                    <a href="https://github.com/Eliahhango" target="_blank" rel="noopener noreferrer" className="px-10 py-4 bg-slate-200 dark:bg-gray-900 text-slate-800 dark:text-white font-semibold rounded-lg shadow-lg hover:bg-slate-300 dark:hover:bg-gray-800 transition-all duration-300 transform hover:scale-105 flex items-center justify-center gap-2 w-full sm:w-auto">
+                    <a href="https://github.com/Eliahhango" target="_blank" rel="noopener noreferrer" className="px-8 sm:px-10 py-3 sm:py-4 bg-slate-200 dark:bg-gray-900 text-slate-800 dark:text-white font-semibold rounded-lg shadow-lg hover:bg-slate-300 dark:hover:bg-gray-800 transition-all duration-300 transform hover:scale-105 flex items-center justify-center gap-2 w-full sm:w-auto text-sm sm:text-base">
                         <GithubIcon className="w-5 h-5" /> GitHub
                     </a>
                 </motion.div>

@@ -24,18 +24,18 @@ const StatItem: React.FC<{ stat: Stat }> = ({ stat }) => {
 
     return (
         <div className="text-center">
-            <div className="text-4xl md:text-5xl font-bold text-blue-500 dark:text-blue-400 min-h-[3rem] flex items-center justify-center">
+            <div className="text-3xl sm:text-4xl md:text-5xl font-bold text-blue-500 dark:text-blue-400 min-h-[3rem] flex items-center justify-center">
                 <span ref={ref} style={{ display: 'inline-block', minWidth: '2ch' }}>0</span>+
             </div>
-            <p className="mt-2 text-sm md:text-base font-semibold text-slate-500 dark:text-gray-400 uppercase tracking-widest">{stat.label}</p>
+            <p className="mt-2 text-xs sm:text-sm md:text-base font-semibold text-slate-500 dark:text-gray-400 uppercase tracking-widest px-2">{stat.label}</p>
         </div>
     );
 };
 
 const Stats: React.FC = () => {
   return (
-    <section id="stats" className="py-20 bg-slate-100 dark:bg-gray-950 rounded-lg">
-      <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+    <section id="stats" className="py-12 sm:py-16 md:py-20 bg-slate-100 dark:bg-gray-950 rounded-lg mx-4 sm:mx-6">
+      <div className="max-w-4xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 px-4">
         {STATS_DATA.map((stat) => (
             <StatItem key={stat.label} stat={stat} />
         ))}
