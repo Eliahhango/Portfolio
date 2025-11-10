@@ -26,7 +26,7 @@ export const authenticate = async (req: AuthRequest, res: Response, next: NextFu
     }
 
     req.admin = {
-      id: admin._id.toString(),
+      id: (admin._id as any).toString(),
       email: admin.email,
       role: admin.role,
     };

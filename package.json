@@ -10,7 +10,9 @@
     "server:dev": "cd server && npm run dev",
     "server:install": "cd server && npm install",
     "server:build": "cd server && npm run build",
-    "server:start": "cd server && npm start"
+    "server:start": "cd server && npm start",
+    "build:all": "npm run build && cd server && npm run build",
+    "start": "cd server && npm start"
   },
   "dependencies": {
     "react-dom": "^19.2.0",

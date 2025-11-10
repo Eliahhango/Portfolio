@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 import { body, validationResult } from 'express-validator';
 import { authenticate, AuthRequest } from '../middleware/auth.middleware.js';
 import Service from '../models/Service.model.js';
@@ -6,7 +6,7 @@ import Service from '../models/Service.model.js';
 const router = express.Router();
 
 // Get all services (public)
-router.get('/', async (req, res) => {
+router.get('/', async (req: Request, res: Response) => {
   try {
     const services = await Service.find({ isActive: true })
       .populate('createdBy', 'name email')
@@ -19,7 +19,7 @@ router.get('/', async (req, res) => {
 });
 
 // Get all services (admin - includes inactive)
-router.get('/admin', authenticate, async (req, res) => {
+router.get('/admin', authenticate, async (req: AuthRequest, res: Response) => {
   try {
     const services = await Service.find()
       .populate('createdBy', 'name email')
@@ -32,7 +32,7 @@ router.get('/admin', authenticate, async (req, res) => {
 });
 
 // Get single service
-router.get('/:id', async (req, res) => {
+router.get('/:id', async (req: Request, res: Response) => {
   try {
     const service = await Service.findById(req.params.id)
       .populate('createdBy', 'name email')
@@ -53,7 +53,7 @@ router.post('/', authenticate, [
   body('description').trim().notEmpty(),
   body('category').isIn(['cybersecurity', 'development', 'design', 'consulting']),
   body('features').isArray(),
-], async (req: AuthRequest, res) => {
+], async (req: AuthRequest, res: Response) => {
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -82,7 +82,7 @@ router.put('/:id', authenticate, [
   body('title').optional().trim().notEmpty(),
   body('description').optional().trim().notEmpty(),
   body('category').optional().isIn(['cybersecurity', 'development', 'design', 'consulting']),
-], async (req: AuthRequest, res) => {
+], async (req: AuthRequest, res: Response) => {
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {

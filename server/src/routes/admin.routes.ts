@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Response } from 'express';
 import { body, validationResult } from 'express-validator';
 import { authenticate, requireMainAdmin, AuthRequest } from '../middleware/auth.middleware.js';
 import Admin from '../models/Admin.model.js';
@@ -6,7 +6,7 @@ import Admin from '../models/Admin.model.js';
 const router = express.Router();
 
 // Get all admins (main admin only)
-router.get('/', authenticate, requireMainAdmin, async (req, res) => {
+router.get('/', authenticate, requireMainAdmin, async (req: AuthRequest, res: Response) => {
   try {
     const admins = await Admin.find().select('-password').sort({ createdAt: -1 });
     res.json(admins);
@@ -20,7 +20,7 @@ router.post('/', authenticate, requireMainAdmin, [
   body('email').isEmail().normalizeEmail(),
   body('password').isLength({ min: 6 }),
   body('name').trim().notEmpty(),
-], async (req: AuthRequest, res) => {
+], async (req: AuthRequest, res: Response) => {
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -52,7 +52,7 @@ router.post('/', authenticate, requireMainAdmin, [
 router.put('/:id', authenticate, requireMainAdmin, [
   body('name').optional().trim().notEmpty(),
   body('isActive').optional().isBoolean(),
-], async (req: AuthRequest, res) => {
+], async (req: AuthRequest, res: Response) => {
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -84,7 +84,7 @@ router.put('/:id', authenticate, requireMainAdmin, [
 });
 
 // Delete admin (main admin only, cannot delete self or other main admin)
-router.delete('/:id', authenticate, requireMainAdmin, async (req: AuthRequest, res) => {
+router.delete('/:id', authenticate, requireMainAdmin, async (req: AuthRequest, res: Response) => {
   try {
     const { id } = req.params;
 
@@ -111,7 +111,7 @@ router.delete('/:id', authenticate, requireMainAdmin, async (req: AuthRequest, r
 });
 
 // Get current admin info
-router.get('/me', authenticate, async (req: AuthRequest, res) => {
+router.get('/me', authenticate, async (req: AuthRequest, res: Response) => {
   try {
     const admin = await Admin.findById(req.admin?.id).select('-password');
     if (!admin) {

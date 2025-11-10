@@ -4,6 +4,8 @@ import ServicesManager from './ServicesManager';
 import ContentManager from './ContentManager';
 import AdminsManager from './AdminsManager';
 import DashboardStats from './DashboardStats';
+import VisitorsManager from './VisitorsManager';
+import MessagesManager from './MessagesManager';
 
 interface Admin {
   id: string;
@@ -18,12 +20,14 @@ interface AdminDashboardProps {
 }
 
 const AdminDashboard: React.FC<AdminDashboardProps> = ({ admin, onLogout }) => {
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'services' | 'content' | 'admins'>('dashboard');
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'services' | 'content' | 'visitors' | 'messages' | 'admins'>('dashboard');
 
   const tabs = [
     { id: 'dashboard', label: 'Dashboard', icon: '📊' },
     { id: 'services', label: 'Services', icon: '🛠️' },
     { id: 'content', label: 'Content', icon: '📝' },
+    { id: 'visitors', label: 'Visitors', icon: '👁️' },
+    { id: 'messages', label: 'Messages', icon: '💬' },
     ...(admin.role === 'main' ? [{ id: 'admins', label: 'Admins', icon: '👥' }] : []),
   ];
 
@@ -82,6 +86,8 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ admin, onLogout }) => {
           {activeTab === 'dashboard' && <DashboardStats admin={admin} />}
           {activeTab === 'services' && <ServicesManager />}
           {activeTab === 'content' && <ContentManager />}
+          {activeTab === 'visitors' && <VisitorsManager />}
+          {activeTab === 'messages' && <MessagesManager />}
           {activeTab === 'admins' && admin.role === 'main' && <AdminsManager />}
         </motion.div>
       </main>

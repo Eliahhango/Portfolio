@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 import { body, validationResult } from 'express-validator';
 import { authenticate, AuthRequest } from '../middleware/auth.middleware.js';
 import Content from '../models/Content.model.js';
@@ -6,7 +6,7 @@ import Content from '../models/Content.model.js';
 const router = express.Router();
 
 // Get all content (public - only active)
-router.get('/', async (req, res) => {
+router.get('/', async (req: Request, res: Response) => {
   try {
     const content = await Content.find()
       .populate('updatedBy', 'name email')
@@ -18,7 +18,7 @@ router.get('/', async (req, res) => {
 });
 
 // Get content by section
-router.get('/section/:section', async (req, res) => {
+router.get('/section/:section', async (req: Request, res: Response) => {
   try {
     const content = await Content.find({ section: req.params.section })
       .populate('updatedBy', 'name email')
@@ -30,7 +30,7 @@ router.get('/section/:section', async (req, res) => {
 });
 
 // Get single content item
-router.get('/:key', async (req, res) => {
+router.get('/:key', async (req: Request, res: Response) => {
   try {
     const content = await Content.findOne({ key: req.params.key })
       .populate('updatedBy', 'name email');
@@ -50,7 +50,7 @@ router.post('/', authenticate, [
   body('value').notEmpty(),
   body('section').trim().notEmpty(),
   body('type').optional().isIn(['text', 'html', 'json']),
-], async (req: AuthRequest, res) => {
+], async (req: AuthRequest, res: Response) => {
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -82,7 +82,7 @@ router.post('/', authenticate, [
 // Update content (admin only)
 router.put('/:key', authenticate, [
   body('value').notEmpty(),
-], async (req: AuthRequest, res) => {
+], async (req: AuthRequest, res: Response) => {
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {

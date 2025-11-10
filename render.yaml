@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: portfolio-fullstack
+    env: node
+    buildCommand: npm install && npm run build && cd server && npm install && npm run build
+    startCommand: cd server && npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: MONGODB_URI
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+

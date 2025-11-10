@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo, useCallback, lazy, Suspense } from 'react';
+import { initVisitorTracking } from './utils/visitorTracking';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import About from './components/About';
@@ -42,6 +43,9 @@ const App: React.FC = () => {
   const [isChatbotOpen, setIsChatbotOpen] = useState(false);
 
   useEffect(() => {
+    // Initialize visitor tracking
+    initVisitorTracking();
+
     const sections = document.querySelectorAll('section');
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
