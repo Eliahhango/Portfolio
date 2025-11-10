@@ -29,23 +29,30 @@ const Chatbot: React.FC<ChatbotProps> = ({ onClose }) => {
 
     useEffect(() => {
         try {
-            // Guard against environments where `process` is not defined.
-            const apiKey = typeof process !== 'undefined' ? process.env.API_KEY : undefined;
+            // Get API key - Vite replaces process.env.API_KEY at build time via define in vite.config.ts
+            // We check both process.env (for build-time replacement) and import.meta.env (for runtime)
+            const apiKey = (
+                (typeof process !== 'undefined' && (process.env.API_KEY || process.env.GEMINI_API_KEY)) ||
+                import.meta.env.VITE_GEMINI_API_KEY ||
+                ''
+            ) as string;
 
-            if (!apiKey) {
-                throw new Error("API_KEY environment variable not set.");
+            if (!apiKey || apiKey === '') {
+                console.warn("GEMINI_API_KEY not found. Chatbot will not function. Please set GEMINI_API_KEY in your .env file or Vercel environment variables.");
+                setError("AI assistant is not configured. Please contact the administrator.");
+                return;
             }
 
             const ai = new GoogleGenAI({ apiKey });
             chatRef.current = ai.chats.create({
                 model: 'gemini-2.5-flash',
                 config: {
-                    systemInstruction: "You are a helpful and friendly AI assistant for the EliTechWiz portfolio website. Your name is WizBot. Keep your answers concise and informative. You can answer questions about EliTechWiz's skills (cybersecurity, software development, design), projects, and experience. Be professional but approachable.",
+                    systemInstruction: "You are WizBot, a helpful and friendly AI assistant for EliTechWiz's portfolio website. EliTechWiz is a cybersecurity expert, software architect, and creative designer. You can answer questions about: cybersecurity services (penetration testing, vulnerability assessments, security consulting), software development services, UI/UX design services, projects, experience, and how to contact EliTechWiz. Keep answers concise, professional, and helpful. If asked about services, mention that clients can contact via email (contact@elitechwiz.com) or phone (+255 688 164 510).",
                 },
             });
         } catch (e) {
-            console.error(e);
-            setError("Failed to initialize the AI model. Please check the API key.");
+            console.error("Chatbot initialization error:", e);
+            setError("Failed to initialize the AI assistant. Please try again later.");
         }
     }, []);
 

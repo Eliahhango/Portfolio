@@ -14,6 +14,8 @@ import AnimatedParticles from './components/AnimatedParticles';
 import Newsletter from './components/Newsletter';
 import CTA from './components/CTA';
 import ProjectModal from './components/ProjectModal';
+import ChatbotIcon from './components/ChatbotIcon';
+import Chatbot from './components/Chatbot';
 import type { Project } from './types';
 
 // Lazy load modals for better performance
@@ -37,6 +39,7 @@ const App: React.FC = () => {
   const [isDnsmpiModalOpen, setIsDnsmpiModalOpen] = useState(false);
   const [isCommunityModalOpen, setIsCommunityModalOpen] = useState(false);
   const [isStatusModalOpen, setIsStatusModalOpen] = useState(false);
+  const [isChatbotOpen, setIsChatbotOpen] = useState(false);
 
   useEffect(() => {
     const sections = document.querySelectorAll('section');
@@ -106,9 +109,15 @@ const App: React.FC = () => {
         onStatusClick={modalHandlers.status}
       />
       
-      <div className="fixed bottom-5 right-5 z-50">
+      <div className="fixed bottom-5 right-5 z-50 flex flex-col gap-3 items-end">
           <ScrollToTopButton />
+          <ChatbotIcon 
+            onClick={() => setIsChatbotOpen(!isChatbotOpen)} 
+            isOpen={isChatbotOpen}
+          />
       </div>
+      
+      {isChatbotOpen && <Chatbot onClose={() => setIsChatbotOpen(false)} />}
       
       {selectedProject && <ProjectModal project={selectedProject} onClose={() => setSelectedProject(null)} />}
       <Suspense fallback={null}>
