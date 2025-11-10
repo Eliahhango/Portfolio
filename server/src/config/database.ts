@@ -1,20 +1,19 @@
 // Database configuration - supports both MongoDB and PostgreSQL
 import mongoose from 'mongoose';
-import { PrismaClient } from '@prisma/client';
 
 // Initialize Prisma only when needed (lazy loading)
-let _PrismaClient: typeof PrismaClient | null = null;
+let _PrismaClient: any = null;
 
 export type DatabaseType = 'mongodb' | 'postgresql';
 
-let prismaClient: PrismaClient | null = null;
+let prismaClient: any = null;
 let databaseType: DatabaseType | null = null;
 
 export const getDatabaseType = (): DatabaseType | null => {
   return databaseType;
 };
 
-export const getPrismaClient = (): PrismaClient => {
+export const getPrismaClient = (): any => {
   if (!prismaClient) {
     throw new Error('Prisma client not initialized. PostgreSQL connection failed.');
   }
@@ -70,8 +69,15 @@ const connectPostgreSQL = async (url: string): Promise<void> => {
   try {
     // Dynamically import Prisma to avoid errors if not using PostgreSQL
     if (!_PrismaClient) {
-      const prismaModule = await import('@prisma/client');
-      _PrismaClient = prismaModule.PrismaClient;
+      try {
+        const prismaModule = await import('@prisma/client');
+        _PrismaClient = prismaModule.PrismaClient;
+      } catch (importError: any) {
+        console.error('❌ Failed to import Prisma client:', importError.message);
+        console.error('💡 Run: npx prisma generate');
+        console.error('💡 Or use MongoDB instead by setting MONGODB_URI');
+        throw new Error('Prisma client not available. Run "npx prisma generate" or use MongoDB.');
+      }
     }
     
     prismaClient = new _PrismaClient({
@@ -95,6 +101,7 @@ const connectPostgreSQL = async (url: string): Promise<void> => {
     console.error('❌ PostgreSQL connection error:', err.message);
     console.error('💡 Make sure you have run: npx prisma generate');
     console.error('💡 And that DATABASE_URL points to a valid PostgreSQL database');
+    console.error('💡 Or use MongoDB by setting MONGODB_URI instead');
     throw err;
   }
 };
