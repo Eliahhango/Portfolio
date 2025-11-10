@@ -37,7 +37,7 @@ Deploy this portfolio to your preferred platform:
 ## ✨ Features
 
 - **Portfolio Website** - Modern, responsive design with dark mode
-- **Admin Dashboard** - Full content management system (`/admin.html`)
+- **Admin Dashboard** - Full content management system
 - **Visitor Analytics** - Track visitors, pages, devices, and browsers
 - **Contact Management** - Receive and manage contact form submissions
 - **AI Chatbot** - Google Gemini-powered support assistant
