@@ -1,10 +1,8 @@
-# 👨‍💻 EliTechWiz - Cybersecurity Expert, Software Architect & Creative Designer
+# 👨‍💻 EliTechWiz Portfolio
 
 <div align="center">
 
-![Profile](https://files.catbox.moe/qgbtyt.png)
-
-**Visionary Technologist | Ethical Hacker | Creative Designer | CEO & Lead Architect**
+**Cybersecurity Expert | Software Architect | Creative Designer**
 
 *Merging technology, design, and strategy to build secure, innovative, and impactful digital experiences.*
 
@@ -18,128 +16,34 @@
 
 ## 🎯 About Me
 
-I am **EliTechWiz**, a visionary technologist, hacker, and creative mind, driven by innovation and the pursuit of digital excellence. My expertise spans across multiple domains:
+I'm **EliTechWiz**, a visionary technologist specializing in cybersecurity, software development, and design. With expertise in penetration testing, secure application development, and UI/UX design, I help businesses build secure and innovative digital solutions.
 
-- 🔒 **Cybersecurity & Ethical Hacking** - Securing digital spaces and identifying vulnerabilities
-- 💻 **Software Development** - Building scalable, efficient, and beautiful applications
-- 🎨 **UI/UX Design** - Creating intuitive and visually stunning user experiences
-- 🏗️ **Architectural Design** - Crafting both digital and physical structures
-- 🚀 **Strategic Innovation** - Turning complex problems into elegant solutions
-
-As a **CEO and creator**, I thrive on building projects that push boundaries, challenge norms, and leave a lasting impression in the tech world. Whether I'm securing digital spaces, designing intuitive interfaces, or crafting visually stunning creations, my goal is to transform ideas into reality with precision, creativity, and a relentless drive for excellence.
-
-> *"Let's innovate, design, and dominate the digital future together."*
+**Services:**
+- 🔒 Cybersecurity Consulting & Penetration Testing
+- 💻 Software Development & System Architecture
+- 🎨 UI/UX Design & User Experience Optimization
 
 ---
 
-## 🛠️ Technical Expertise
+## 🚀 Quick Deploy
 
-### 🔐 Cybersecurity & Hacking
-- Penetration Testing & Vulnerability Assessment
-- Network Security & Intrusion Detection
-- Ethical Hacking & Security Auditing
-- Custom Security Solutions Development
+Deploy this portfolio to your preferred platform:
 
-### 💻 Software Development
-- **Frontend:** React, TypeScript, Next.js, Tailwind CSS
-- **Backend:** Node.js, Express, Python, Django
-- **Tools:** Git, Docker, CI/CD, Testing Frameworks
-- **Architecture:** System Design, Scalable Solutions, Microservices
-
-### 🎨 Design & Architecture
-- UI/UX Design (Figma, Adobe XD)
-- Graphic Design & Branding
-- 3D Modeling & Visualization (AutoCAD, Revit, 3ds Max)
-- Civil Engineering & Architectural Planning
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/Eliahhango/Portfolio)
+[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/Eliahhango/Portfolio)
 
 ---
 
-## 📈 Professional Journey
+## 🛠️ Tech Stack
 
-### 🏢 CEO & Lead Architect | EliTechWiz Innovations
-**2020 - Present**
-
-Leading a team of innovators to build next-generation security and software solutions. Overseeing all aspects from concept to deployment, driving innovation and excellence across all projects.
-
-### 🔒 Senior Security Consultant | CyberSafe Corp
-**2018 - 2020**
-
-Conducted penetration tests and security audits for Fortune 500 companies, identifying critical vulnerabilities and designing comprehensive mitigation strategies. Delivered security solutions that protected millions of users.
-
-### 💻 Full-Stack Developer | DevSolutions Ltd.
-**2015 - 2018**
-
-Developed and maintained web applications for various clients, specializing in scalable backend systems and responsive user interfaces. Delivered high-quality solutions that exceeded client expectations.
+- **React 19** + **TypeScript**
+- **Tailwind CSS** for styling
+- **Framer Motion** for animations
+- **Vite** for building
 
 ---
 
-## 🚀 Notable Projects
-
-- **SecureAuth Platform** - Multi-factor authentication system for enterprise applications
-- **DataViz Dashboard** - Interactive data visualization tool for business intelligence
-- **E-commerce Redesign** - Complete UI/UX overhaul for major online retailers
-- **Network Intrusion Detection** - Custom Snort-based IDS for corporate networks
-- **Architectural Visualization** - 3D modeling and rendering of modern residential complexes
-- **Portfolio Website** - Modern, responsive portfolio showcasing skills and projects
-
----
-
-## 📊 Achievements & Stats
-
-- ✅ **10+ Years** of Professional Experience
-- 🎯 **50+ Projects** Successfully Completed
-- 😊 **100+ Happy Clients** Served
-- 🏆 Recognized for Excellence in Cybersecurity & Software Development
-
----
-
-## 💬 What People Say
-
-> *"EliTechWiz's development skill is exceptional. The project was delivered on time and exceeded our expectations in every way. A true professional."*  
-> **— sirtheprogrammer, Lead Developer @ codeskytz**
-
-> *"When it comes to cybersecurity, there's no one I trust more. EliTechWiz identified critical vulnerabilities that others missed. Absolutely essential for any serious company."*  
-> **— Mrcyber, Security Analyst**
-
-> *"The user interface they designed was not only beautiful but also incredibly intuitive. Our user engagement has skyrocketed since the redesign. Fantastic work!"*  
-> **— Maria, UX Director at Creative Minds**
-
----
-
-## 📱 Connect With Me
-
-I'm always open to discussing new projects, creative ideas, or opportunities to be part of your visions. Feel free to reach out!
-
-- 📧 **Email:** [contact@elitechwiz.com](mailto:contact@elitechwiz.com)
-- 📱 **Phone:** +255 688 164 510
-- 💬 **WhatsApp:** +255 742 631 101
-- 🐙 **GitHub:** [@Eliahhango](https://github.com/Eliahhango)
-- 📺 **YouTube:** [@eliahhango](https://youtube.com/@eliahhango)
-
----
-
-## 🎨 Portfolio Website
-
-This repository contains my professional portfolio website, built with modern web technologies:
-
-### 🛠️ Tech Stack
-- **Frontend:** React 19 + TypeScript
-- **Styling:** Tailwind CSS
-- **Animations:** Framer Motion
-- **Build Tool:** Vite
-- **Deployment:** Ready for Vercel, Netlify, or any static hosting
-
-### ✨ Features
-- 🌓 Dark/Light Mode Toggle
-- 📱 Fully Responsive Design
-- 🎭 Smooth Animations & Transitions
-- 🎯 Interactive Project Showcase
-- 📊 Animated Statistics
-- 🗺️ Professional Journey Timeline
-- 💬 Testimonials Section
-- 📧 Contact Integration
-
-### 🚀 Quick Start
+## 📦 Quick Start
 
 ```bash
 # Clone the repository
@@ -156,35 +60,20 @@ npm run dev
 npm run build
 ```
 
-### 📦 Deployment
-
-This portfolio is a static site and can be deployed to:
-- **Vercel** (Recommended) - Automatic deployments from GitHub
-- **Netlify** - Easy drag-and-drop or Git integration
-- **Render** - Static site hosting
-- **GitHub Pages** - Free hosting for public repos
-
 ---
 
-## 📄 License
+## 📱 Connect
 
-This project is licensed under the MIT License - feel free to use it as inspiration for your own portfolio!
-
----
-
-## 🙏 Acknowledgments
-
-- Fonts from [Google Fonts](https://fonts.google.com/)
-- Icons from various open-source libraries
-- Images from [Unsplash](https://unsplash.com/) and [Pexels](https://pexels.com/)
+- 📧 **Email:** [contact@elitechwiz.com](mailto:contact@elitechwiz.com)
+- 📱 **Phone:** +255 688 164 510
+- 🐙 **GitHub:** [@Eliahhango](https://github.com/Eliahhango)
+- 📺 **YouTube:** [@eliahhango](https://youtube.com/@eliahhango)
 
 ---
 
 <div align="center">
 
 **Built with ❤️ by EliTechWiz**
-
-*Innovating the digital future, one project at a time.*
 
 ⭐ Star this repo if you find it helpful!
 
