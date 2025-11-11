@@ -2,6 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { MDXProvider } from '@mdx-js/react';
 import SEO from '../components/SEO';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import rehypeRaw from 'rehype-raw';
+import rehypeSanitize from 'rehype-sanitize';
 
 const modules = import.meta.glob('../content/blog/**/*.mdx', { eager: true }) as any;
 
@@ -63,8 +67,10 @@ const BlogPost: React.FC = () => {
           <Link to="/blog" className="text-blue-600 underline">← Back</Link>
           <h1 className="mt-4 text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white">{apiPost.title}</h1>
           {apiPost.cover && <img src={apiPost.cover} alt="" className="mt-6 w-full rounded-lg border border-slate-200 dark:border-white/10" />}
-          <article className="mt-6 whitespace-pre-wrap leading-7 text-slate-700 dark:text-gray-300">
-            {apiPost.content}
+          <article className="mt-6 prose dark:prose-invert max-w-none">
+            <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw, rehypeSanitize]}>
+              {apiPost.content}
+            </ReactMarkdown>
           </article>
         </div>
       </section>
