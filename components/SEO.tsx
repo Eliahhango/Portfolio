@@ -1,5 +1,4 @@
-import React from 'react';
-import { Helmet } from 'react-helmet-async';
+import React, { useEffect } from 'react';
 
 type SEOProps = {
   title?: string;
@@ -18,51 +17,61 @@ const DEFAULTS = {
   url: 'https://www.elitechwiz.site/'
 };
 
-const SEO: React.FC<SEOProps> = ({
-  title = DEFAULTS.title,
-  description = DEFAULTS.description,
-  image = DEFAULTS.image,
-  url = DEFAULTS.url,
-  canonical,
-  type = 'website'
-}) => {
-  const canonicalUrl = canonical || url;
-  return (
-    <Helmet>
-      <title>{title}</title>
-      <meta name="description" content={description} />
-
-      <link rel="canonical" href={canonicalUrl} />
-
-      {/* Open Graph */}
-      <meta property="og:type" content={type} />
-      <meta property="og:title" content={title} />
-      <meta property="og:description" content={description} />
-      <meta property="og:image" content={image} />
-      <meta property="og:url" content={url} />
-
-      {/* Twitter */}
-      <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:title" content={title} />
-      <meta name="twitter:description" content={description} />
-      <meta name="twitter:image" content={image} />
-
-      {/* JSON-LD basic Site */}
-      <script type="application/ld+json">
-        {JSON.stringify({
-          '@context': 'https://schema.org',
-          '@type': 'WebSite',
-          name: 'EliTechWiz',
-          url: 'https://www.elitechwiz.site',
-          potentialAction: {
-            '@type': 'SearchAction',
-            target: 'https://www.elitechwiz.site/?q={search_term_string}',
-            'query-input': 'required name=search_term_string'
-          }
-        })}
-      </script>
-    </Helmet>
-  );
+const SEO: React.FC<SEOProps> = ({ title = DEFAULTS.title, description = DEFAULTS.description, image = DEFAULTS.image, url = DEFAULTS.url, canonical, type = 'website' }) => {
+  useEffect(() => {
+    document.title = title;
+    const ensureMeta = (attr: [string, string], content: string) => {
+      const [key, value] = attr;
+      let el = document.head.querySelector(`meta[${key}="${value}"]`) as HTMLMetaElement | null;
+      if (!el) {
+        el = document.createElement('meta');
+        el.setAttribute(key, value);
+        document.head.appendChild(el);
+      }
+      el.setAttribute('content', content);
+    };
+    const ensureLink = (rel: string, href: string) => {
+      let el = document.head.querySelector(`link[rel="${rel}"]`) as HTMLLinkElement | null;
+      if (!el) {
+        el = document.createElement('link');
+        el.setAttribute('rel', rel);
+        document.head.appendChild(el);
+      }
+      el.setAttribute('href', href);
+    };
+    ensureMeta(['name', 'description'], description);
+    ensureLink('canonical', canonical || url);
+    ensureMeta(['property', 'og:type'], type);
+    ensureMeta(['property', 'og:title'], title);
+    ensureMeta(['property', 'og:description'], description);
+    ensureMeta(['property', 'og:image'], image);
+    ensureMeta(['property', 'og:url'], url);
+    ensureMeta(['name', 'twitter:card'], 'summary_large_image');
+    ensureMeta(['name', 'twitter:title'], title);
+    ensureMeta(['name', 'twitter:description'], description);
+    ensureMeta(['name', 'twitter:image'], image);
+    // JSON-LD
+    const scriptId = 'app-schema';
+    let script = document.getElementById(scriptId) as HTMLScriptElement | null;
+    if (!script) {
+      script = document.createElement('script');
+      script.type = 'application/ld+json';
+      script.id = scriptId;
+      document.head.appendChild(script);
+    }
+    script.text = JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'WebSite',
+      name: 'EliTechWiz',
+      url: 'https://www.elitechwiz.site',
+      potentialAction: {
+        '@type': 'SearchAction',
+        target: 'https://www.elitechwiz.site/?q={search_term_string}',
+        'query-input': 'required name=search_term_string'
+      }
+    });
+  }, [title, description, image, url, canonical, type]);
+  return null;
 };
 
 export default SEO;

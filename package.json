@@ -19,7 +19,6 @@
     "react": "^19.2.0",
     "framer-motion": "^11.3.19",
     "@google/genai": "^1.27.0",
-    "react-helmet-async": "^2.0.5",
     "react-router-dom": "^7.0.2",
     "@mdx-js/react": "^3.0.1"
   },
