@@ -13,6 +13,7 @@ const ContactForm: React.FC = () => {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const siteKey = import.meta.env.VITE_TURNSTILE_SITE_KEY || '';
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({
@@ -27,13 +28,18 @@ const ContactForm: React.FC = () => {
     setLoading(true);
 
     try {
+      const tokenInput = document.querySelector('input[name="cf-turnstile-response"]') as HTMLInputElement | null;
+      const turnstileToken = tokenInput?.value || '';
+      if (!turnstileToken) {
+        throw new Error('Please complete the CAPTCHA verification.');
+      }
       const apiUrl = import.meta.env.VITE_API_URL || '';
       const response = await fetch(`${apiUrl}/api/contact/submit`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({ ...formData, turnstileToken }),
       });
 
       const data = await response.json();
@@ -44,6 +50,11 @@ const ContactForm: React.FC = () => {
 
       setSubmitted(true);
       setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
+      // Reset the token by reloading the widget container
+      const container = document.getElementById('cf-turnstile-container');
+      if (container) {
+        container.innerHTML = `<div class="cf-turnstile" data-sitekey="${siteKey}" data-theme="auto"></div>`;
+      }
       
       setTimeout(() => {
         setSubmitted(false);
@@ -155,6 +166,9 @@ const ContactForm: React.FC = () => {
             className="w-full px-4 py-3 rounded-lg border border-slate-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all resize-none"
             placeholder="Tell me about your project or inquiry..."
           />
+        </div>
+        <div id="cf-turnstile-container" className="mt-2">
+          <div className="cf-turnstile" data-sitekey={siteKey} data-theme="auto"></div>
         </div>
         <button
           type="submit"

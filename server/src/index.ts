@@ -14,6 +14,9 @@ import serviceRoutes from './routes/service.routes.js';
 import contentRoutes from './routes/content.routes.js';
 import visitorRoutes from './routes/visitor.routes.js';
 import contactRoutes from './routes/contact.routes.js';
+import newsletterRoutes from './routes/newsletter.routes.js';
+import Audit from './models/Audit.model.js';
+import auditRoutes from './routes/audit.routes.js';
 
 dotenv.config();
 
@@ -136,6 +139,25 @@ app.use('/api/', limiter);
 app.use('/api/auth', authLimiter);
 app.use('/api/contact', contactLimiter);
 
+// Admin audit logger (after auth for admin routes)
+app.use('/api', (req: any, res, next) => {
+  // Log only mutating methods on admin-protected namespaces
+  const isMutating = ['POST', 'PUT', 'PATCH', 'DELETE'].includes(req.method);
+  if (isMutating && req.path.startsWith('/admin')) {
+    const admin = req.admin;
+    const ip = req.ip || req.headers['x-forwarded-for'] || req.socket.remoteAddress || 'unknown';
+    Audit.create({
+      adminId: admin?.id || 'unknown',
+      adminEmail: admin?.email || 'unknown',
+      action: `${req.method} ${req.path}`,
+      method: req.method,
+      path: req.path,
+      ip: typeof ip === 'string' ? ip : ''
+    }).catch(() => {});
+  }
+  next();
+});
+
 // Body parsing middleware
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
@@ -187,6 +209,8 @@ app.use('/api/services', serviceRoutes);
 app.use('/api/content', contentRoutes);
 app.use('/api/visitors', visitorRoutes);
 app.use('/api/contact', contactRoutes);
+app.use('/api/newsletter', newsletterRoutes);
+app.use('/api/audit', auditRoutes);
 
 // Health check
 app.get('/api/health', (req: express.Request, res: express.Response) => {

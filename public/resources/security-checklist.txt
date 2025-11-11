@@ -1,0 +1,11 @@
+Basic Security Checklist
+1) Use HTTPS everywhere (HSTS enabled)
+2) Strong CSP without wildcards
+3) X-Content-Type-Options: nosniff
+4) Permissions-Policy set minimally
+5) Rate limiting and brute-force protection
+6) Validate and sanitize all inputs
+7) Rotate and store secrets securely
+8) Keep dependencies updated
+
+

@@ -2,6 +2,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import type { Project } from '../types';
+import { Link } from 'react-router-dom';
 
 interface ProjectCardProps {
     project: Project;
@@ -31,6 +32,17 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, onClick }) => {
                         </span>
                     ))}
                 </div>
+                {project.caseStudySlug && (
+                    <div className="mt-4">
+                        <Link
+                            to={`/case-studies/${project.caseStudySlug}`}
+                            className="inline-block text-sm font-semibold text-blue-600 hover:text-blue-700"
+                            onClick={(e) => e.stopPropagation()}
+                        >
+                            Read case study →
+                        </Link>
+                    </div>
+                )}
             </div>
         </motion.div>
     );

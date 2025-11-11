@@ -134,6 +134,7 @@ export const PROJECTS_DATA: Project[] = [
         tags: ['Cybersecurity', 'React', 'Node.js', 'MFA'],
         repoUrl: 'https://github.com/Eliahhango',
         liveUrl: '#',
+        caseStudySlug: 'secureauth-platform',
     },
     {
         title: 'DataViz Dashboard',
@@ -143,6 +144,7 @@ export const PROJECTS_DATA: Project[] = [
         tags: ['Data Science', 'React', 'D3.js', 'BI'],
         repoUrl: 'https://github.com/Eliahhango',
         liveUrl: '#',
+        caseStudySlug: 'dataviz-dashboard',
     },
     {
         title: 'E-commerce Redesign',

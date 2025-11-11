@@ -7,6 +7,7 @@ export interface Project {
   tags: string[];
   repoUrl?: string;
   liveUrl?: string;
+  caseStudySlug?: string; // Optional slug to a detailed case study page
 }
 
 export interface Stat {
