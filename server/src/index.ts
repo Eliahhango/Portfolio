@@ -25,27 +25,89 @@ const PORT = process.env.PORT || 5000;
 
 // Security Middleware
 app.use(helmet({
+  // Strong CSP. Adjusted to allow required third-party resources.
   contentSecurityPolicy: {
+    useDefaults: true,
     directives: {
       defaultSrc: ["'self'"],
-      styleSrc: ["'self'", "'unsafe-inline'"],
-      scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"], // Needed for React
+      baseUri: ["'self'"],
+      frameAncestors: ["'self'"],
+      objectSrc: ["'none'"],
+      scriptSrc: [
+        "'self'",
+        "'unsafe-inline'",
+        // Allow Tailwind CDN for runtime styles in current setup
+        "https://cdn.tailwindcss.com",
+        // Allow any scripts bundled to call out to aistudiocdn if referenced
+        "https://aistudiocdn.com"
+      ],
+      styleSrc: [
+        "'self'",
+        "'unsafe-inline'",
+        "https://fonts.googleapis.com"
+      ],
       imgSrc: ["'self'", "data:", "https:"],
-      connectSrc: ["'self'"],
-    },
+      fontSrc: ["'self'", "https://fonts.gstatic.com", "data:"],
+      connectSrc: ["'self'", "https:"],
+      upgradeInsecureRequests: []
+    }
   },
-  crossOriginEmbedderPolicy: false, // Allow embedding
+  // Opt out of COEP for now to avoid breaking cross-origin embeds
+  crossOriginEmbedderPolicy: false,
+  // Enforce X-Content-Type-Options, X-Frame-Options, CORP, COOP, etc.
+  referrerPolicy: { policy: 'strict-origin-when-cross-origin' },
+  // Ensure HSTS is enabled with stronger settings (Render terminates TLS at proxy)
+  hsts: {
+    maxAge: 31536000, // 1 year
+    includeSubDomains: true,
+    preload: true
+  }
 }));
+
+// Additional security headers not covered directly by helmet
+app.use((req, res, next) => {
+  // Modern Permissions-Policy (replace deprecated Feature-Policy)
+  res.setHeader(
+    'Permissions-Policy',
+    [
+      'camera=()',
+      'microphone=()',
+      'geolocation=()',
+      'accelerometer=()',
+      'autoplay=()',
+      'clipboard-read=()',
+      'clipboard-write=()',
+      'fullscreen=(self)',
+      'payment=()',
+      'usb=()'
+    ].join(', ')
+  );
+  // Reduce XSS risk from inline event handlers (kept 'unsafe-inline' in CSP for now due to setup)
+  res.setHeader('X-Permitted-Cross-Domain-Policies', 'none');
+  next();
+});
 
 // Trust proxy (for Render/Heroku)
 app.set('trust proxy', 1);
 
 // CORS configuration
+const allowedOrigins = [
+  process.env.FRONTEND_URL,
+  'https://www.elitechwiz.site',
+  'https://elitechwiz.site'
+].filter(Boolean) as string[];
+
 app.use(cors({
-  origin: process.env.FRONTEND_URL || '*',
+  origin: (origin, callback) => {
+    // Allow same-origin or non-browser requests (no Origin header)
+    if (!origin || allowedOrigins.some((o) => o === origin)) {
+      return callback(null, true);
+    }
+    return callback(new Error('CORS: Origin not allowed'), false);
+  },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
 // Rate limiting
