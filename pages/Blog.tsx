@@ -1,38 +1,30 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-// Import all MDX files under content/blog at build-time
-const posts = Object.entries(
-  import.meta.glob('../content/blog/**/*.mdx', { eager: true })
-) as unknown as [string, { frontmatter?: any; default: React.ComponentType }][];
-
-type PostMeta = {
-  title: string;
-  description?: string;
-  date?: string;
-  tags?: string[];
-  slug?: string;
-};
-
-function toSlug(filePath: string, fm?: PostMeta): string {
-  if (fm?.slug) return fm.slug;
-  const last = filePath.split('/').pop() || '';
-  return last.replace(/\.mdx?$/, '');
-}
+type ApiPost = { _id: string; title: string; slug: string; description?: string; tags?: string[]; createdAt?: string; cover?: string };
 
 const Blog: React.FC = () => {
-  const list = posts
-    .map(([path, mod]) => {
-      const fm = (mod as any).frontmatter as PostMeta | undefined;
-      return {
-        slug: toSlug(path, fm),
-        title: fm?.title || toSlug(path, fm),
-        description: fm?.description || '',
-        date: fm?.date || '',
-        tags: fm?.tags || []
-      };
-    })
-    .sort((a, b) => (a.date < b.date ? 1 : -1));
+  const [list, setList] = useState<ApiPost[]>([]);
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const apiUrl = import.meta.env.VITE_API_URL || '';
+        const res = await fetch(`${apiUrl}/api/blog`);
+        if (res.ok) {
+          const data = await res.json();
+          setList(data);
+          setLoaded(true);
+        } else {
+          setLoaded(true);
+        }
+      } catch {
+        setLoaded(true);
+      }
+    };
+    fetchPosts();
+  }, []);
 
   return (
     <section id="blog" className="pt-24 pb-16">
@@ -47,7 +39,7 @@ const Blog: React.FC = () => {
               className="group rounded-xl border border-slate-200 dark:border-white/10 p-5 hover:border-blue-400 dark:hover:border-blue-400 transition-colors"
             >
               <h2 className="text-xl font-bold text-slate-900 dark:text-white group-hover:text-blue-600">{p.title}</h2>
-              {p.date && <div className="mt-1 text-xs text-slate-500">{new Date(p.date).toLocaleDateString()}</div>}
+              {p.createdAt && <div className="mt-1 text-xs text-slate-500">{new Date(p.createdAt).toLocaleDateString()}</div>}
               {p.description && <p className="mt-2 text-sm text-slate-600 dark:text-gray-400">{p.description}</p>}
               {!!p.tags?.length && (
                 <div className="mt-3 flex gap-2 flex-wrap">
@@ -60,6 +52,10 @@ const Blog: React.FC = () => {
               )}
             </Link>
           ))}
+          {!loaded && <div>Loading...</div>}
+          {loaded && list.length === 0 && (
+            <div className="text-slate-600 dark:text-gray-400">No posts yet.</div>
+          )}
         </div>
       </div>
     </section>

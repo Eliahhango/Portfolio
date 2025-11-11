@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { MDXProvider } from '@mdx-js/react';
 import SEO from '../components/SEO';
@@ -13,6 +13,24 @@ const components = {
 
 const BlogPost: React.FC = () => {
   const { slug = '' } = useParams();
+  const [apiPost, setApiPost] = useState<any | null>(null);
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    const fetchPost = async () => {
+      try {
+        const apiUrl = import.meta.env.VITE_API_URL || '';
+        const res = await fetch(`${apiUrl}/api/blog/${slug}`);
+        if (res.ok) {
+          const data = await res.json();
+          setApiPost(data);
+        }
+      } finally {
+        setLoaded(true);
+      }
+    };
+    fetchPost();
+  }, [slug]);
 
   const entry = Object.entries(modules).find(([path, mod]) => {
     const fileSlug = path.split('/').pop()?.replace(/\.mdx?$/, '');
@@ -20,7 +38,7 @@ const BlogPost: React.FC = () => {
     return fileSlug === slug || fm?.slug === slug;
   });
 
-  if (!entry) {
+  if (!apiPost && !entry && loaded) {
     return (
       <section className="pt-24 pb-16">
         <div className="max-w-3xl mx-auto px-4">
@@ -31,7 +49,29 @@ const BlogPost: React.FC = () => {
     );
   }
 
-  const [, mod] = entry;
+  if (apiPost) {
+    return (
+      <section className="pt-24 pb-16">
+        <SEO
+          title={apiPost.title}
+          description={apiPost.description}
+          type="article"
+          canonical={`https://www.elitechwiz.site/blog/${slug}`}
+          url={`https://www.elitechwiz.site/blog/${slug}`}
+        />
+        <div className="max-w-3xl mx-auto px-4">
+          <Link to="/blog" className="text-blue-600 underline">← Back</Link>
+          <h1 className="mt-4 text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white">{apiPost.title}</h1>
+          {apiPost.cover && <img src={apiPost.cover} alt="" className="mt-6 w-full rounded-lg border border-slate-200 dark:border-white/10" />}
+          <article className="mt-6 whitespace-pre-wrap leading-7 text-slate-700 dark:text-gray-300">
+            {apiPost.content}
+          </article>
+        </div>
+      </section>
+    );
+  }
+
+  const [, mod] = entry!;
   const Post = (mod as any).default as React.ComponentType;
   const fm = (mod as any).frontmatter || {};
 
