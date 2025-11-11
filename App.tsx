@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo, useCallback, lazy, Suspense } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { initVisitorTracking } from './utils/visitorTracking';
 import Header from './components/Header';
 import Hero from './components/Hero';
@@ -18,6 +19,8 @@ import ChatbotIcon from './components/ChatbotIcon';
 import Chatbot from './components/Chatbot';
 import type { Project } from './types';
 import SEO from './components/SEO';
+import NotFound from './pages/NotFound';
+import ErrorBoundary from './pages/ErrorBoundary';
 
 // Lazy load modals for better performance
 const PrivacyModal = lazy(() => import('./components/PrivacyModal'));
@@ -85,56 +88,67 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="bg-slate-50 dark:bg-black text-slate-600 dark:text-gray-300 min-h-screen" style={{ overflowX: 'hidden' }}>
-      <SEO />
-      <AnimatedParticles />
-      <Header 
-        activeSection={activeSection} 
-      />
-      <main className="relative z-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-        <Hero />
-        <About />
-        <Expertise />
-        <Journey />
-        <Projects onProjectClick={setSelectedProject} />
-        <Testimonials />
-        <CTA />
-        <Contact />
-      </main>
-      <Newsletter />
-      <Footer 
-        onPrivacyClick={modalHandlers.privacy}
-        onDocsClick={modalHandlers.docs}
-        onTermsClick={modalHandlers.terms}
-        onSecurityClick={modalHandlers.security}
-        onCookieClick={modalHandlers.cookie}
-        onDnsmpiClick={modalHandlers.dnsmpi}
-        onCommunityClick={modalHandlers.community}
-        onStatusClick={modalHandlers.status}
-      />
-      
-      <div className="fixed bottom-5 right-5 z-50 flex flex-col gap-3 items-end">
-          <ScrollToTopButton />
-          <ChatbotIcon 
-            onClick={() => setIsChatbotOpen(!isChatbotOpen)} 
-            isOpen={isChatbotOpen}
+    <Router>
+      <ErrorBoundary>
+        <div className="bg-slate-50 dark:bg-black text-slate-600 dark:text-gray-300 min-h-screen" style={{ overflowX: 'hidden' }}>
+          <SEO />
+          <AnimatedParticles />
+          <Header 
+            activeSection={activeSection} 
           />
-      </div>
-      
-      {isChatbotOpen && <Chatbot onClose={() => setIsChatbotOpen(false)} />}
-      
-      {selectedProject && <ProjectModal project={selectedProject} onClose={() => setSelectedProject(null)} />}
-      <Suspense fallback={null}>
-        {isPrivacyModalOpen && <PrivacyModal onClose={modalCloseHandlers.privacy} />}
-        {isDocsModalOpen && <DocumentationModal onClose={modalCloseHandlers.docs} />}
-        {isTermsModalOpen && <TermsModal onClose={modalCloseHandlers.terms} />}
-        {isSecurityModalOpen && <SecurityModal onClose={modalCloseHandlers.security} />}
-        {isCookieModalOpen && <CookieModal onClose={modalCloseHandlers.cookie} />}
-        {isDnsmpiModalOpen && <DnsmpiModal onClose={modalCloseHandlers.dnsmpi} />}
-        {isCommunityModalOpen && <CommunityModal onClose={modalCloseHandlers.community} />}
-        {isStatusModalOpen && <StatusModal onClose={modalCloseHandlers.status} />}
-      </Suspense>
-    </div>
+          <main className="relative z-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+            <Routes>
+              <Route path="/" element={
+                <>
+                  <Hero />
+                  <About />
+                  <Expertise />
+                  <Journey />
+                  <Projects onProjectClick={setSelectedProject} />
+                  <Testimonials />
+                  <CTA />
+                  <Contact />
+                </>
+              } />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </main>
+          <Newsletter />
+          <Footer 
+            onPrivacyClick={modalHandlers.privacy}
+            onDocsClick={modalHandlers.docs}
+            onTermsClick={modalHandlers.terms}
+            onSecurityClick={modalHandlers.security}
+            onCookieClick={modalHandlers.cookie}
+            onDnsmpiClick={modalHandlers.dnsmpi}
+            onCommunityClick={modalHandlers.community}
+            onStatusClick={modalHandlers.status}
+          />
+          
+          <div className="fixed bottom-5 right-5 z-50 flex flex-col gap-3 items-end">
+              <ScrollToTopButton />
+              <ChatbotIcon 
+                onClick={() => setIsChatbotOpen(!isChatbotOpen)} 
+                isOpen={isChatbotOpen}
+              />
+          </div>
+          
+          {isChatbotOpen && <Chatbot onClose={() => setIsChatbotOpen(false)} />}
+          
+          {selectedProject && <ProjectModal project={selectedProject} onClose={() => setSelectedProject(null)} />}
+          <Suspense fallback={null}>
+            {isPrivacyModalOpen && <PrivacyModal onClose={modalCloseHandlers.privacy} />}
+            {isDocsModalOpen && <DocumentationModal onClose={modalCloseHandlers.docs} />}
+            {isTermsModalOpen && <TermsModal onClose={modalCloseHandlers.terms} />}
+            {isSecurityModalOpen && <SecurityModal onClose={modalCloseHandlers.security} />}
+            {isCookieModalOpen && <CookieModal onClose={modalCloseHandlers.cookie} />}
+            {isDnsmpiModalOpen && <DnsmpiModal onClose={modalCloseHandlers.dnsmpi} />}
+            {isCommunityModalOpen && <CommunityModal onClose={modalCloseHandlers.community} />}
+            {isStatusModalOpen && <StatusModal onClose={modalCloseHandlers.status} />}
+          </Suspense>
+        </div>
+      </ErrorBoundary>
+    </Router>
   );
 };
 
