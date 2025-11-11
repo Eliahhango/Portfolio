@@ -1,6 +1,5 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import InspirationalQuote from './InspirationalQuote';
 
 const About: React.FC = () => {
   return (
@@ -39,9 +38,6 @@ const About: React.FC = () => {
             Let’s innovate, design, and dominate the digital future together.
           </p>
         </motion.div>
-      </div>
-      <div className="mt-12">
-        <InspirationalQuote />
       </div>
     </section>
   );

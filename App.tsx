@@ -5,7 +5,6 @@ import Hero from './components/Hero';
 import About from './components/About';
 import Expertise from './components/Skills';
 import Projects from './components/Projects';
-import Stats from './components/Stats';
 import Testimonials from './components/Testimonials';
 import Journey from './components/Journey';
 import Contact from './components/Contact';
@@ -95,7 +94,6 @@ const App: React.FC = () => {
       <main className="relative z-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         <Hero />
         <About />
-        <Stats />
         <Expertise />
         <Journey />
         <Projects onProjectClick={setSelectedProject} />
