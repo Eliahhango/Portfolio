@@ -8,17 +8,12 @@ import rateLimit from 'express-rate-limit';
 import mongoSanitize from 'express-mongo-sanitize';
 import hpp from 'hpp';
 import { connectDatabase, getDatabaseType } from './config/database.js';
-import authRoutes from './routes/auth.routes.js';
-import adminRoutes from './routes/admin.routes.js';
 import serviceRoutes from './routes/service.routes.js';
 import contentRoutes from './routes/content.routes.js';
 import visitorRoutes from './routes/visitor.routes.js';
 import contactRoutes from './routes/contact.routes.js';
 import newsletterRoutes from './routes/newsletter.routes.js';
-import Audit from './models/Audit.model.js';
-import auditRoutes from './routes/audit.routes.js';
 import blogRoutes from './routes/blog.routes.js';
-import uploadRoutes from './routes/upload.routes.js';
 import BlogPost from './models/BlogPost.model.js';
 
 dotenv.config();
@@ -125,12 +120,6 @@ const limiter = rateLimit({
   legacyHeaders: false,
 });
 
-const authLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 5, // Limit auth endpoints to 5 requests per windowMs
-  message: 'Too many authentication attempts, please try again later.',
-});
-
 const contactLimiter = rateLimit({
   windowMs: 60 * 60 * 1000, // 1 hour
   max: 5, // Limit contact submissions to 5 per hour
@@ -139,27 +128,7 @@ const contactLimiter = rateLimit({
 
 // Apply rate limiting
 app.use('/api/', limiter);
-app.use('/api/auth', authLimiter);
 app.use('/api/contact', contactLimiter);
-
-// Admin audit logger (after auth for admin routes)
-app.use('/api', (req: any, res, next) => {
-  // Log only mutating methods on admin-protected namespaces
-  const isMutating = ['POST', 'PUT', 'PATCH', 'DELETE'].includes(req.method);
-  if (isMutating && req.path.startsWith('/admin')) {
-    const admin = req.admin;
-    const ip = req.ip || req.headers['x-forwarded-for'] || req.socket.remoteAddress || 'unknown';
-    Audit.create({
-      adminId: admin?.id || 'unknown',
-      adminEmail: admin?.email || 'unknown',
-      action: `${req.method} ${req.path}`,
-      method: req.method,
-      path: req.path,
-      ip: typeof ip === 'string' ? ip : ''
-    }).catch(() => {});
-  }
-  next();
-});
 
 // Body parsing middleware
 app.use(express.json({ limit: '10mb' }));
@@ -233,19 +202,12 @@ connectDatabase()
   });
 
 // API Routes (must come before static files)
-app.use('/api/auth', authRoutes);
-app.use('/api/admin', adminRoutes);
 app.use('/api/services', serviceRoutes);
 app.use('/api/content', contentRoutes);
 app.use('/api/visitors', visitorRoutes);
 app.use('/api/contact', contactRoutes);
 app.use('/api/newsletter', newsletterRoutes);
-app.use('/api/audit', auditRoutes);
 app.use('/api/blog', blogRoutes);
-app.use('/api/uploads', uploadRoutes);
-
-// Serve uploaded assets
-app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 // Health check
 app.get('/api/health', (req: express.Request, res: express.Response) => {
@@ -254,11 +216,6 @@ app.get('/api/health', (req: express.Request, res: express.Response) => {
 
 // Serve static files from React build (in production)
 if (process.env.NODE_ENV === 'production') {
-  // Serve admin.html
-  app.get('/admin.html', (req: express.Request, res: express.Response) => {
-    res.sendFile(path.join(__dirname, '../../dist/admin.html'));
-  });
-
   // Serve static assets
   app.use(express.static(path.join(__dirname, '../../dist')));
 
@@ -267,10 +224,6 @@ if (process.env.NODE_ENV === 'production') {
     // Don't serve index.html for API routes
     if (req.path.startsWith('/api')) {
       return res.status(404).json({ message: 'API route not found' });
-    }
-    // Serve admin.html for /admin route
-    if (req.path === '/admin' || req.path.startsWith('/admin')) {
-      return res.sendFile(path.join(__dirname, '../../dist/admin.html'));
     }
     // Serve main index.html for all other routes
     res.sendFile(path.join(__dirname, '../../dist/index.html'));
@@ -283,4 +236,3 @@ app.listen(PORT, () => {
     console.log(`📦 Serving frontend from dist/`);
   }
 });
-

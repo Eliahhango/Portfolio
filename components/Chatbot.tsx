@@ -102,8 +102,7 @@ const Chatbot: React.FC<ChatbotProps> = ({ onClose }) => {
                 console.warn("GEMINI_API_KEY not configured. Chatbot will operate in limited mode.");
                 setIsConfigured(false);
                 // Set a friendly message instead of error
-                setMessages([{
-                    sender: 'ai',
+                setMessages([{'                    sender: 'ai',
                     text: "Hello! I'm WizBot. I'm currently experiencing some technical difficulties, but you can still reach out to EliTechWiz directly at contact@elitechwiz.com or +255 688 164 510. How can I help you?"
                 }]);
                 return;
@@ -112,7 +111,7 @@ const Chatbot: React.FC<ChatbotProps> = ({ onClose }) => {
             setIsConfigured(true);
             const ai = new GoogleGenAI({ apiKey });
             chatRef.current = ai.chats.create({
-                model: 'gemini-2.5-flash',
+                model: 'gemini-1.5-flash-latest',
                 config: {
                     systemInstruction: createSystemInstruction(),
                 },
@@ -121,8 +120,7 @@ const Chatbot: React.FC<ChatbotProps> = ({ onClose }) => {
             // Log error for developers, but show friendly message to users
             console.error("Chatbot initialization error:", e);
             setIsConfigured(false);
-            setMessages([{
-                sender: 'ai',
+            setMessages([{'                sender: 'ai',
                 text: "Hello! I'm WizBot. I'm currently experiencing some technical difficulties, but you can still reach out to EliTechWiz directly at contact@elitechwiz.com or +255 688 164 510. How can I help you?"
             }]);
         }
@@ -221,13 +219,10 @@ const Chatbot: React.FC<ChatbotProps> = ({ onClose }) => {
                 <div className="flex-1 p-4 overflow-y-auto">
                     <div className="flex flex-col gap-4">
                         {messages.map((msg, index) => (
-                            <div key={index} className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
-                                <div className={`max-w-[80%] p-3 rounded-xl ${msg.sender === 'user' ? 'bg-blue-500 text-white' : 'bg-slate-200 dark:bg-gray-800 text-slate-800 dark:text-gray-200'}`}>
-                                    <p className="text-sm whitespace-pre-wrap" dangerouslySetInnerHTML={{__html: msg.text.replace(/\n/g, '<br />')}} />
+                            <div key={index} className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>'                                <div className={`max-w-[80%] p-3 rounded-xl ${msg.sender === 'user' ? 'bg-blue-500 text-white' : 'bg-slate-200 dark:bg-gray-800 text-slate-800 dark:text-gray-200'}`}>'                                    <p className="text-sm whitespace-pre-wrap" dangerouslySetInnerHTML={{__html: msg.text.replace(/\n/g, '<br />')}} />
                                 </div>
                             </div>
-                        ))}
-                        {isLoading && (
+                        ))}'                        {isLoading && (
                             <div className="flex justify-start">
                                 <div className="max-w-[80%] p-3 rounded-xl bg-slate-200 dark:bg-gray-800 text-slate-800 dark:text-gray-200">
                                     <div className="flex items-center gap-2">

@@ -33,7 +33,6 @@ export default defineConfig(({ mode }) => {
         rollupOptions: {
           input: {
             main: './index.html',
-            admin: './admin.html',
           },
           output: {
             manualChunks: {
