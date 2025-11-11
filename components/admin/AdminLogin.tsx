@@ -50,14 +50,21 @@ const AdminLogin: React.FC<AdminLoginProps> = ({ onLogin }) => {
       }
       if (!response) throw new Error('No response from server');
 
-      const contentType = response.headers.get('content-type') || '';
-      const isJson = contentType.includes('application/json');
-      const data = isJson ? await response.json() : { message: await response.text() };
-
       if (!response.ok) {
-        throw new Error(data.message || lastErr || (isRegister ? 'Registration failed' : 'Login failed'));
+        // Read safely using a clone so we don't consume the original stream twice
+        const clone = response.clone();
+        let msg = '';
+        try {
+          const ct = clone.headers.get('content-type') || '';
+          msg = ct.includes('application/json')
+            ? (await clone.json())?.message || ''
+            : await clone.text();
+        } catch {}
+        throw new Error(msg || lastErr || (isRegister ? 'Registration failed' : 'Login failed'));
       }
 
+      // Success path
+      const data = await response.json();
       localStorage.setItem('adminToken', data.token);
       localStorage.setItem('admin', JSON.stringify(data.admin));
       onLogin(data.token, data.admin);
