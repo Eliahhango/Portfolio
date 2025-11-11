@@ -18,7 +18,6 @@ interface ChatbotProps {
 
 // Sanitize user input to prevent sensitive information leakage
 const sanitizeInput = (input: string): string => {
-    // Remove potential API keys, tokens, or sensitive patterns
     const sensitivePatterns = [
         /api[_-]?key\s*[:=]\s*[\w-]+/gi,
         /token\s*[:=]\s*[\w-]+/gi,
@@ -90,19 +89,13 @@ const Chatbot: React.FC<ChatbotProps> = ({ onClose }) => {
 
     useEffect(() => {
         try {
-            // Get API key - Vite replaces process.env.API_KEY at build time via define in vite.config.ts
-            const apiKey = (
-                (typeof process !== 'undefined' && (process.env.API_KEY || process.env.GEMINI_API_KEY)) ||
-                import.meta.env.VITE_GEMINI_API_KEY ||
-                ''
-            ) as string;
+            const apiKey = import.meta.env.VITE_GEMINI_API_KEY as string;
 
-            if (!apiKey || apiKey === '') {
-                // Don't show error to users - just log for developers
-                console.warn("GEMINI_API_KEY not configured. Chatbot will operate in limited mode.");
+            if (!apiKey) {
+                console.warn("VITE_GEMINI_API_KEY not configured. Chatbot will operate in limited mode.");
                 setIsConfigured(false);
-                // Set a friendly message instead of error
-                setMessages([{'                    sender: 'ai',
+                setMessages([{
+                    sender: 'ai',
                     text: "Hello! I'm WizBot. I'm currently experiencing some technical difficulties, but you can still reach out to EliTechWiz directly at contact@elitechwiz.com or +255 688 164 510. How can I help you?"
                 }]);
                 return;
@@ -117,11 +110,11 @@ const Chatbot: React.FC<ChatbotProps> = ({ onClose }) => {
                 },
             });
         } catch (e) {
-            // Log error for developers, but show friendly message to users
             console.error("Chatbot initialization error:", e);
             setIsConfigured(false);
-            setMessages([{'                sender: 'ai',
-                text: "Hello! I'm WizBot. I'm currently experiencing some technical difficulties, but you can still reach out to EliTechWiz directly at contact@elitechwiz.com or +255 688 164 510. How can I help you?"
+            setMessages([{
+                sender: 'ai',
+                text: "Hello! I'm WizBot. I'm currently experiencing some technical difficulties. Please contact EliTechWiz directly at contact@elitechwiz.com."
             }]);
         }
     }, []);
@@ -134,42 +127,26 @@ const Chatbot: React.FC<ChatbotProps> = ({ onClose }) => {
         e.preventDefault();
         if (!input.trim() || isLoading) return;
 
-        // If not configured, provide helpful response without API call
+        const userMessage: Message = { sender: 'user', text: input };
+        setMessages(prev => [...prev, userMessage]);
+        const sanitizedInput = sanitizeInput(input);
+        setInput('');
+
         if (!isConfigured || !chatRef.current) {
-            const userMessage: Message = { sender: 'user', text: input };
-            setMessages(prev => [...prev, userMessage]);
-            setInput('');
-            
-            // Provide a helpful response based on common questions
-            const lowerInput = input.toLowerCase();
-            let response = "I'm currently experiencing technical difficulties. For immediate assistance, please contact EliTechWiz directly at contact@elitechwiz.com or +255 688 164 510.";
-            
-            if (lowerInput.includes('service') || lowerInput.includes('cybersecurity') || lowerInput.includes('development') || lowerInput.includes('design')) {
-                response = "EliTechWiz offers cybersecurity consulting, software development, and UI/UX design services. For detailed information and to discuss your needs, please contact contact@elitechwiz.com or +255 688 164 510.";
-            } else if (lowerInput.includes('contact') || lowerInput.includes('email') || lowerInput.includes('phone')) {
-                response = "You can reach EliTechWiz at:\n• Email: contact@elitechwiz.com\n• Phone: +255 688 164 510\n• WhatsApp: +255 742 631 101";
-            } else if (lowerInput.includes('project') || lowerInput.includes('portfolio')) {
-                response = "EliTechWiz has worked on various projects including security platforms, data visualization tools, and e-commerce solutions. Visit the Projects section on the website or contact contact@elitechwiz.com for more details.";
-            }
-            
+            setIsLoading(true);
             setTimeout(() => {
+                let response = "I'm currently experiencing technical difficulties. For immediate assistance, please contact EliTechWiz directly at contact@elitechwiz.com or +255 688 164 510.";
                 setMessages(prev => [...prev, { sender: 'ai', text: response }]);
+                setIsLoading(false);
             }, 500);
             return;
         }
 
-        // Sanitize input before sending
-        const sanitizedInput = sanitizeInput(input);
-        const userMessage: Message = { sender: 'user', text: input };
-        setMessages(prev => [...prev, userMessage]);
-        
-        const prompt = sanitizedInput;
-        setInput('');
         setIsLoading(true);
         setError(null);
 
         try {
-            const stream = await chatRef.current.sendMessageStream({ message: prompt });
+            const stream = await chatRef.current.sendMessageStream({ message: sanitizedInput });
             
             setIsLoading(false);
             setMessages(prev => [...prev, { sender: 'ai', text: '' }]);
@@ -184,18 +161,13 @@ const Chatbot: React.FC<ChatbotProps> = ({ onClose }) => {
                 });
             }
         } catch (e: any) {
-            // Log detailed error for developers
             console.error("Gemini API error:", e);
             setIsLoading(false);
-            
-            // Show user-friendly error message
             const errorMessage = e?.message?.toLowerCase() || '';
             if (errorMessage.includes('api key') || errorMessage.includes('authentication') || errorMessage.includes('permission')) {
                 setError("I'm having trouble connecting right now. Please try again in a moment, or contact EliTechWiz directly at contact@elitechwiz.com.");
-            } else if (errorMessage.includes('quota') || errorMessage.includes('limit')) {
-                setError("I'm experiencing high demand right now. Please try again later or contact EliTechWiz directly at contact@elitechwiz.com.");
             } else {
-                setError("I'm having trouble processing that request. Please try rephrasing your question or contact EliTechWiz directly at contact@elitechwiz.com.");
+                setError("I'm having trouble processing that request. Please contact EliTechWiz at contact@elitechwiz.com.");
             }
         }
     };
@@ -219,10 +191,13 @@ const Chatbot: React.FC<ChatbotProps> = ({ onClose }) => {
                 <div className="flex-1 p-4 overflow-y-auto">
                     <div className="flex flex-col gap-4">
                         {messages.map((msg, index) => (
-                            <div key={index} className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>'                                <div className={`max-w-[80%] p-3 rounded-xl ${msg.sender === 'user' ? 'bg-blue-500 text-white' : 'bg-slate-200 dark:bg-gray-800 text-slate-800 dark:text-gray-200'}`}>'                                    <p className="text-sm whitespace-pre-wrap" dangerouslySetInnerHTML={{__html: msg.text.replace(/\n/g, '<br />')}} />
+                            <div key={index} className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
+                                <div className={`max-w-[80%] p-3 rounded-xl ${msg.sender === 'user' ? 'bg-blue-500 text-white' : 'bg-slate-200 dark:bg-gray-800 text-slate-800 dark:text-gray-200'}`}>
+                                    <p className="text-sm whitespace-pre-wrap" dangerouslySetInnerHTML={{__html: msg.text.replace(/\n/g, '<br />')}} />
                                 </div>
                             </div>
-                        ))}'                        {isLoading && (
+                        ))}
+                        {isLoading && (
                             <div className="flex justify-start">
                                 <div className="max-w-[80%] p-3 rounded-xl bg-slate-200 dark:bg-gray-800 text-slate-800 dark:text-gray-200">
                                     <div className="flex items-center gap-2">
