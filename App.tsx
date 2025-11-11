@@ -18,6 +18,7 @@ import ProjectModal from './components/ProjectModal';
 import ChatbotIcon from './components/ChatbotIcon';
 import Chatbot from './components/Chatbot';
 import type { Project } from './types';
+import SEO from './components/SEO';
 
 // Lazy load modals for better performance
 const PrivacyModal = lazy(() => import('./components/PrivacyModal'));
@@ -86,6 +87,7 @@ const App: React.FC = () => {
 
   return (
     <div className="bg-slate-50 dark:bg-black text-slate-600 dark:text-gray-300 min-h-screen" style={{ overflowX: 'hidden' }}>
+      <SEO />
       <AnimatedParticles />
       <Header 
         activeSection={activeSection} 

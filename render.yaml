@@ -13,4 +13,8 @@ services:
         sync: false
       - key: JWT_SECRET
         sync: false
+      - key: TURNSTILE_SECRET
+        sync: false
+      - key: SITE_URL
+        value: https://www.elitechwiz.site
 

@@ -12,6 +12,7 @@ router.post('/submit', [
   body('phone').optional().trim().isLength({ max: 20 }).withMessage('Phone must be less than 20 characters'),
   body('subject').trim().isLength({ min: 3, max: 200 }).withMessage('Subject must be 3-200 characters'),
   body('message').trim().isLength({ min: 10, max: 5000 }).withMessage('Message must be 10-5000 characters'),
+  body('turnstileToken').isString().withMessage('Captcha token is required'),
 ], async (req: Request, res: Response) => {
   try {
     const errors = validationResult(req);
@@ -23,9 +24,29 @@ router.post('/submit', [
       });
     }
 
-    const { name, email, phone, subject, message } = req.body;
+    const { name, email, phone, subject, message, turnstileToken } = req.body;
     const ip = req.ip || req.headers['x-forwarded-for'] || req.socket.remoteAddress || 'unknown';
     const userAgent = req.headers['user-agent'] || 'unknown';
+
+    // Verify Cloudflare Turnstile
+    const secret = process.env.TURNSTILE_SECRET;
+    if (!secret) {
+      console.warn('TURNSTILE_SECRET not set — skipping verification');
+    } else {
+      const verifyRes = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({
+          secret,
+          response: turnstileToken,
+          remoteip: typeof ip === 'string' ? ip : ''
+        }).toString()
+      });
+      const outcome = await verifyRes.json() as any;
+      if (!outcome.success) {
+        return res.status(400).json({ success: false, message: 'Captcha verification failed' });
+      }
+    }
 
     // Check for spam (same email/IP submitting multiple times in short period)
     const recentSubmission = await ContactMessage.findOne({

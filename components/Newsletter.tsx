@@ -5,16 +5,35 @@ import { MailIcon } from '../constants';
 const Newsletter: React.FC = () => {
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
+  const [message, setMessage] = useState('');
+  const [confirmUrl, setConfirmUrl] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Here you would typically send the email to your backend
-    console.log('Newsletter signup:', email);
-    setSubmitted(true);
-    setTimeout(() => {
-      setSubmitted(false);
+    setSubmitted(false);
+    setMessage('');
+    setConfirmUrl('');
+    setLoading(true);
+    try {
+      const apiUrl = import.meta.env.VITE_API_URL || '';
+      const res = await fetch(`${apiUrl}/api/newsletter/subscribe`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || 'Subscription failed');
+      setSubmitted(true);
+      setMessage('Check your email to confirm subscription.');
+      if (data.confirmUrl) setConfirmUrl(data.confirmUrl); // handy for testing
       setEmail('');
-    }, 3000);
+    } catch (err: any) {
+      setSubmitted(true);
+      setMessage(err.message || 'Subscription failed. Try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -48,13 +67,21 @@ const Newsletter: React.FC = () => {
               />
               <button
                 type="submit"
-                className="px-6 py-3 bg-yellow-400 hover:bg-yellow-500 text-blue-900 font-semibold rounded-lg transition-colors duration-300 whitespace-nowrap text-sm sm:text-base"
+                disabled={loading}
+                className="px-6 py-3 bg-yellow-400 hover:bg-yellow-500 disabled:bg-yellow-300 disabled:cursor-not-allowed text-blue-900 font-semibold rounded-lg transition-colors duration-300 whitespace-nowrap text-sm sm:text-base"
               >
-                {submitted ? 'Subscribed!' : 'Subscribe'}
+                {loading ? 'Submitting...' : (submitted ? 'Subscribed!' : 'Subscribe')}
               </button>
             </div>
             {submitted && (
-              <p className="mt-3 text-yellow-300 text-sm">Thank you for subscribing! 🎉</p>
+              <div className="mt-3 text-yellow-300 text-sm">
+                <p>{message}</p>
+                {confirmUrl && (
+                  <p className="mt-1">
+                    Dev quick-confirm: <a className="underline" href={confirmUrl} target="_blank" rel="noreferrer">Open link</a>
+                  </p>
+                )}
+              </div>
             )}
           </form>
         </motion.div>
