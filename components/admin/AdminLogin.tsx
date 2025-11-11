@@ -8,8 +8,10 @@ interface AdminLoginProps {
 const AdminLogin: React.FC<AdminLoginProps> = ({ onLogin }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [isRegister, setIsRegister] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -19,25 +21,33 @@ const AdminLogin: React.FC<AdminLoginProps> = ({ onLogin }) => {
     try {
       // Use relative URL for single deployment, or VITE_API_URL if set
       const apiUrl = import.meta.env.VITE_API_URL || '';
-      const response = await fetch(`${apiUrl}/api/auth/login`, {
+      const endpoint = isRegister ? '/api/auth/register' : '/api/auth/login';
+      const payload = isRegister ? { email, password, name } : { email, password };
+      const doRequest = (base: string) => fetch(`${base}${endpoint}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify(payload),
       });
+      // Try configured API first (if provided), then same-origin as fallback
+      let response = await doRequest(apiUrl);
+      if (!response.ok && apiUrl) {
+        // Retry against same-origin
+        response = await doRequest('');
+      }
 
       const contentType = response.headers.get('content-type') || '';
       const isJson = contentType.includes('application/json');
       const data = isJson ? await response.json() : { message: await response.text() };
 
       if (!response.ok) {
-        throw new Error(data.message || 'Login failed');
+        throw new Error(data.message || (isRegister ? 'Registration failed' : 'Login failed'));
       }
 
       localStorage.setItem('adminToken', data.token);
       localStorage.setItem('admin', JSON.stringify(data.admin));
       onLogin(data.token, data.admin);
     } catch (err: any) {
-      setError(err.message || 'Failed to login');
+      setError(err.message || (isRegister ? 'Failed to register' : 'Failed to login'));
     } finally {
       setLoading(false);
     }
@@ -51,16 +61,32 @@ const AdminLogin: React.FC<AdminLoginProps> = ({ onLogin }) => {
         className="w-full max-w-md bg-white dark:bg-gray-950 rounded-lg shadow-2xl p-8"
       >
         <h1 className="text-3xl font-bold text-center mb-2 text-slate-900 dark:text-white">
-          Admin Dashboard
+          {isRegister ? 'Initialize Admin' : 'Admin Dashboard'}
         </h1>
         <p className="text-center text-slate-600 dark:text-gray-400 mb-8">
-          Sign in to manage your portfolio
+          {isRegister ? 'Create the first (main) admin. This can be done only once.' : 'Sign in to manage your portfolio'}
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           {error && (
             <div className="bg-red-100 dark:bg-red-900/30 border border-red-400 text-red-700 dark:text-red-300 px-4 py-3 rounded">
               {error}
+            </div>
+          )}
+
+          {isRegister && (
+            <div>
+              <label className="block text-sm font-medium text-slate-700 dark:text-gray-300 mb-2">
+                Full Name
+              </label>
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required={isRegister}
+                className="w-full px-4 py-3 rounded-lg border border-slate-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Jane Doe"
+              />
             </div>
           )}
 
@@ -97,9 +123,21 @@ const AdminLogin: React.FC<AdminLoginProps> = ({ onLogin }) => {
             disabled={loading}
             className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {loading ? 'Signing in...' : 'Sign In'}
+            {loading ? (isRegister ? 'Creating...' : 'Signing in...') : (isRegister ? 'Create Main Admin' : 'Sign In')}
           </button>
         </form>
+
+        <div className="mt-4 text-center text-sm text-slate-600 dark:text-gray-400">
+          {isRegister ? (
+            <button className="underline" onClick={() => setIsRegister(false)}>
+              Back to Sign In
+            </button>
+          ) : (
+            <button className="underline" onClick={() => setIsRegister(true)}>
+              First time? Initialize main admin
+            </button>
+          )}
+        </div>
       </motion.div>
     </div>
   );
