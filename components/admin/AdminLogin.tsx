@@ -25,7 +25,9 @@ const AdminLogin: React.FC<AdminLoginProps> = ({ onLogin }) => {
         body: JSON.stringify({ email, password }),
       });
 
-      const data = await response.json();
+      const contentType = response.headers.get('content-type') || '';
+      const isJson = contentType.includes('application/json');
+      const data = isJson ? await response.json() : { message: await response.text() };
 
       if (!response.ok) {
         throw new Error(data.message || 'Login failed');
