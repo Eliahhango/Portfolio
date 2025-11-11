@@ -20,27 +20,42 @@ const AdminLogin: React.FC<AdminLoginProps> = ({ onLogin }) => {
 
     try {
       // Use relative URL for single deployment, or VITE_API_URL if set
-      const apiUrl = import.meta.env.VITE_API_URL || '';
+      const cfg = (import.meta.env.VITE_API_URL || '').trim();
       const endpoint = isRegister ? '/api/auth/register' : '/api/auth/login';
       const payload = isRegister ? { email, password, name } : { email, password };
-      const doRequest = (base: string) => fetch(`${base}${endpoint}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
-      // Try configured API first (if provided), then same-origin as fallback
-      let response = await doRequest(apiUrl);
-      if (!response.ok && apiUrl) {
-        // Retry against same-origin
-        response = await doRequest('');
+      const join = (base: string) => (base ? base.replace(/\/+$/, '') : '') + endpoint;
+      const bases = Array.from(new Set([
+        cfg,
+        typeof window !== 'undefined' ? window.location.origin : '',
+        '' // relative, same-origin
+      ])).filter(Boolean);
+
+      let response: Response | null = null;
+      let lastErr: string | undefined;
+      for (const base of bases) {
+        try {
+          response = await fetch(join(base), {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload),
+          });
+          if (response.ok) break;
+          // collect textual message for better diagnostics
+          const ct = response.headers.get('content-type') || '';
+          const txt = ct.includes('application/json') ? JSON.stringify(await response.json()) : await response.text();
+          lastErr = `HTTP ${response.status} from ${join(base)}: ${txt?.slice(0, 200)}`;
+        } catch (e: any) {
+          lastErr = `Network error to ${join(base)}: ${e?.message || e}`;
+        }
       }
+      if (!response) throw new Error('No response from server');
 
       const contentType = response.headers.get('content-type') || '';
       const isJson = contentType.includes('application/json');
       const data = isJson ? await response.json() : { message: await response.text() };
 
       if (!response.ok) {
-        throw new Error(data.message || (isRegister ? 'Registration failed' : 'Login failed'));
+        throw new Error(data.message || lastErr || (isRegister ? 'Registration failed' : 'Login failed'));
       }
 
       localStorage.setItem('adminToken', data.token);
