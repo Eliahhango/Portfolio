@@ -85,9 +85,10 @@ export const NAV_LINKS = [
     { name: 'Expertise', href: '#expertise' },
     { name: 'Journey', href: '#journey' },
     { name: 'Projects', href: '#projects' },
+    { name: 'Blog', href: '/blog' },
+    { name: 'Admin', href: '/admin' },
     { name: 'Testimonials', href: '#testimonials' },
     { name: 'Contact', href: '#contact' },
-    { name: 'Blog', href: '/blog' },
 ];
 
 // --- STATS ---
