@@ -18,6 +18,8 @@ import newsletterRoutes from './routes/newsletter.routes.js';
 import Audit from './models/Audit.model.js';
 import auditRoutes from './routes/audit.routes.js';
 import blogRoutes from './routes/blog.routes.js';
+import uploadRoutes from './routes/upload.routes.js';
+import BlogPost from './models/BlogPost.model.js';
 
 dotenv.config();
 
@@ -189,6 +191,33 @@ connectDatabase()
     } else {
       console.log('💡 Using MongoDB database (Mongoose ODM)');
     }
+
+    // Seed sample blog posts if none exist (one-time helper)
+    BlogPost.countDocuments().then(async (count) => {
+      if (count === 0) {
+        await BlogPost.create([
+          {
+            title: 'Welcome to the Blog',
+            slug: 'welcome',
+            description: 'Kicking off posts about security, software, and design.',
+            content:
+              'This is a sample post. I will share articles on cybersecurity, full‑stack engineering, and design systems. Stay tuned for practical insights and case studies.',
+            tags: ['announcement', 'security'],
+            published: true
+          },
+          {
+            title: 'Hardening a Web App in Production',
+            slug: 'hardening-in-production',
+            description: 'A concise checklist to harden your app in production.',
+            content:
+              '- Enable HSTS and TLS only\n- Set a strict CSP\n- Rate limit auth & sensitive endpoints\n- Use a modern Permissions-Policy\n- Sanitize inputs and validate on server\n- Rotate secrets; least-privileged DB users',
+            tags: ['security', 'checklist'],
+            published: true
+          }
+        ]).catch(() => {});
+        console.log('📝 Seeded sample blog posts');
+      }
+    }).catch(() => {});
   })
   .catch((err) => {
     console.error('❌ Database connection failed:', err.message);
@@ -213,6 +242,10 @@ app.use('/api/contact', contactRoutes);
 app.use('/api/newsletter', newsletterRoutes);
 app.use('/api/audit', auditRoutes);
 app.use('/api/blog', blogRoutes);
+app.use('/api/uploads', uploadRoutes);
+
+// Serve uploaded assets
+app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 // Health check
 app.get('/api/health', (req: express.Request, res: express.Response) => {
