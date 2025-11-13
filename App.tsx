@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo, useCallback, lazy, Suspense } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import { initVisitorTracking } from './utils/visitorTracking';
 import Header from './components/Header';
 import Hero from './components/Hero';
@@ -88,7 +88,6 @@ const App: React.FC = () => {
   };
 
   return (
-    <Router>
       <ErrorBoundary>
         <div className="bg-slate-50 dark:bg-black text-slate-600 dark:text-gray-300 min-h-screen" style={{ overflowX: 'hidden' }}>
           <SEO />
@@ -148,7 +147,6 @@ const App: React.FC = () => {
           </Suspense>
         </div>
       </ErrorBoundary>
-    </Router>
   );
 };
 
