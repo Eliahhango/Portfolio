@@ -89,7 +89,7 @@ const App: React.FC = () => {
 
   return (
       <ErrorBoundary>
-        <div className="bg-slate-50 dark:bg-black text-slate-600 dark:text-gray-300 min-h-screen" style={{ overflowX: 'hidden' }}>
+        <div className="bg-white dark:bg-gray-900 text-slate-600 dark:text-gray-300 min-h-screen" style={{ overflowX: 'hidden' }}>
           <SEO />
           <AnimatedParticles />
           <Header 
