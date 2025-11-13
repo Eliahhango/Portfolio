@@ -82,7 +82,7 @@ const PaletteIcon: React.FC<IconProps> = (props) => (
 export const NAV_LINKS = [
     { name: 'Home', href: '#home' },
     { name: 'About', href: '#about' },
-    { name: 'Expertise', href: '#expertise' },
+    { name: 'Skills', href: '#skills' },
     { name: 'Journey', href: '#journey' },
     { name: 'Projects', href: '#projects' },
     { name: 'Blog', href: '/blog' },
