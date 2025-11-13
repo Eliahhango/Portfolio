@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const getInitialTheme = (): 'light' | 'dark' => {
-    if (typeof window !== 'undefined') {
-        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            return 'dark';
-        }
-    }
-    return 'light';
-};
-
 const ThemeToggle: React.FC = () => {
-    const [theme, setTheme] = useState<'light' | 'dark'>(getInitialTheme());
+    const [theme, setTheme] = useState<'light' | 'dark'>(() => {
+        if (typeof window === 'undefined') {
+            return 'light';
+        }
+        const storedTheme = localStorage.getItem('theme');
+        if (storedTheme) {
+            return storedTheme as 'light' | 'dark';
+        }
+        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    });
 
     useEffect(() => {
         const root = document.documentElement;
