@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import Stats from './Stats';
 
 const About: React.FC = () => {
   return (
@@ -39,6 +40,13 @@ const About: React.FC = () => {
           </p>
         </motion.div>
       </div>
+      <section className="py-12 sm:py-16">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6">
+          <h2 className="text-2xl sm:text-3xl font-bold text-center text-slate-900 dark:text-white mb-4">My Achievements</h2>
+          <div className="w-20 h-1 bg-blue-500 mx-auto mb-8 sm:mb-12"></div>
+          <Stats />
+        </div>
+      </section>
     </section>
   );
 };
