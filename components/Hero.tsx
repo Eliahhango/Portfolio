@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import Typewriter from './Typewriter';
 import { GithubIcon } from '../constants';
+import Stats from './Stats';
 
 const Hero: React.FC = () => {
     return (
@@ -41,6 +42,7 @@ const Hero: React.FC = () => {
                         <GithubIcon className="w-5 h-5" /> GitHub
                     </a>
                 </motion.div>
+                <Stats />
             </div>
         </section>
     );
