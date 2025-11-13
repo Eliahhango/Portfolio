@@ -25,19 +25,7 @@ const ThemeToggle: React.FC = () => {
     }, [theme]);
 
     const toggleTheme = () => {
-        setTheme(prevTheme => {
-            const newTheme = prevTheme === 'dark' ? 'light' : 'dark';
-            // Immediately update DOM for instant feedback
-            const root = document.documentElement;
-            if (newTheme === 'dark') {
-                root.classList.add('dark');
-                localStorage.setItem('theme', 'dark');
-            } else {
-                root.classList.remove('dark');
-                localStorage.setItem('theme', 'light');
-            }
-            return newTheme;
-        });
+        setTheme(prevTheme => prevTheme === 'dark' ? 'light' : 'dark');
     };
 
     return (
