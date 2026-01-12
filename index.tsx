@@ -10,6 +10,14 @@ import CaseStudy from './pages/CaseStudy';
 import ConfirmSubscription from './pages/ConfirmSubscription';
 import Booking from './pages/Booking';
 import Downloads from './pages/Downloads';
+import Terms from './pages/Terms';
+import Privacy from './pages/Privacy';
+import Security from './pages/Security';
+import Status from './pages/Status';
+import Community from './pages/Community';
+import Docs from './pages/Docs';
+import Cookies from './pages/Cookies';
+import DNSMPI from './pages/DNSMPI';
 
 const rootElement = document.getElementById('root');
 if (!rootElement) {
@@ -29,6 +37,14 @@ root.render(
         <Route path="/newsletter/confirm/:token" element={<ConfirmSubscription />} />
         <Route path="/booking" element={<Booking />} />
         <Route path="/downloads" element={<Downloads />} />
+        <Route path="/terms" element={<Terms />} />
+        <Route path="/privacy" element={<Privacy />} />
+        <Route path="/security" element={<Security />} />
+        <Route path="/status" element={<Status />} />
+        <Route path="/community" element={<Community />} />
+        <Route path="/docs" element={<Docs />} />
+        <Route path="/cookies" element={<Cookies />} />
+        <Route path="/dnsmpi" element={<DNSMPI />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>

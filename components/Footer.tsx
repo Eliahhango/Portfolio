@@ -1,27 +1,28 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { GithubIcon, YoutubeIcon, LinkedInIcon, TwitterIcon, FacebookIcon, MailIcon, PhoneIcon } from '../constants';
 
 interface FooterProps {
-  onPrivacyClick: () => void;
-  onDocsClick: () => void;
-  onTermsClick: () => void;
-  onSecurityClick: () => void;
-  onCookieClick: () => void;
-  onDnsmpiClick: () => void;
-  onCommunityClick: () => void;
-  onStatusClick: () => void;
+  onPrivacyClick?: () => void;
+  onDocsClick?: () => void;
+  onTermsClick?: () => void;
+  onSecurityClick?: () => void;
+  onCookieClick?: () => void;
+  onDnsmpiClick?: () => void;
+  onCommunityClick?: () => void;
+  onStatusClick?: () => void;
 }
 
 const FOOTER_LINKS_DATA = [
-    { name: "Terms", type: 'modal', action: 'onTermsClick' as keyof FooterProps },
-    { name: "Privacy", type: 'modal', action: 'onPrivacyClick' as keyof FooterProps },
-    { name: "Security", type: 'modal', action: 'onSecurityClick' as keyof FooterProps },
-    { name: "Status", type: 'modal', action: 'onStatusClick' as keyof FooterProps },
-    { name: "Community", type: 'modal', action: 'onCommunityClick' as keyof FooterProps },
-    { name: "Docs", type: 'modal', action: 'onDocsClick' as keyof FooterProps },
+    { name: "Terms of Service", type: 'route', path: '/terms' },
+    { name: "Privacy Policy", type: 'route', path: '/privacy' },
+    { name: "Security", type: 'route', path: '/security' },
+    { name: "Status", type: 'route', path: '/status' },
+    { name: "Community", type: 'route', path: '/community' },
+    { name: "Documentation", type: 'route', path: '/docs' },
     { name: "Contact", type: 'link', href: '#contact' },
-    { name: "Manage cookies", type: 'modal', action: 'onCookieClick' as keyof FooterProps },
-    { name: "Do not share my personal information", type: 'modal', action: 'onDnsmpiClick' as keyof FooterProps }
+    { name: "Cookie Policy", type: 'route', path: '/cookies' },
+    { name: "Do Not Sell My Info", type: 'route', path: '/dnsmpi' }
 ];
 
 const Footer: React.FC<FooterProps> = (props) => {
@@ -114,15 +115,15 @@ const Footer: React.FC<FooterProps> = (props) => {
           <div className="flex flex-col gap-4">
             <div className="flex flex-wrap justify-center sm:justify-start gap-x-4 sm:gap-x-6 gap-y-2">
               {FOOTER_LINKS_DATA.map(link => {
-                if (link.type === 'modal' && link.action) {
+                if (link.type === 'route' && link.path) {
                   return (
-                    <button 
+                    <Link 
                       key={link.name} 
-                      onClick={props[link.action]}
+                      to={link.path}
                       className="text-xs sm:text-sm text-slate-500 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 transition-colors"
                     >
                       {link.name}
-                    </button>
+                    </Link>
                   )
                 }
                 if (link.type === 'link' && link.href) {

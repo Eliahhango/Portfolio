@@ -118,16 +118,7 @@ const App: React.FC = () => {
             </Routes>
           </main>
           <Newsletter />
-          <Footer 
-            onPrivacyClick={modalHandlers.privacy}
-            onDocsClick={modalHandlers.docs}
-            onTermsClick={modalHandlers.terms}
-            onSecurityClick={modalHandlers.security}
-            onCookieClick={modalHandlers.cookie}
-            onDnsmpiClick={modalHandlers.dnsmpi}
-            onCommunityClick={modalHandlers.community}
-            onStatusClick={modalHandlers.status}
-          />
+          <Footer />
           
           <div className="fixed bottom-5 right-5 z-50 flex flex-col gap-3 items-end">
               <ScrollToTopButton />
