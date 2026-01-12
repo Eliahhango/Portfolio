@@ -26,13 +26,13 @@ const About: React.FC = () => {
           transition={{ duration: 0.5 }}
           className="md:w-2/3 text-center md:text-left"
         >
-          <p className="text-sm sm:text-base text-slate-600 dark:text-gray-400 mb-4">
+          <p className="text-sm sm:text-base text-slate-600 dark:text-gray-300 mb-4">
             I am EliTechWiz, a visionary technologist, hacker, and creative mind, driven by innovation and the pursuit of digital excellence. My expertise spans cybersecurity, software development, UI/UX design, graphics and architectural design, and more.
           </p>
-          <p className="text-sm sm:text-base text-slate-600 dark:text-gray-400 mb-4">
+          <p className="text-sm sm:text-base text-slate-600 dark:text-gray-300 mb-4">
             With a passion for turning complex problems into elegant solutions, I merge technology, design, and strategy to create impactful digital experiences. As a CEO and creator, I thrive on building projects that push boundaries, challenge norms, and leave a lasting impression in the tech world.
           </p>
-          <p className="text-sm sm:text-base text-slate-600 dark:text-gray-400 mb-4">
+          <p className="text-sm sm:text-base text-slate-600 dark:text-gray-300 mb-4">
             Whether I'm securing digital spaces, designing intuitive interfaces, or crafting visually stunning creations, my goal is to transform ideas into reality with precision, creativity, and a relentless drive for excellence.
           </p>
            <p className="text-sm sm:text-base text-slate-500 dark:text-gray-300 font-semibold italic">

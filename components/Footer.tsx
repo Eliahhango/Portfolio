@@ -34,7 +34,7 @@ const Footer: React.FC<FooterProps> = (props) => {
   ];
 
   return (
-    <footer className="bg-slate-100 dark:bg-black py-8 sm:py-12 px-4 sm:px-6 lg:px-8 relative z-10">
+    <footer className="bg-slate-100 dark:bg-slate-950 dark:border-t dark:border-slate-800/50 py-8 sm:py-12 px-4 sm:px-6 lg:px-8 relative z-10">
       <div className="max-w-7xl mx-auto">
         {/* Main Footer Content */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
@@ -43,7 +43,7 @@ const Footer: React.FC<FooterProps> = (props) => {
             <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-4">
               <span className="text-blue-500">Eli</span>TechWiz
             </h3>
-            <p className="text-sm text-slate-600 dark:text-gray-400 mb-4">
+            <p className="text-sm text-slate-600 dark:text-gray-300 mb-4">
               Cybersecurity Expert, Software Architect & Creative Designer. Building secure, innovative digital experiences.
             </p>
             <div className="flex items-center space-x-3">
@@ -54,7 +54,7 @@ const Footer: React.FC<FooterProps> = (props) => {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={label}
-                  className="w-10 h-10 flex items-center justify-center rounded-full bg-slate-200 dark:bg-gray-800 text-slate-600 dark:text-gray-400 hover:bg-blue-500 hover:text-white transition-all duration-300"
+                  className="w-10 h-10 flex items-center justify-center rounded-full bg-slate-200 dark:bg-slate-800/50 dark:border dark:border-slate-700/50 text-slate-600 dark:text-gray-300 hover:bg-blue-500 dark:hover:bg-blue-600 dark:hover:border-blue-500/50 dark:hover:shadow-lg dark:hover:shadow-blue-500/30 hover:text-white transition-all duration-300"
                 >
                   <Icon className="w-5 h-5" />
                 </a>
@@ -67,7 +67,7 @@ const Footer: React.FC<FooterProps> = (props) => {
             <h4 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Quick Links</h4>
             <ul className="space-y-2">
               <li>
-                <a href="#about" className="text-sm text-slate-600 dark:text-gray-400 hover:text-blue-500 transition-colors">
+                <a href="#about" className="text-sm text-slate-600 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 transition-colors">
                   About Me
                 </a>
               </li>
@@ -93,13 +93,13 @@ const Footer: React.FC<FooterProps> = (props) => {
           <div>
             <h4 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Get In Touch</h4>
             <ul className="space-y-3">
-              <li className="flex items-center space-x-2 text-sm text-slate-600 dark:text-gray-400">
+              <li className="flex items-center space-x-2 text-sm text-slate-600 dark:text-gray-300">
                 <MailIcon className="w-4 h-4 text-blue-500" />
                 <a href="mailto:contact@elitechwiz.com" className="hover:text-blue-500 transition-colors">
                   contact@elitechwiz.com
                 </a>
               </li>
-              <li className="flex items-center space-x-2 text-sm text-slate-600 dark:text-gray-400">
+              <li className="flex items-center space-x-2 text-sm text-slate-600 dark:text-gray-300">
                 <PhoneIcon className="w-4 h-4 text-blue-500" />
                 <a href="tel:+255688164510" className="hover:text-blue-500 transition-colors">
                   +255 688 164 510
@@ -119,7 +119,7 @@ const Footer: React.FC<FooterProps> = (props) => {
                     <button 
                       key={link.name} 
                       onClick={props[link.action]}
-                      className="text-xs sm:text-sm text-slate-500 dark:text-gray-400 hover:text-blue-500 transition-colors"
+                      className="text-xs sm:text-sm text-slate-500 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 transition-colors"
                     >
                       {link.name}
                     </button>
@@ -130,7 +130,7 @@ const Footer: React.FC<FooterProps> = (props) => {
                     <a 
                       key={link.name} 
                       href={link.href}
-                      className="text-xs sm:text-sm text-slate-500 dark:text-gray-400 hover:text-blue-500 transition-colors"
+                      className="text-xs sm:text-sm text-slate-500 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 transition-colors"
                     >
                       {link.name}
                     </a>
@@ -139,7 +139,7 @@ const Footer: React.FC<FooterProps> = (props) => {
                 return null;
               })}
             </div>
-            <p className="text-xs sm:text-sm text-slate-500 dark:text-gray-400 text-center sm:text-left">
+            <p className="text-xs sm:text-sm text-slate-500 dark:text-gray-300 text-center sm:text-left">
               &copy; {new Date().getFullYear()} EliTechWiz. All rights reserved.
             </p>
           </div>

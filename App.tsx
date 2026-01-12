@@ -92,7 +92,7 @@ const App: React.FC = () => {
 
   return (
       <ErrorBoundary>
-        <div className="bg-white dark:bg-gray-900 text-slate-600 dark:text-gray-300 min-h-screen" style={{ overflowX: 'hidden' }}>
+        <div className="bg-white dark:bg-gradient-to-br dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 text-slate-600 dark:text-gray-200 min-h-screen" style={{ overflowX: 'hidden' }}>
           <SEO />
           <SkipToContent />
           <ScrollProgress />

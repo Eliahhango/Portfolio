@@ -31,7 +31,7 @@ const ThemeToggle: React.FC = () => {
     return (
         <button
             onClick={toggleTheme}
-            className="w-10 h-10 p-2 rounded-full flex items-center justify-center bg-slate-200 dark:bg-gray-900 text-slate-600 dark:text-yellow-400 focus:outline-none"
+            className="w-10 h-10 p-2 rounded-full flex items-center justify-center bg-slate-200 dark:bg-slate-800/50 dark:border dark:border-slate-700/50 text-slate-600 dark:text-blue-400 hover:dark:text-blue-300 focus:outline-none dark:hover:bg-slate-700/50 dark:hover:border-blue-500/50 transition-all duration-300"
             aria-label="Toggle theme"
         >
             <AnimatePresence mode="wait" initial={false}>

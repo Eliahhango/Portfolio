@@ -11,7 +11,7 @@ const Hero: React.FC = () => {
     };
     return (
         <section id="home" className="relative min-h-[85vh] sm:min-h-[90vh] flex items-center justify-center text-center pt-20 pb-12">
-            <div className="absolute inset-0 -z-10 bg-gradient-to-b from-blue-50/40 via-transparent to-transparent dark:from-blue-500/10" />
+            <div className="absolute inset-0 -z-10 bg-gradient-to-b from-blue-50/40 via-transparent to-transparent dark:from-blue-500/20 dark:via-blue-600/10 dark:to-transparent" />
             <div className="max-w-5xl px-4 sm:px-6">
                 <motion.h1 
                     initial={{ opacity: 0, y: 20 }}
@@ -29,7 +29,7 @@ const Hero: React.FC = () => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8, delay: 0.2 }}
-                    className="mt-4 sm:mt-6 text-base sm:text-lg md:text-xl text-slate-600 dark:text-gray-400 max-w-2xl mx-auto px-4"
+                    className="mt-4 sm:mt-6 text-base sm:text-lg md:text-xl text-slate-600 dark:text-gray-300 max-w-2xl mx-auto px-4"
                 >
                    Merging technology, design, and strategy to build secure, innovative, and impactful digital experiences.
                 </motion.p>
@@ -46,7 +46,7 @@ const Hero: React.FC = () => {
                     >
                         Let's Innovate Together
                     </a>
-                    <a href="https://github.com/Eliahhango" target="_blank" rel="noopener noreferrer" className="px-8 sm:px-10 py-3 sm:py-4 bg-slate-200 dark:bg-gray-900 text-slate-800 dark:text-white font-semibold rounded-xl shadow-lg hover:bg-slate-300 dark:hover:bg-gray-800 transition-all duration-300 transform hover:scale-105 flex items-center justify-center gap-2 w-full sm:w-auto text-sm sm:text-base">
+                    <a href="https://github.com/Eliahhango" target="_blank" rel="noopener noreferrer" className="px-8 sm:px-10 py-3 sm:py-4 bg-slate-200 dark:bg-slate-800/50 dark:border dark:border-slate-700/50 text-slate-800 dark:text-gray-100 font-semibold rounded-xl shadow-lg hover:bg-slate-300 dark:hover:bg-slate-700/50 dark:hover:border-blue-500/50 dark:hover:shadow-blue-500/20 transition-all duration-300 transform hover:scale-105 flex items-center justify-center gap-2 w-full sm:w-auto text-sm sm:text-base">
                         <GithubIcon className="w-5 h-5" /> GitHub
                     </a>
                 </motion.div>

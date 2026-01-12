@@ -32,16 +32,16 @@ const Testimonials: React.FC = () => {
                         animate="visible"
                         exit="exit"
                         transition={{ duration: 0.5 }}
-                        className="absolute w-full h-full bg-slate-100 dark:bg-gray-950 p-4 sm:p-6 md:p-8 rounded-lg shadow-sm border border-slate-200 dark:border-gray-900 flex flex-col justify-between"
+                        className="absolute w-full h-full bg-slate-100 dark:bg-slate-800/50 dark:border-slate-700/50 p-4 sm:p-6 md:p-8 rounded-lg shadow-sm dark:shadow-slate-900/50 border border-slate-200 dark:border-slate-700/50 flex flex-col justify-between"
                     >
-                        <p className="text-sm sm:text-base md:text-lg text-slate-600 dark:text-gray-400 italic text-center">
+                        <p className="text-sm sm:text-base md:text-lg text-slate-600 dark:text-gray-200 italic text-center">
                             "{TESTIMONIALS_DATA[currentIndex].quote}"
                         </p>
                         <div className="flex items-center self-end mt-4">
                             <img src={TESTIMONIALS_DATA[currentIndex].avatarUrl} alt={TESTIMONIALS_DATA[currentIndex].name} className="w-10 h-10 sm:w-12 sm:h-12 rounded-full mr-3 sm:mr-4 object-cover" />
                             <div>
                                 <h4 className="text-sm sm:text-base font-bold text-slate-900 dark:text-white">{TESTIMONIALS_DATA[currentIndex].name}</h4>
-                                <p className="text-xs sm:text-sm text-slate-500 dark:text-gray-500">{TESTIMONIALS_DATA[currentIndex].company}</p>
+                                <p className="text-xs sm:text-sm text-slate-500 dark:text-gray-400">{TESTIMONIALS_DATA[currentIndex].company}</p>
                             </div>
                         </div>
                     </motion.div>
@@ -53,7 +53,7 @@ const Testimonials: React.FC = () => {
                         key={index}
                         onClick={() => setCurrentIndex(index)}
                         className={`w-3 h-3 rounded-full transition-colors ${
-                            currentIndex === index ? 'bg-blue-500' : 'bg-slate-300 dark:bg-gray-800 hover:bg-blue-300'
+                            currentIndex === index ? 'bg-blue-500 dark:bg-blue-600 dark:shadow-lg dark:shadow-blue-500/50' : 'bg-slate-300 dark:bg-slate-700 dark:hover:bg-slate-600 hover:bg-blue-300'
                         }`}
                         aria-label={`Go to testimonial ${index + 1}`}
                     />

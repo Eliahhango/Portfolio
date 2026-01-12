@@ -42,7 +42,7 @@ const Header: React.FC<HeaderProps> = ({ activeSection }) => {
     }, [isMenuOpen]);
 
     return (
-        <header className={`sticky top-0 z-50 transition-all duration-300 ${isScrolled || isMenuOpen ? 'bg-slate-50/80 dark:bg-black/80 backdrop-blur-sm shadow-md' : 'bg-transparent'}`} style={{ willChange: 'background-color, box-shadow' }}>
+        <header className={`sticky top-0 z-50 transition-all duration-300 ${isScrolled || isMenuOpen ? 'bg-slate-50/80 dark:bg-slate-950/90 dark:border-b dark:border-slate-800/50 backdrop-blur-sm shadow-md dark:shadow-slate-900/50' : 'bg-transparent'}`} style={{ willChange: 'background-color, box-shadow' }}>
             <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center justify-between h-20">
                     <a 
@@ -98,14 +98,14 @@ const Header: React.FC<HeaderProps> = ({ activeSection }) => {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -10 }}
                         transition={{ duration: 0.2 }}
-                        className="md:hidden bg-slate-50/95 dark:bg-black/95 backdrop-blur-sm border-t border-slate-200/50 dark:border-white/10"
+                        className="md:hidden bg-slate-50/95 dark:bg-slate-950/95 dark:border-slate-800/50 backdrop-blur-sm border-t border-slate-200/50 dark:border-slate-800/50"
                     >
                         <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 flex flex-col items-center">
                             {NAV_LINKS.map(link => {
                                 const isSection = link.href.startsWith('#');
                                 const sectionId = link.href.substring(1);
                                 const mappedSectionId = sectionId === 'skills' ? 'expertise' : sectionId;
-                                const className = `block px-3 py-3 rounded-lg text-base font-semibold tracking-wide transition-colors w-full text-center cursor-pointer ${activeSection === mappedSectionId ? 'text-white bg-blue-500' : 'text-slate-600 dark:text-gray-300 hover:text-blue-500 hover:bg-slate-100 dark:hover:bg-gray-900'}`;
+                                const className = `block px-3 py-3 rounded-lg text-base font-semibold tracking-wide transition-colors w-full text-center cursor-pointer ${activeSection === mappedSectionId ? 'text-white bg-blue-500 dark:bg-blue-600 dark:shadow-lg dark:shadow-blue-500/30' : 'text-slate-600 dark:text-gray-200 hover:text-blue-500 hover:bg-slate-100 dark:hover:bg-slate-800/50 dark:hover:text-blue-400'}`;
                                 return isSection ? (
                                     <a 
                                         key={link.name} 
