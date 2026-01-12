@@ -2,8 +2,13 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import Typewriter from './Typewriter';
 import { GithubIcon } from '../constants';
+import { scrollToSection } from '../utils/scrollUtils';
 
 const Hero: React.FC = () => {
+    const handleContactClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+        e.preventDefault();
+        scrollToSection('contact');
+    };
     return (
         <section id="home" className="relative min-h-[85vh] sm:min-h-[90vh] flex items-center justify-center text-center pt-20 pb-12">
             <div className="absolute inset-0 -z-10 bg-gradient-to-b from-blue-50/40 via-transparent to-transparent dark:from-blue-500/10" />
@@ -34,7 +39,11 @@ const Hero: React.FC = () => {
                     transition={{ duration: 0.8, delay: 0.4 }}
                     className="mt-8 sm:mt-10 flex flex-col sm:flex-row justify-center items-center gap-4 px-4"
                 >
-                    <a href="#contact" className="px-8 sm:px-10 py-3 sm:py-4 bg-blue-600 text-white font-semibold rounded-xl shadow-lg hover:bg-blue-700 transition-all duration-300 transform hover:scale-105 w-full sm:w-auto text-sm sm:text-base">
+                    <a 
+                        href="#contact" 
+                        onClick={handleContactClick}
+                        className="px-8 sm:px-10 py-3 sm:py-4 bg-blue-600 text-white font-semibold rounded-xl shadow-lg hover:bg-blue-700 transition-all duration-300 transform hover:scale-105 w-full sm:w-auto text-sm sm:text-base cursor-pointer"
+                    >
                         Let's Innovate Together
                     </a>
                     <a href="https://github.com/Eliahhango" target="_blank" rel="noopener noreferrer" className="px-8 sm:px-10 py-3 sm:py-4 bg-slate-200 dark:bg-gray-900 text-slate-800 dark:text-white font-semibold rounded-xl shadow-lg hover:bg-slate-300 dark:hover:bg-gray-800 transition-all duration-300 transform hover:scale-105 flex items-center justify-center gap-2 w-full sm:w-auto text-sm sm:text-base">

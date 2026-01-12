@@ -11,8 +11,11 @@ import Journey from './components/Journey';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import ScrollToTopButton from './components/ScrollToTopButton';
+import ScrollProgress from './components/ScrollProgress';
+import SkipToContent from './components/SkipToContent';
 import AnimatedParticles from './components/AnimatedParticles';
 import Newsletter from './components/Newsletter';
+import { ModalSkeleton } from './components/LoadingSkeleton';
 import CTA from './components/CTA';
 import ProjectModal from './components/ProjectModal';
 import ChatbotIcon from './components/ChatbotIcon';
@@ -91,6 +94,8 @@ const App: React.FC = () => {
       <ErrorBoundary>
         <div className="bg-white dark:bg-gray-900 text-slate-600 dark:text-gray-300 min-h-screen" style={{ overflowX: 'hidden' }}>
           <SEO />
+          <SkipToContent />
+          <ScrollProgress />
           <AnimatedParticles />
           <Header 
             activeSection={activeSection} 
@@ -135,7 +140,7 @@ const App: React.FC = () => {
           {isChatbotOpen && <Chatbot onClose={() => setIsChatbotOpen(false)} />}
           
           {selectedProject && <ProjectModal project={selectedProject} onClose={() => setSelectedProject(null)} />}
-          <Suspense fallback={null}>
+          <Suspense fallback={<ModalSkeleton />}>
             {isPrivacyModalOpen && <PrivacyModal onClose={modalCloseHandlers.privacy} />}
             {isDocsModalOpen && <DocumentationModal onClose={modalCloseHandlers.docs} />}
             {isTermsModalOpen && <TermsModal onClose={modalCloseHandlers.terms} />}

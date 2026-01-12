@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ThemeToggle from './ThemeToggle';
 import { NAV_LINKS } from '../constants';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { handleSectionClick, scrollToSection } from '../utils/scrollUtils';
 
 interface HeaderProps {
     activeSection: string;
@@ -11,6 +12,8 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ activeSection }) => {
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const navigate = useNavigate();
+    const location = useLocation();
     
     useEffect(() => {
         const handleScroll = () => {
@@ -21,6 +24,10 @@ const Header: React.FC<HeaderProps> = ({ activeSection }) => {
     }, []);
 
     const closeMenu = () => setIsMenuOpen(false);
+
+    const onSectionClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+        handleSectionClick(e, href, navigate, location.pathname, closeMenu);
+    };
 
     useEffect(() => {
         // Prevent background scroll when mobile menu is open
@@ -38,15 +45,26 @@ const Header: React.FC<HeaderProps> = ({ activeSection }) => {
         <header className={`sticky top-0 z-50 transition-all duration-300 ${isScrolled || isMenuOpen ? 'bg-slate-50/80 dark:bg-black/80 backdrop-blur-sm shadow-md' : 'bg-transparent'}`} style={{ willChange: 'background-color, box-shadow' }}>
             <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center justify-between h-20">
-                    <a href="#home" className="text-2xl sm:text-3xl font-bold tracking-tighter text-slate-900 dark:text-white" onClick={closeMenu}>
+                    <a 
+                        href="#home" 
+                        className="text-2xl sm:text-3xl font-bold tracking-tighter text-slate-900 dark:text-white cursor-pointer" 
+                        onClick={(e) => onSectionClick(e, '#home')}
+                    >
                         <span className="text-blue-500">Eli</span>TechWiz
                     </a>
                     <div className="hidden md:flex items-center space-x-8">
                         {NAV_LINKS.map(link => {
                             const isSection = link.href.startsWith('#');
-                            const className = `text-sm font-semibold uppercase tracking-wider transition-colors ${activeSection === link.href.substring(1) ? 'text-blue-500' : 'text-slate-500 dark:text-gray-400 hover:text-blue-500 dark:hover:text-blue-400'}`;
+                            const sectionId = link.href.substring(1);
+                            const mappedSectionId = sectionId === 'skills' ? 'expertise' : sectionId;
+                            const className = `text-sm font-semibold uppercase tracking-wider transition-colors cursor-pointer ${activeSection === mappedSectionId ? 'text-blue-500' : 'text-slate-500 dark:text-gray-400 hover:text-blue-500 dark:hover:text-blue-400'}`;
                             return isSection ? (
-                                <a key={link.name} href={link.href} className={className}>
+                                <a 
+                                    key={link.name} 
+                                    href={link.href} 
+                                    className={className}
+                                    onClick={(e) => onSectionClick(e, link.href)}
+                                >
                                     {link.name}
                                 </a>
                             ) : (
@@ -85,9 +103,16 @@ const Header: React.FC<HeaderProps> = ({ activeSection }) => {
                         <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 flex flex-col items-center">
                             {NAV_LINKS.map(link => {
                                 const isSection = link.href.startsWith('#');
-                                const className = `block px-3 py-3 rounded-lg text-base font-semibold tracking-wide transition-colors w-full text-center ${activeSection === link.href.substring(1) ? 'text-white bg-blue-500' : 'text-slate-600 dark:text-gray-300 hover:text-blue-500 hover:bg-slate-100 dark:hover:bg-gray-900'}`;
+                                const sectionId = link.href.substring(1);
+                                const mappedSectionId = sectionId === 'skills' ? 'expertise' : sectionId;
+                                const className = `block px-3 py-3 rounded-lg text-base font-semibold tracking-wide transition-colors w-full text-center cursor-pointer ${activeSection === mappedSectionId ? 'text-white bg-blue-500' : 'text-slate-600 dark:text-gray-300 hover:text-blue-500 hover:bg-slate-100 dark:hover:bg-gray-900'}`;
                                 return isSection ? (
-                                    <a key={link.name} href={link.href} onClick={closeMenu} className={className}>
+                                    <a 
+                                        key={link.name} 
+                                        href={link.href} 
+                                        onClick={(e) => onSectionClick(e, link.href)} 
+                                        className={className}
+                                    >
                                         {link.name}
                                     </a>
                                 ) : (

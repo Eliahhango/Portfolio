@@ -50,16 +50,20 @@ const SEO: React.FC<SEOProps> = ({ title = DEFAULTS.title, description = DEFAULT
     ensureMeta(['name', 'twitter:title'], title);
     ensureMeta(['name', 'twitter:description'], description);
     ensureMeta(['name', 'twitter:image'], image);
-    // JSON-LD
-    const scriptId = 'app-schema';
-    let script = document.getElementById(scriptId) as HTMLScriptElement | null;
-    if (!script) {
-      script = document.createElement('script');
-      script.type = 'application/ld+json';
-      script.id = scriptId;
-      document.head.appendChild(script);
-    }
-    script.text = JSON.stringify({
+    // JSON-LD Schemas
+    const addSchema = (id: string, schema: object) => {
+      let script = document.getElementById(id) as HTMLScriptElement | null;
+      if (!script) {
+        script = document.createElement('script');
+        script.type = 'application/ld+json';
+        script.id = id;
+        document.head.appendChild(script);
+      }
+      script.text = JSON.stringify(schema);
+    };
+
+    // WebSite Schema
+    addSchema('app-schema', {
       '@context': 'https://schema.org',
       '@type': 'WebSite',
       name: 'EliTechWiz',
@@ -68,6 +72,35 @@ const SEO: React.FC<SEOProps> = ({ title = DEFAULTS.title, description = DEFAULT
         '@type': 'SearchAction',
         target: 'https://www.elitechwiz.site/?q={search_term_string}',
         'query-input': 'required name=search_term_string'
+      }
+    });
+
+    // Person Schema
+    addSchema('person-schema', {
+      '@context': 'https://schema.org',
+      '@type': 'Person',
+      name: 'EliTechWiz',
+      url: 'https://www.elitechwiz.site',
+      image: 'https://files.catbox.moe/qgbtyt.png',
+      jobTitle: 'Cybersecurity Expert & Software Architect',
+      description: 'Visionary technologist, hacker, and creative mind. Expertise in cybersecurity, software development, UI/UX design, and architectural design.',
+      email: 'contact@elitechwiz.com',
+      telephone: '+255688164510',
+      sameAs: [
+        'https://github.com/Eliahhango',
+        'https://youtube.com/@eliahhango'
+      ],
+      knowsAbout: [
+        'Cybersecurity',
+        'Software Development',
+        'UI/UX Design',
+        'Ethical Hacking',
+        'Software Architecture',
+        'Web Development'
+      ],
+      alumniOf: {
+        '@type': 'Organization',
+        name: 'Software Development & Cybersecurity'
       }
     });
   }, [title, description, image, url, canonical, type]);
