@@ -57,7 +57,7 @@ const Header: React.FC<HeaderProps> = ({ activeSection }) => {
                             const isSection = link.href.startsWith('#');
                             const sectionId = link.href.substring(1);
                             const mappedSectionId = sectionId === 'skills' ? 'expertise' : sectionId;
-                            const className = `text-sm font-semibold uppercase tracking-wider transition-colors cursor-pointer ${activeSection === mappedSectionId ? 'text-blue-500' : 'text-slate-500 dark:text-gray-400 hover:text-blue-500 dark:hover:text-blue-400'}`;
+                            const className = `text-sm font-semibold uppercase tracking-wider transition-colors cursor-pointer ${activeSection === mappedSectionId ? 'text-blue-500 dark:text-blue-400' : 'text-slate-500 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400'}`;
                             return isSection ? (
                                 <a 
                                     key={link.name} 
