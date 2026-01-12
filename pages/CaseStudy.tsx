@@ -53,7 +53,7 @@ const CaseStudy: React.FC = () => {
             {fm.tags.map((t: string) => <span key={t} className="text-xs px-2 py-1 rounded bg-slate-100 dark:bg-white/10">{t}</span>)}
           </div>
         )}
-        {fm.cover && <img src={fm.cover} alt="" className="mt-6 w-full rounded-lg border border-slate-200 dark:border-white/10" />}
+        {fm.cover && <img src={fm.cover} alt={fm.title || 'Case study cover image'} className="mt-6 w-full rounded-lg border border-slate-200 dark:border-white/10" />}
         <div className="prose dark:prose-invert mt-8 max-w-none">
           <MDXProvider components={components}>
             <Doc />
