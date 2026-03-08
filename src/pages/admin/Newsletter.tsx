@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Loader2, Trash2 } from 'lucide-react';
+import Toast, { type ToastState } from '../../components/admin/Toast';
 import { useAdminAuth } from '../../contexts/AdminAuthContext';
 import { adminFetch } from '../../lib/adminApi';
 import type { NewsletterSubscriber, NewsletterSubscriberResponse } from '../../types/admin';
@@ -26,6 +27,11 @@ const Newsletter: React.FC = () => {
   });
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
+  const [toast, setToast] = useState<ToastState | null>(null);
+
+  const showToast = (message: string, variant: ToastState['variant']) => {
+    setToast({ message, variant });
+  };
 
   const loadSubscribers = async (nextFilter = filter, nextPage = page) => {
     setIsLoading(true);
@@ -54,7 +60,9 @@ const Newsletter: React.FC = () => {
       setConfirmedCount(data.confirmedCount);
       setPagination(data.pagination);
     } catch (loadError) {
-      setError(loadError instanceof Error ? loadError.message : 'Failed to load subscribers.');
+      const message = loadError instanceof Error ? loadError.message : 'Failed to load subscribers.';
+      setError(message);
+      showToast(message, 'error');
     } finally {
       setIsLoading(false);
     }
@@ -84,9 +92,12 @@ const Newsletter: React.FC = () => {
         method: 'DELETE',
       });
 
+      showToast('Subscriber deleted successfully.', 'success');
       await loadSubscribers(filter, page);
     } catch (deleteError) {
-      setError(deleteError instanceof Error ? deleteError.message : 'Failed to delete subscriber.');
+      const message = deleteError instanceof Error ? deleteError.message : 'Failed to delete subscriber.';
+      setError(message);
+      showToast(message, 'error');
     }
   };
 
@@ -207,6 +218,8 @@ const Newsletter: React.FC = () => {
           </div>
         </div>
       </section>
+
+      <Toast toast={toast} onClose={() => setToast(null)} />
     </div>
   );
 };

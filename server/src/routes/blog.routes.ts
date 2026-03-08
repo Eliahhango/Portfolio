@@ -12,6 +12,7 @@ const blogValidators = [
     .matches(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)
     .withMessage('Slug must contain lowercase letters, numbers, and hyphens only'),
   body('description').optional({ values: 'falsy' }).trim().isLength({ max: 500 }).withMessage('Description must be under 500 characters'),
+  body('cover').optional({ values: 'falsy' }).trim().isLength({ max: 1000 }).withMessage('Cover image URL must be under 1000 characters'),
   body('content').trim().isLength({ min: 10 }).withMessage('Content must be at least 10 characters'),
   body('tags').optional().isArray().withMessage('Tags must be an array'),
   body('published').optional().isBoolean().withMessage('Published must be a boolean'),
@@ -46,10 +47,11 @@ router.post('/', verifyFirebaseToken, requireAdmin, blogValidators, async (req: 
       return res.status(400).json({ message: 'Validation failed', errors: errors.array() });
     }
 
-    const { title, slug, description, content, published } = req.body as {
+    const { title, slug, description, cover, content, published } = req.body as {
       title: string;
       slug: string;
       description?: string;
+      cover?: string;
       content: string;
       published?: boolean;
     };
@@ -64,6 +66,7 @@ router.post('/', verifyFirebaseToken, requireAdmin, blogValidators, async (req: 
       title: title.trim(),
       slug: slug.trim(),
       description: description?.trim() || undefined,
+      cover: cover?.trim() || undefined,
       content: content.trim(),
       tags: sanitizeTags(req.body.tags),
       published: Boolean(published),
@@ -84,10 +87,11 @@ router.put('/:id', verifyFirebaseToken, requireAdmin, blogValidators, async (req
       return res.status(400).json({ message: 'Validation failed', errors: errors.array() });
     }
 
-    const { title, slug, description, content, published } = req.body as {
+    const { title, slug, description, cover, content, published } = req.body as {
       title: string;
       slug: string;
       description?: string;
+      cover?: string;
       content: string;
       published?: boolean;
     };
@@ -104,6 +108,7 @@ router.put('/:id', verifyFirebaseToken, requireAdmin, blogValidators, async (req
         title: title.trim(),
         slug: slug.trim(),
         description: description?.trim() || undefined,
+        cover: cover?.trim() || undefined,
         content: content.trim(),
         tags: sanitizeTags(req.body.tags),
         published: Boolean(published),

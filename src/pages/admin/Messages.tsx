@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { ChevronLeft, ChevronRight, Loader2, Trash2, X } from 'lucide-react';
+import Toast, { type ToastState } from '../../components/admin/Toast';
 import { useAdminAuth } from '../../contexts/AdminAuthContext';
 import { adminFetch } from '../../lib/adminApi';
 import type { ContactListResponse, ContactMessage, ContactStatus } from '../../types/admin';
@@ -43,6 +44,11 @@ const Messages: React.FC = () => {
   const [isSaving, setIsSaving] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [error, setError] = useState('');
+  const [toast, setToast] = useState<ToastState | null>(null);
+
+  const showToast = (message: string, variant: ToastState['variant']) => {
+    setToast({ message, variant });
+  };
 
   const loadMessages = async (nextFilter = filter, nextPage = page) => {
     setIsLoading(true);
@@ -70,7 +76,9 @@ const Messages: React.FC = () => {
       setUnreadCount(data.unreadCount);
       setPagination(data.pagination);
     } catch (loadError) {
-      setError(loadError instanceof Error ? loadError.message : 'Failed to load messages.');
+      const message = loadError instanceof Error ? loadError.message : 'Failed to load messages.';
+      setError(message);
+      showToast(message, 'error');
     } finally {
       setIsLoading(false);
     }
@@ -97,7 +105,9 @@ const Messages: React.FC = () => {
       setNotesDraft(data.notes ?? '');
       await loadMessages(filter, page);
     } catch (loadError) {
-      setError(loadError instanceof Error ? loadError.message : 'Failed to load message details.');
+      const message = loadError instanceof Error ? loadError.message : 'Failed to load message details.';
+      setError(message);
+      showToast(message, 'error');
     } finally {
       setIsPanelLoading(false);
     }
@@ -133,9 +143,12 @@ const Messages: React.FC = () => {
       setSelectedMessage(data.contactMessage);
       setStatusDraft(data.contactMessage.status);
       setNotesDraft(data.contactMessage.notes ?? '');
+      showToast('Message updated successfully.', 'success');
       await loadMessages(filter, page);
     } catch (saveError) {
-      setError(saveError instanceof Error ? saveError.message : 'Failed to update the message.');
+      const message = saveError instanceof Error ? saveError.message : 'Failed to update the message.';
+      setError(message);
+      showToast(message, 'error');
     } finally {
       setIsSaving(false);
     }
@@ -162,9 +175,12 @@ const Messages: React.FC = () => {
 
       setSelectedMessage(null);
       setIsDeleteModalOpen(false);
+      showToast('Message deleted successfully.', 'success');
       await loadMessages(filter, page);
     } catch (deleteError) {
-      setError(deleteError instanceof Error ? deleteError.message : 'Failed to delete the message.');
+      const message = deleteError instanceof Error ? deleteError.message : 'Failed to delete the message.';
+      setError(message);
+      showToast(message, 'error');
     } finally {
       setIsSaving(false);
     }
@@ -430,6 +446,8 @@ const Messages: React.FC = () => {
           </div>
         </div>
       )}
+
+      <Toast toast={toast} onClose={() => setToast(null)} />
     </div>
   );
 };
