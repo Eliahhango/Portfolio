@@ -2,14 +2,20 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import Stats from './Stats';
 import { usePublicSiteContent } from '../contexts/PublicSiteContentContext';
-import SectionHeader from './SectionHeader';
 
 const About: React.FC = () => {
   const { aboutContent } = usePublicSiteContent();
 
   return (
     <section id="about" className="py-12 sm:py-16 md:py-20">
-      <SectionHeader tag="About Me" title="Who I Am" />
+      <div className="mb-10 px-4 text-center">
+        <h2 className="text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white sm:text-4xl">
+          About <span className="text-blue-500">Me</span>
+        </h2>
+        <p className="mx-auto mt-3 max-w-xl text-base text-slate-500 dark:text-slate-400">
+          Technologist, builder, and creative mind based in Dar es Salaam.
+        </p>
+      </div>
       <div className="max-w-4xl mx-auto flex flex-col md:flex-row items-center gap-8 sm:gap-12 px-4 sm:px-6">
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
@@ -46,12 +52,11 @@ const About: React.FC = () => {
           </p>
         </motion.div>
       </div>
-      <section className="py-12 sm:py-16">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6">
-          <SectionHeader title="My Achievements" />
+      <div className="max-w-4xl mx-auto px-4 sm:px-6">
+        <div className="mt-12 border-t border-slate-200 pt-12 dark:border-white/10">
           <Stats />
         </div>
-      </section>
+      </div>
     </section>
   );
 };
