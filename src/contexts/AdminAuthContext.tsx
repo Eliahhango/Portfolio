@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import type { User } from 'firebase/auth';
-import { auth, initializeAuthPersistence, onAuthStateChanged, signInWithEmailAndPassword, signOut as firebaseSignOut } from '../firebase';
+import { doc, getDoc, Timestamp } from 'firebase/firestore';
+import { auth, db, initializeAuthPersistence, onAuthStateChanged, signInWithEmailAndPassword, signOut as firebaseSignOut } from '../firebase';
 import { firebaseClientSetupMessage, isFirebaseClientConfigured, missingFirebaseClientEnvVars } from '../lib/firebaseClientConfig';
 import { buildApiUrl, readJsonResponse } from '../lib/adminApi';
 import type { AdminProfile } from '../types/admin';
@@ -21,13 +22,59 @@ interface AdminAuthContextValue {
 
 const AdminAuthContext = createContext<AdminAuthContextValue | undefined>(undefined);
 
-const verifyAdminAccess = async (idToken: string) => {
+const shouldUseClientAdminFallback = (status: number) => {
+  return [404, 405, 500, 501, 502, 503, 504].includes(status);
+};
+
+const serializeDate = (value: unknown) => {
+  if (value instanceof Timestamp) {
+    return value.toDate().toISOString();
+  }
+
+  return typeof value === 'string' ? value : null;
+};
+
+const readAdminProfileFromFirestore = async (user: User): Promise<AdminProfile> => {
+  if (!db) {
+    throw new Error('Admin backend is unavailable and Firestore fallback is not configured.');
+  }
+
+  const snapshot = await getDoc(doc(db, 'admins', user.uid));
+
+  if (!snapshot.exists()) {
+    throw new Error('Admin access denied.');
+  }
+
+  const data = snapshot.data();
+
+  if (data.isActive === false) {
+    throw new Error('Admin access denied.');
+  }
+
+  return {
+    id: snapshot.id,
+    uid: typeof data.uid === 'string' ? data.uid : user.uid,
+    email: typeof data.email === 'string' ? data.email : user.email || '',
+    name: typeof data.name === 'string' ? data.name : null,
+    role: typeof data.role === 'string' ? data.role : 'admin',
+    isActive: typeof data.isActive === 'boolean' ? data.isActive : true,
+    photoURL: typeof data.photoURL === 'string' ? data.photoURL : null,
+    createdAt: serializeDate(data.createdAt),
+    updatedAt: serializeDate(data.updatedAt),
+  };
+};
+
+const verifyAdminAccess = async (idToken: string, user: User) => {
   const response = await fetch(buildApiUrl('/api/admin/verify'), {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${idToken}`,
     },
   });
+
+  if (!response.ok && shouldUseClientAdminFallback(response.status)) {
+    return readAdminProfileFromFirestore(user);
+  }
 
   const data = await readJsonResponse<{ admin: AdminProfile }>(response);
   return data.admin;
@@ -42,6 +89,17 @@ const normalizeAuthError = (error: unknown) => {
 
   if (message.includes('auth/invalid-email')) {
     return 'Enter a valid email address.';
+  }
+
+  if (
+    message.includes('Request failed with status 404') ||
+    message.includes('Request failed with status 405') ||
+    message.includes('Request failed with status 500') ||
+    message.includes('Request failed with status 502') ||
+    message.includes('Failed to reach upstream API server') ||
+    message.includes('API proxy is not configured')
+  ) {
+    return 'Admin API is not available yet. Check the Vercel API proxy and backend URL.';
   }
 
   return message;
@@ -73,7 +131,7 @@ export const AdminAuthProvider: React.FC<React.PropsWithChildren> = ({ children 
 
     try {
       const nextToken = await nextUser.getIdToken();
-      const verifiedAdmin = await verifyAdminAccess(nextToken);
+      const verifiedAdmin = await verifyAdminAccess(nextToken, nextUser);
 
       if (!active()) {
         return;
@@ -146,7 +204,7 @@ export const AdminAuthProvider: React.FC<React.PropsWithChildren> = ({ children 
       await initializeAuthPersistence();
       const credentials = await signInWithEmailAndPassword(auth, email, password);
       const nextToken = await credentials.user.getIdToken(true);
-      const verifiedAdmin = await verifyAdminAccess(nextToken);
+      const verifiedAdmin = await verifyAdminAccess(nextToken, credentials.user);
 
       setUser(credentials.user);
       setAdminProfile(verifiedAdmin);
