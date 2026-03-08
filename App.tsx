@@ -40,6 +40,7 @@ import Community from './pages/Community';
 import Docs from './pages/Docs';
 import Cookies from './pages/Cookies';
 import DNSMPI from './pages/DNSMPI';
+import { PublicSiteContentProvider } from './contexts/PublicSiteContentContext';
 
 const PrivacyModal = lazy(() => import('./components/PrivacyModal'));
 const DocumentationModal = lazy(() => import('./components/DocumentationModal'));
@@ -106,47 +107,49 @@ const PortfolioHome: React.FC = () => {
   };
 
   return (
-    <div
-      className="min-h-screen bg-white text-slate-600 dark:bg-gradient-to-br dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 dark:text-gray-200"
-      style={{ overflowX: 'hidden' }}
-    >
-      <SEO />
-      <SkipToContent />
-      <ScrollProgress />
-      <AnimatedParticles />
-      <Header activeSection={activeSection} />
-      <main className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <Hero />
-        <About />
-        <Expertise />
-        <Journey />
-        <Projects onProjectClick={setSelectedProject} />
-        <Testimonials />
-        <CTA />
-        <Contact />
-      </main>
-      <Newsletter />
-      <Footer />
+    <PublicSiteContentProvider>
+      <div
+        className="min-h-screen bg-white text-slate-600 dark:bg-gradient-to-br dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 dark:text-gray-200"
+        style={{ overflowX: 'hidden' }}
+      >
+        <SEO />
+        <SkipToContent />
+        <ScrollProgress />
+        <AnimatedParticles />
+        <Header activeSection={activeSection} />
+        <main className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <Hero />
+          <About />
+          <Expertise />
+          <Journey />
+          <Projects onProjectClick={setSelectedProject} />
+          <Testimonials />
+          <CTA />
+          <Contact />
+        </main>
+        <Newsletter />
+        <Footer />
 
-      <div className="fixed bottom-5 right-5 z-50 flex flex-col items-end gap-3">
-        <ScrollToTopButton />
-        <ChatbotIcon onClick={() => setIsChatbotOpen(!isChatbotOpen)} isOpen={isChatbotOpen} />
+        <div className="fixed bottom-5 right-5 z-50 flex flex-col items-end gap-3">
+          <ScrollToTopButton />
+          <ChatbotIcon onClick={() => setIsChatbotOpen(!isChatbotOpen)} isOpen={isChatbotOpen} />
+        </div>
+
+        {isChatbotOpen && <Chatbot onClose={() => setIsChatbotOpen(false)} />}
+        {selectedProject && <ProjectModal project={selectedProject} onClose={() => setSelectedProject(null)} />}
+
+        <Suspense fallback={<ModalSkeleton />}>
+          {isPrivacyModalOpen && <PrivacyModal onClose={modalCloseHandlers.privacy} />}
+          {isDocsModalOpen && <DocumentationModal onClose={modalCloseHandlers.docs} />}
+          {isTermsModalOpen && <TermsModal onClose={modalCloseHandlers.terms} />}
+          {isSecurityModalOpen && <SecurityModal onClose={modalCloseHandlers.security} />}
+          {isCookieModalOpen && <CookieModal onClose={modalCloseHandlers.cookie} />}
+          {isDnsmpiModalOpen && <DnsmpiModal onClose={modalCloseHandlers.dnsmpi} />}
+          {isCommunityModalOpen && <CommunityModal onClose={modalCloseHandlers.community} />}
+          {isStatusModalOpen && <StatusModal onClose={modalCloseHandlers.status} />}
+        </Suspense>
       </div>
-
-      {isChatbotOpen && <Chatbot onClose={() => setIsChatbotOpen(false)} />}
-      {selectedProject && <ProjectModal project={selectedProject} onClose={() => setSelectedProject(null)} />}
-
-      <Suspense fallback={<ModalSkeleton />}>
-        {isPrivacyModalOpen && <PrivacyModal onClose={modalCloseHandlers.privacy} />}
-        {isDocsModalOpen && <DocumentationModal onClose={modalCloseHandlers.docs} />}
-        {isTermsModalOpen && <TermsModal onClose={modalCloseHandlers.terms} />}
-        {isSecurityModalOpen && <SecurityModal onClose={modalCloseHandlers.security} />}
-        {isCookieModalOpen && <CookieModal onClose={modalCloseHandlers.cookie} />}
-        {isDnsmpiModalOpen && <DnsmpiModal onClose={modalCloseHandlers.dnsmpi} />}
-        {isCommunityModalOpen && <CommunityModal onClose={modalCloseHandlers.community} />}
-        {isStatusModalOpen && <StatusModal onClose={modalCloseHandlers.status} />}
-      </Suspense>
-    </div>
+    </PublicSiteContentProvider>
   );
 };
 

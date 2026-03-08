@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { GithubIcon, YoutubeIcon, LinkedInIcon, TwitterIcon, FacebookIcon, MailIcon, PhoneIcon } from '../constants';
+import { useOptionalPublicSiteContent } from '../contexts/PublicSiteContentContext';
+import { defaultContactContent, toTelHref } from '../utils/siteContent';
 
 interface FooterProps {
   onPrivacyClick?: () => void;
@@ -25,14 +27,17 @@ const FOOTER_LINKS_DATA = [
     { name: "Do Not Sell My Info", type: 'route', path: '/dnsmpi' }
 ];
 
-const Footer: React.FC<FooterProps> = (props) => {
+const Footer: React.FC<FooterProps> = () => {
+  const publicContent = useOptionalPublicSiteContent();
+  const contactContent = publicContent?.contactContent || defaultContactContent;
+
   const socialLinks = [
-    { Icon: GithubIcon, href: 'https://github.com/Eliahhango', label: 'GitHub' },
-    { Icon: YoutubeIcon, href: 'https://youtube.com/@eliahhango', label: 'YouTube' },
+    { Icon: GithubIcon, href: contactContent.githubUrl, label: 'GitHub' },
+    { Icon: YoutubeIcon, href: contactContent.youtubeUrl, label: 'YouTube' },
     { Icon: LinkedInIcon, href: '#', label: 'LinkedIn' },
     { Icon: TwitterIcon, href: '#', label: 'Twitter' },
     { Icon: FacebookIcon, href: '#', label: 'Facebook' },
-  ];
+  ].filter((item) => item.href && item.href !== '#');
 
   return (
     <footer className="bg-slate-100 dark:bg-slate-950 dark:border-t dark:border-slate-800/50 py-8 sm:py-12 px-4 sm:px-6 lg:px-8 relative z-10">
@@ -96,14 +101,14 @@ const Footer: React.FC<FooterProps> = (props) => {
             <ul className="space-y-3">
               <li className="flex items-center space-x-2 text-sm text-slate-600 dark:text-gray-300">
                 <MailIcon className="w-4 h-4 text-blue-500" />
-                <a href="mailto:contact@elitechwiz.com" className="hover:text-blue-500 transition-colors">
-                  contact@elitechwiz.com
+                <a href={`mailto:${contactContent.email}`} className="hover:text-blue-500 transition-colors">
+                  {contactContent.email}
                 </a>
               </li>
               <li className="flex items-center space-x-2 text-sm text-slate-600 dark:text-gray-300">
                 <PhoneIcon className="w-4 h-4 text-blue-500" />
-                <a href="tel:+255688164510" className="hover:text-blue-500 transition-colors">
-                  +255 688 164 510
+                <a href={toTelHref(contactContent.phone)} className="hover:text-blue-500 transition-colors">
+                  {contactContent.phone}
                 </a>
               </li>
             </ul>

@@ -28,6 +28,14 @@ VITE_FIREBASE_APP_ID=
 VITE_API_URL=
 ```
 
+If the frontend is deployed separately from the backend, keep `VITE_API_URL` empty and configure a Vercel runtime env var instead:
+
+```env
+API_PROXY_URL=https://your-backend.example.com
+```
+
+The Vercel `/api/*` function will proxy browser requests to that backend.
+
 ## 4. Configure backend Firebase Admin
 
 Use one of these in `server/.env`:
@@ -101,7 +109,7 @@ One or more `VITE_...` variables are empty or missing.
 
 ### `Admin API calls are going to the wrong server`
 
-Set `VITE_API_URL` if your API is not served from the same origin as the frontend.
+If you use Vercel with a separate backend, set `API_PROXY_URL` in Vercel Project Settings so `/api/*` is proxied correctly.
 
 ### `Admin access denied`
 

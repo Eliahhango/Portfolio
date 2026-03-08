@@ -15,6 +15,29 @@ export interface Stat {
   label: string;
 }
 
+export interface PublicService {
+  _id: string;
+  title: string;
+  description: string;
+  category: 'cybersecurity' | 'development' | 'design' | 'consulting';
+  features: string[];
+  pricing?: {
+    startingAt?: number;
+    currency?: string;
+  };
+  isActive: boolean;
+  order: number;
+}
+
+export interface SiteContentRecord {
+  _id?: string;
+  key: string;
+  value: string | string[] | Record<string, unknown>;
+  type: 'text' | 'html' | 'json';
+  section: string;
+  updatedBy?: string;
+}
+
 // FIX: Add the Message interface for the chatbot component.
 export interface Message {
   sender: 'user' | 'ai';

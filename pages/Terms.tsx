@@ -6,8 +6,11 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import ScrollProgress from '../components/ScrollProgress';
 import { ArrowLeft } from 'lucide-react';
+import { useSiteContactContent } from '../hooks/useSiteContactContent';
+import { toTelHref } from '../utils/siteContent';
 
 const Terms: React.FC = () => {
+  const contactContent = useSiteContactContent();
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -114,8 +117,8 @@ const Terms: React.FC = () => {
               For questions about these Terms, please contact us at:
             </p>
             <p className="mb-4 text-slate-600 dark:text-gray-300 leading-relaxed">
-              Email: <a href="mailto:contact@elitechwiz.com" className="text-blue-600 dark:text-blue-400 hover:underline">contact@elitechwiz.com</a><br />
-              Phone: <a href="tel:+255688164510" className="text-blue-600 dark:text-blue-400 hover:underline">+255 688 164 510</a>
+              Email: <a href={`mailto:${contactContent.email}`} className="text-blue-600 dark:text-blue-400 hover:underline">{contactContent.email}</a><br />
+              Phone: <a href={toTelHref(contactContent.phone)} className="text-blue-600 dark:text-blue-400 hover:underline">{contactContent.phone}</a>
             </p>
           </motion.section>
         </motion.div>

@@ -51,6 +51,53 @@ export interface BlogPostRecord {
   updatedAt: string;
 }
 
+export interface ServiceRecord {
+  _id: string;
+  title: string;
+  description: string;
+  category: 'cybersecurity' | 'development' | 'design' | 'consulting';
+  features: string[];
+  pricing?: {
+    startingAt?: number;
+    currency?: string;
+  };
+  isActive: boolean;
+  order: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface NewsletterSubscriber {
+  _id: string;
+  email: string;
+  confirmed: boolean;
+  confirmedAt?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface NewsletterSubscriberResponse {
+  subscribers: NewsletterSubscriber[];
+  pagination: {
+    page: number;
+    limit: number;
+    total: number;
+    pages: number;
+  };
+  confirmedCount: number;
+}
+
+export interface ContentItemRecord {
+  _id: string;
+  key: string;
+  value: string | string[] | Record<string, unknown>;
+  type: 'text' | 'html' | 'json';
+  section: string;
+  updatedBy: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface VisitorPoint {
   date: string;
   count: number;

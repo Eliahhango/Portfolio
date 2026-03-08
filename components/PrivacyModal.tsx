@@ -1,11 +1,15 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useSiteContactContent } from '../hooks/useSiteContactContent';
+import { toTelHref } from '../utils/siteContent';
 
 interface ModalProps {
     onClose: () => void;
 }
 
 const PrivacyModal: React.FC<ModalProps> = ({ onClose }) => {
+    const contactContent = useSiteContactContent();
+
     return (
         <AnimatePresence>
             <div className="fixed inset-0 bg-black/70 z-[100] flex items-center justify-center p-4" onClick={onClose}>
@@ -183,10 +187,10 @@ const PrivacyModal: React.FC<ModalProps> = ({ onClose }) => {
                                     <strong>Privacy Officer:</strong> <a href="mailto:privacy@elitechwiz.com" className="text-blue-500 hover:underline">privacy@elitechwiz.com</a>
                                 </p>
                                 <p className="text-slate-700 dark:text-gray-300 mb-2">
-                                    <strong>General Contact:</strong> <a href="mailto:contact@elitechwiz.com" className="text-blue-500 hover:underline">contact@elitechwiz.com</a>
+                                    <strong>General Contact:</strong> <a href={`mailto:${contactContent.email}`} className="text-blue-500 hover:underline">{contactContent.email}</a>
                                 </p>
                                 <p className="text-slate-700 dark:text-gray-300">
-                                    <strong>Phone:</strong> <a href="tel:+255688164510" className="text-blue-500 hover:underline">+255 688 164 510</a>
+                                    <strong>Phone:</strong> <a href={toTelHref(contactContent.phone)} className="text-blue-500 hover:underline">{contactContent.phone}</a>
                                 </p>
                             </div>
                         </section>
