@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ArrowRight, CheckCircle2, Send } from 'lucide-react';
+import { buildApiUrl } from '../utils/api';
 
 const subjectOptions = ['Project Inquiry', 'Consultation', 'Partnership', 'Other'];
 
@@ -52,8 +53,7 @@ const ContactForm: React.FC = () => {
         throw new Error('Please complete the CAPTCHA verification.');
       }
 
-      const apiUrl = import.meta.env.VITE_API_URL || '';
-      const response = await fetch(`${apiUrl}/api/contact/submit`, {
+      const response = await fetch(buildApiUrl('/api/contact/submit'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

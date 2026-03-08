@@ -2,6 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Check } from 'lucide-react';
 import { TESTIMONIALS_DATA } from '../constants';
+import { buildApiUrl } from '../utils/api';
 
 const benefits = ['Weekly security tips', 'No spam, ever', 'Unsubscribe anytime'];
 
@@ -22,8 +23,7 @@ const Newsletter: React.FC = () => {
     setLoading(true);
 
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || '';
-      const response = await fetch(`${apiUrl}/api/newsletter/subscribe`, {
+      const response = await fetch(buildApiUrl('/api/newsletter/subscribe'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email }),

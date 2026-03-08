@@ -1,9 +1,5 @@
-const apiBaseUrl = import.meta.env.VITE_API_URL || '';
-
-export const buildApiUrl = (path: string) => {
-  const normalizedPath = path.startsWith('/') ? path : `/${path}`;
-  return `${apiBaseUrl}${normalizedPath}`;
-};
+export { buildApiUrl } from '../../utils/api';
+import { buildApiUrl } from '../../utils/api';
 
 export const createSlug = (value: string) => {
   return value

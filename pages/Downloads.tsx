@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import SEO from '../components/SEO';
+import { buildApiUrl } from '../utils/api';
 
 const resources = [
   { title: 'Security Checklist (TXT)', path: '/resources/security-checklist.txt' }
@@ -16,9 +17,7 @@ const Downloads: React.FC = () => {
     setLoading(true);
     setMessage('');
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || '';
-      // Reuse newsletter subscribe as a simple gate
-      const res = await fetch(`${apiUrl}/api/newsletter/subscribe`, {
+      const res = await fetch(buildApiUrl('/api/newsletter/subscribe'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email })

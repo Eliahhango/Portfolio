@@ -1,11 +1,5 @@
 import type { PublicService, SiteContentRecord } from '../types';
-
-const apiBaseUrl = import.meta.env.VITE_API_URL || '';
-
-const buildSiteApiUrl = (path: string) => {
-  const normalizedPath = path.startsWith('/') ? path : `/${path}`;
-  return `${apiBaseUrl}${normalizedPath}`;
-};
+import { buildApiUrl } from './api';
 
 export interface HeroContent {
   title: string;
@@ -123,7 +117,7 @@ export const mapContactContent = (items: SiteContentRecord[]) => {
 };
 
 export const fetchContentSection = async (section: string): Promise<SiteContentRecord[]> => {
-  const response = await fetch(buildSiteApiUrl(`/api/content/section/${section}`));
+  const response = await fetch(buildApiUrl(`/api/content/section/${section}`));
 
   if (!response.ok) {
     throw new Error(`Failed to load ${section} content.`);
@@ -133,7 +127,7 @@ export const fetchContentSection = async (section: string): Promise<SiteContentR
 };
 
 export const fetchPublicServices = async () => {
-  const response = await fetch(buildSiteApiUrl('/api/services'));
+  const response = await fetch(buildApiUrl('/api/services'));
 
   if (!response.ok) {
     throw new Error('Failed to load services.');

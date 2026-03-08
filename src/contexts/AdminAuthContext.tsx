@@ -4,6 +4,7 @@ import { doc, getDoc, Timestamp } from 'firebase/firestore';
 import { auth, db, initializeAuthPersistence, onAuthStateChanged, signInWithEmailAndPassword, signOut as firebaseSignOut } from '../firebase';
 import { firebaseClientSetupMessage, isFirebaseClientConfigured, missingFirebaseClientEnvVars } from '../lib/firebaseClientConfig';
 import { buildApiUrl, readJsonResponse } from '../lib/adminApi';
+import { apiConfigurationErrorMessage } from '../../utils/api';
 import type { AdminProfile } from '../types/admin';
 
 interface AdminAuthContextValue {
@@ -32,6 +33,10 @@ const serializeDate = (value: unknown) => {
   }
 
   return typeof value === 'string' ? value : null;
+};
+
+const isApiConfigurationError = (error: unknown) => {
+  return error instanceof Error && error.message.includes(apiConfigurationErrorMessage);
 };
 
 const readAdminProfileFromFirestore = async (user: User): Promise<AdminProfile> => {
@@ -65,19 +70,27 @@ const readAdminProfileFromFirestore = async (user: User): Promise<AdminProfile> 
 };
 
 const verifyAdminAccess = async (idToken: string, user: User) => {
-  const response = await fetch(buildApiUrl('/api/admin/verify'), {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${idToken}`,
-    },
-  });
+  try {
+    const response = await fetch(buildApiUrl('/api/admin/verify'), {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${idToken}`,
+      },
+    });
 
-  if (!response.ok && shouldUseClientAdminFallback(response.status)) {
-    return readAdminProfileFromFirestore(user);
+    if (!response.ok && shouldUseClientAdminFallback(response.status)) {
+      return readAdminProfileFromFirestore(user);
+    }
+
+    const data = await readJsonResponse<{ admin: AdminProfile }>(response);
+    return data.admin;
+  } catch (error) {
+    if (isApiConfigurationError(error)) {
+      return readAdminProfileFromFirestore(user);
+    }
+
+    throw error;
   }
-
-  const data = await readJsonResponse<{ admin: AdminProfile }>(response);
-  return data.admin;
 };
 
 const normalizeAuthError = (error: unknown) => {
@@ -92,14 +105,14 @@ const normalizeAuthError = (error: unknown) => {
   }
 
   if (
+    message.includes(apiConfigurationErrorMessage) ||
     message.includes('Request failed with status 404') ||
     message.includes('Request failed with status 405') ||
     message.includes('Request failed with status 500') ||
     message.includes('Request failed with status 502') ||
-    message.includes('Failed to reach upstream API server') ||
-    message.includes('API proxy is not configured')
+    message.includes('Failed to reach upstream API server')
   ) {
-    return 'Admin API is not available yet. Check the Vercel API proxy and backend URL.';
+    return 'Admin API is not available. Check VITE_API_URL and your backend deployment.';
   }
 
   return message;

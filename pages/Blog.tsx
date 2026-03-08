@@ -6,6 +6,7 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import ScrollProgress from '../components/ScrollProgress';
 import type { PublicBlogPost } from '../types';
+import { buildApiUrl } from '../utils/api';
 
 const tagColorMap: Record<string, { badge: string; surface: string }> = {
   security: {
@@ -126,13 +127,14 @@ const Blog: React.FC = () => {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const apiUrl = import.meta.env.VITE_API_URL || '';
-        const response = await fetch(`${apiUrl}/api/blog`);
+        const response = await fetch(buildApiUrl('/api/blog'));
 
         if (response.ok) {
           const data = (await response.json()) as PublicBlogPost[];
           setList(data);
         }
+      } catch {
+        setList([]);
       } finally {
         setIsLoading(false);
       }

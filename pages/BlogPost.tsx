@@ -20,6 +20,7 @@ import Footer from '../components/Footer';
 import ScrollProgress from '../components/ScrollProgress';
 import { LinkedInIcon, TwitterIcon } from '../constants';
 import type { PublicBlogPost } from '../types';
+import { buildApiUrl } from '../utils/api';
 import { defaultAboutContent } from '../utils/siteContent';
 
 const modules = import.meta.glob('../content/blog/**/*.mdx', { eager: true }) as Record<string, any>;
@@ -213,12 +214,10 @@ const BlogPost: React.FC = () => {
     let isActive = true;
 
     const fetchData = async () => {
-      const apiUrl = import.meta.env.VITE_API_URL || '';
-
       try {
         const [postResult, listResult] = await Promise.allSettled([
-          fetch(`${apiUrl}/api/blog/${slug}`),
-          fetch(`${apiUrl}/api/blog`),
+          fetch(buildApiUrl(`/api/blog/${slug}`)),
+          fetch(buildApiUrl('/api/blog')),
         ]);
 
         if (!isActive) {
@@ -236,6 +235,11 @@ const BlogPost: React.FC = () => {
           const data = (await listResult.value.json()) as PublicBlogPost[];
           setAllPosts(data);
         } else {
+          setAllPosts([]);
+        }
+      } catch {
+        if (isActive) {
+          setApiPost(null);
           setAllPosts([]);
         }
       } finally {
