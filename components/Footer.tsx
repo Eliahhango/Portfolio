@@ -65,7 +65,7 @@ const Footer: React.FC<FooterProps> = () => {
   };
 
   return (
-    <footer className="relative z-10 bg-slate-900 py-16 text-white dark:bg-slate-950">
+    <footer className="relative z-10 bg-slate-900 dark:bg-slate-950 py-16 text-white border-t-4 border-blue-600">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 xl:grid-cols-4">
           <div className="space-y-5">

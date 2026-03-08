@@ -51,20 +51,7 @@ const Newsletter: React.FC = () => {
   };
 
   return (
-    <section className="relative overflow-hidden bg-slate-900 py-16 text-white dark:bg-slate-950">
-      <motion.div
-        aria-hidden="true"
-        className="absolute -left-16 top-8 h-48 w-48 rounded-full bg-blue-500/20 blur-3xl"
-        animate={{ x: [0, 24, 0], y: [0, 14, 0] }}
-        transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
-      />
-      <motion.div
-        aria-hidden="true"
-        className="absolute -right-8 bottom-0 h-56 w-56 rounded-full bg-cyan-400/15 blur-3xl"
-        animate={{ x: [0, -18, 0], y: [0, -24, 0] }}
-        transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
-      />
-
+    <section className="relative overflow-hidden bg-gradient-to-r from-blue-600 to-blue-700 dark:from-blue-800 dark:to-blue-900 py-16 text-white">
       <div className="relative mx-auto max-w-4xl px-4 text-center sm:px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
