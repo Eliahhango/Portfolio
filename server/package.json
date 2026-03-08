@@ -7,6 +7,7 @@
     "build": "prisma generate && tsc",
     "build:with-prisma": "prisma generate && tsc",
     "start": "node dist/index.js",
+    "firebase:create-admin": "tsx src/scripts/create-firebase-admin.ts",
     "render-build": "cd .. && npm install && npm run build && cd server && npm install && npm run build",
     "prisma:generate": "prisma generate || echo 'Prisma generation skipped (optional)'",
     "prisma:migrate": "prisma migrate dev",

@@ -1,6 +1,7 @@
 import { getApp, getApps, initializeApp } from 'firebase/app';
 import { getAuth, inMemoryPersistence, onAuthStateChanged, setPersistence, signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import { doc, getFirestore, serverTimestamp, setDoc } from 'firebase/firestore';
+import { isFirebaseClientConfigured } from './lib/firebaseClientConfig';
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -11,10 +12,12 @@ const firebaseConfig = {
   appId: import.meta.env.VITE_FIREBASE_APP_ID,
 };
 
-const firebaseApp = getApps().length ? getApp() : initializeApp(firebaseConfig);
+const firebaseApp = isFirebaseClientConfigured
+  ? (getApps().length ? getApp() : initializeApp(firebaseConfig))
+  : null;
 
-export const auth = getAuth(firebaseApp);
-export const db = getFirestore(firebaseApp);
+export const auth = firebaseApp ? getAuth(firebaseApp) : null;
+export const db = firebaseApp ? getFirestore(firebaseApp) : null;
 
 export interface AdminProfileInput {
   uid: string;
@@ -26,10 +29,18 @@ export interface AdminProfileInput {
 }
 
 export const initializeAuthPersistence = async () => {
+  if (!auth) {
+    throw new Error('Firebase client configuration is incomplete.');
+  }
+
   await setPersistence(auth, inMemoryPersistence);
 };
 
 export const saveAdminProfile = async (profile: AdminProfileInput) => {
+  if (!db) {
+    throw new Error('Firebase client configuration is incomplete.');
+  }
+
   await setDoc(
     doc(db, 'admins', profile.uid),
     {

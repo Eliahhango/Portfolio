@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import type { User } from 'firebase/auth';
 import { auth, initializeAuthPersistence, onAuthStateChanged, signInWithEmailAndPassword, signOut as firebaseSignOut } from '../firebase';
+import { firebaseClientSetupMessage, isFirebaseClientConfigured, missingFirebaseClientEnvVars } from '../lib/firebaseClientConfig';
 import { buildApiUrl, readJsonResponse } from '../lib/adminApi';
 import type { AdminProfile } from '../types/admin';
 
@@ -10,6 +11,9 @@ interface AdminAuthContextValue {
   token: string | null;
   isLoading: boolean;
   isAuthenticated: boolean;
+  isConfigured: boolean;
+  missingConfig: string[];
+  configurationError: string | null;
   login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
   getFirebaseToken: (forceRefresh?: boolean) => Promise<string | null>;
@@ -49,6 +53,7 @@ export const AdminAuthProvider: React.FC<React.PropsWithChildren> = ({ children 
   const [token, setToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [configurationError, setConfigurationError] = useState<string | null>(firebaseClientSetupMessage);
 
   const clearAuthState = () => {
     setUser(null);
@@ -96,10 +101,19 @@ export const AdminAuthProvider: React.FC<React.PropsWithChildren> = ({ children 
     let unsubscribe = () => undefined;
 
     const setupAuth = async () => {
+      if (!isFirebaseClientConfigured || !auth) {
+        setConfigurationError(firebaseClientSetupMessage);
+        setIsLoading(false);
+        return;
+      }
+
       try {
         await initializeAuthPersistence();
       } catch (error) {
         console.error('Failed to initialize Firebase auth persistence:', error);
+        setConfigurationError(error instanceof Error ? error.message : 'Failed to initialize Firebase auth.');
+        setIsLoading(false);
+        return;
       }
 
       if (!isActive) {
@@ -121,7 +135,12 @@ export const AdminAuthProvider: React.FC<React.PropsWithChildren> = ({ children 
   }, []);
 
   const login = async (email: string, password: string) => {
+    if (!isFirebaseClientConfigured || !auth) {
+      throw new Error(firebaseClientSetupMessage || 'Firebase client configuration is incomplete.');
+    }
+
     setIsLoading(true);
+    setConfigurationError(firebaseClientSetupMessage);
 
     try {
       await initializeAuthPersistence();
@@ -133,6 +152,7 @@ export const AdminAuthProvider: React.FC<React.PropsWithChildren> = ({ children 
       setAdminProfile(verifiedAdmin);
       setToken(nextToken);
       setIsAuthenticated(true);
+      setConfigurationError(null);
     } catch (error) {
       await firebaseSignOut(auth).catch(() => undefined);
       clearAuthState();
@@ -143,6 +163,12 @@ export const AdminAuthProvider: React.FC<React.PropsWithChildren> = ({ children 
   };
 
   const logout = async () => {
+    if (!auth) {
+      clearAuthState();
+      setIsLoading(false);
+      return;
+    }
+
     setIsLoading(true);
 
     try {
@@ -154,7 +180,7 @@ export const AdminAuthProvider: React.FC<React.PropsWithChildren> = ({ children 
   };
 
   const getFirebaseToken = async (forceRefresh = false) => {
-    if (!auth.currentUser) {
+    if (!auth?.currentUser) {
       return null;
     }
 
@@ -171,6 +197,9 @@ export const AdminAuthProvider: React.FC<React.PropsWithChildren> = ({ children 
         token,
         isLoading,
         isAuthenticated,
+        isConfigured: isFirebaseClientConfigured,
+        missingConfig: missingFirebaseClientEnvVars,
+        configurationError,
         login,
         logout,
         getFirebaseToken,

@@ -36,20 +36,27 @@ const parseServiceAccount = (): ServiceAccount | null => {
     return null;
   }
 
-  const parsed = JSON.parse(rawJson) as RawServiceAccount;
+  try {
+    const parsed = JSON.parse(rawJson) as RawServiceAccount;
 
-  return {
-    projectId: parsed.projectId ?? parsed.project_id,
-    clientEmail: parsed.clientEmail ?? parsed.client_email,
-    privateKey: (parsed.privateKey ?? parsed.private_key ?? '').replace(/\\n/g, '\n'),
-  };
+    return {
+      projectId: parsed.projectId ?? parsed.project_id,
+      clientEmail: parsed.clientEmail ?? parsed.client_email,
+      privateKey: (parsed.privateKey ?? parsed.private_key ?? '').replace(/\\n/g, '\n'),
+    };
+  } catch (error) {
+    console.warn('Invalid FIREBASE_SERVICE_ACCOUNT_JSON. Falling back to GOOGLE_APPLICATION_CREDENTIALS.', error);
+    return null;
+  }
 };
+
+const parsedServiceAccount = parseServiceAccount();
 
 const firebaseAdminApp = getApps().length
   ? getApps()[0]
   : initializeApp(
-      parseServiceAccount()
-        ? { credential: cert(parseServiceAccount() as ServiceAccount) }
+      parsedServiceAccount
+        ? { credential: cert(parsedServiceAccount as ServiceAccount) }
         : { credential: applicationDefault() },
     );
 
