@@ -232,31 +232,28 @@ const Expertise: React.FC = () => {
           <motion.div
             key={category.category}
             variants={columnVariants}
-            className="rounded-[28px] border border-slate-200/80 bg-white/80 p-4 shadow-lg shadow-slate-200/60 backdrop-blur-sm dark:border-white/10 dark:bg-slate-900/50 dark:shadow-slate-950/30"
+            className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-slate-800/50"
           >
-            <div className={`rounded-3xl border p-6 text-center ${category.headerClassName}`}>
-              <div className={`mx-auto flex h-20 w-20 items-center justify-center rounded-3xl ${category.iconShellClassName}`}>
-                <category.Icon className={`h-12 w-12 ${category.iconClassName}`} />
+            <div className="mb-6 flex items-center gap-4">
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-500/10">
+                <category.Icon className="h-6 w-6 text-blue-500" />
               </div>
-              <h3 className="mt-4 text-xl font-bold text-slate-900 dark:text-white">{category.title}</h3>
-              <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-300">{category.description}</p>
+              <div>
+                <h3 className="text-lg font-bold text-slate-900 dark:text-white">{category.title}</h3>
+                <p className="text-xs text-slate-500 dark:text-slate-400">{category.description}</p>
+              </div>
             </div>
 
-            <div className="mt-5 space-y-3">
+            <div className="space-y-3">
               {category.skills.map((skill, skillIndex) => (
                 <motion.div
                   key={skill.id}
                   custom={skillIndex}
                   variants={itemVariants}
-                  className={`group flex items-center gap-3 rounded-xl p-3 transition-all duration-300 ${category.itemShellClassName}`}
+                  className="flex items-center gap-3 rounded-xl border border-slate-100 bg-slate-50 p-3 transition-all hover:border-blue-200 hover:bg-blue-50 dark:border-white/10 dark:bg-slate-800/50 dark:hover:border-blue-500/30 dark:hover:bg-blue-500/10"
                 >
-                  <div className={`flex h-10 w-10 items-center justify-center rounded-xl transition-colors ${category.itemIconShellClassName}`}>
-                    <skill.Icon className={`h-5 w-5 ${category.itemIconClassName}`} />
-                  </div>
-                  <span className="text-sm font-semibold text-slate-700 dark:text-gray-200">{skill.name}</span>
-                  <div className="ml-auto opacity-0 transition-opacity group-hover:opacity-100">
-                    <ChevronRight className={`h-4 w-4 ${category.itemChevronClassName}`} />
-                  </div>
+                  <skill.Icon className="h-5 w-5 shrink-0 text-blue-500" />
+                  <span className="text-sm font-medium text-slate-700 dark:text-gray-200">{skill.name}</span>
                 </motion.div>
               ))}
             </div>
