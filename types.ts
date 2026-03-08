@@ -38,6 +38,18 @@ export interface SiteContentRecord {
   updatedBy?: string;
 }
 
+export interface PublicBlogPost {
+  _id: string;
+  title: string;
+  slug: string;
+  description?: string;
+  tags: string[];
+  createdAt?: string;
+  cover?: string;
+  contentLength: number;
+  readTimeMinutes: number;
+}
+
 // FIX: Add the Message interface for the chatbot component.
 export interface Message {
   sender: 'user' | 'ai';

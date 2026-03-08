@@ -147,8 +147,28 @@ router.get('/', async (req: Request, res: Response) => {
     query.published = false;
   }
 
-  const posts = await BlogPost.find(query).sort({ createdAt: -1 }).select('-content');
-  return res.json(posts);
+  const posts = await BlogPost.find(query)
+    .sort({ createdAt: -1 })
+    .select('title slug description tags createdAt cover content')
+    .lean();
+
+  return res.json(
+    posts.map((post) => {
+      const contentLength = post.content.trim().split(/\s+/).filter(Boolean).length;
+
+      return {
+        _id: post._id,
+        title: post.title,
+        slug: post.slug,
+        description: post.description,
+        tags: post.tags,
+        createdAt: post.createdAt,
+        cover: post.cover,
+        contentLength,
+        readTimeMinutes: Math.max(1, Math.ceil(contentLength / 200)),
+      };
+    }),
+  );
 });
 
 router.get('/:slug', async (req: Request, res: Response) => {
