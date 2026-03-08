@@ -6,3 +6,8 @@ server/.env
 server/.env.*
 serviceAccount.json
 server/serviceAccount.json
+firebase-debug.log
+.firebase-debug.log
+.firebase/
+.vercel
+*.log
