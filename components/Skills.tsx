@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import { motion } from 'framer-motion';
+import { ChevronRight } from 'lucide-react';
 import { EXPERTISE_DATA } from '../constants';
 import { usePublicSiteContent } from '../contexts/PublicSiteContentContext';
 import type { PublicService } from '../types';
@@ -7,6 +8,42 @@ import SectionHeader from './SectionHeader';
 
 type IconProps = React.SVGProps<SVGSVGElement>;
 type ServiceCategory = PublicService['category'];
+
+interface SkillCardItem {
+  id: string;
+  name: string;
+  Icon: React.FC<IconProps>;
+}
+
+interface SkillCategory {
+  category: ServiceCategory;
+  title: string;
+  description: string;
+  Icon: React.FC<IconProps>;
+  headerClassName: string;
+  iconShellClassName: string;
+  iconClassName: string;
+  itemShellClassName: string;
+  itemIconShellClassName: string;
+  itemIconClassName: string;
+  itemChevronClassName: string;
+  skills: SkillCardItem[];
+}
+
+const TECH_STACK = [
+  'React',
+  'TypeScript',
+  'Node.js',
+  'Firebase',
+  'MongoDB',
+  'Python',
+  'Figma',
+  'Tailwind CSS',
+  'Express',
+  'PostgreSQL',
+  'Next.js',
+  'Framer Motion',
+];
 
 const ShieldIcon: React.FC<IconProps> = (props) => (
   <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -35,27 +72,99 @@ const BriefcaseIcon: React.FC<IconProps> = (props) => (
   </svg>
 );
 
-const categoryMeta: Record<ServiceCategory, { title: string; Icon: React.FC<IconProps> }> = {
-  cybersecurity: { title: 'Cybersecurity & Hacking', Icon: ShieldIcon },
-  development: { title: 'Software Development', Icon: CodeIcon },
-  design: { title: 'Design & Architecture', Icon: PaletteIcon },
-  consulting: { title: 'Strategy & Consulting', Icon: BriefcaseIcon },
+const categoryMeta: Record<
+  ServiceCategory,
+  Omit<SkillCategory, 'category' | 'skills'>
+> = {
+  cybersecurity: {
+    title: 'Cybersecurity & Hacking',
+    description: 'Threat defense, ethical testing, and resilient security workflows.',
+    Icon: ShieldIcon,
+    headerClassName: 'border-blue-200/70 bg-gradient-to-br from-blue-500/15 via-white to-cyan-500/10 dark:border-blue-500/20 dark:from-blue-500/20 dark:via-slate-900 dark:to-cyan-500/10',
+    iconShellClassName: 'bg-blue-500/15 text-blue-600 dark:bg-blue-500/20 dark:text-blue-300',
+    iconClassName: 'text-blue-500 dark:text-blue-300',
+    itemShellClassName: 'bg-white dark:bg-slate-800/50 border border-slate-100 dark:border-white/10 hover:border-blue-400/50 hover:bg-blue-50 dark:hover:bg-blue-500/10',
+    itemIconShellClassName: 'bg-blue-500/10 group-hover:bg-blue-500/20',
+    itemIconClassName: 'text-blue-500',
+    itemChevronClassName: 'text-blue-400',
+  },
+  development: {
+    title: 'Software Development',
+    description: 'Modern apps, scalable APIs, and reliable product engineering.',
+    Icon: CodeIcon,
+    headerClassName: 'border-violet-200/70 bg-gradient-to-br from-violet-500/15 via-white to-indigo-500/10 dark:border-violet-500/20 dark:from-violet-500/20 dark:via-slate-900 dark:to-indigo-500/10',
+    iconShellClassName: 'bg-violet-500/15 text-violet-600 dark:bg-violet-500/20 dark:text-violet-300',
+    iconClassName: 'text-violet-500 dark:text-violet-300',
+    itemShellClassName: 'bg-white dark:bg-slate-800/50 border border-slate-100 dark:border-white/10 hover:border-violet-400/50 hover:bg-violet-50 dark:hover:bg-violet-500/10',
+    itemIconShellClassName: 'bg-violet-500/10 group-hover:bg-violet-500/20',
+    itemIconClassName: 'text-violet-500',
+    itemChevronClassName: 'text-violet-400',
+  },
+  design: {
+    title: 'Design & Architecture',
+    description: 'Human-centered interfaces and systems shaped for clarity.',
+    Icon: PaletteIcon,
+    headerClassName: 'border-emerald-200/70 bg-gradient-to-br from-emerald-500/15 via-white to-teal-500/10 dark:border-emerald-500/20 dark:from-emerald-500/20 dark:via-slate-900 dark:to-teal-500/10',
+    iconShellClassName: 'bg-emerald-500/15 text-emerald-600 dark:bg-emerald-500/20 dark:text-emerald-300',
+    iconClassName: 'text-emerald-500 dark:text-emerald-300',
+    itemShellClassName: 'bg-white dark:bg-slate-800/50 border border-slate-100 dark:border-white/10 hover:border-emerald-400/50 hover:bg-emerald-50 dark:hover:bg-emerald-500/10',
+    itemIconShellClassName: 'bg-emerald-500/10 group-hover:bg-emerald-500/20',
+    itemIconClassName: 'text-emerald-500',
+    itemChevronClassName: 'text-emerald-400',
+  },
+  consulting: {
+    title: 'Strategy & Consulting',
+    description: 'Technical planning, audits, and execution guidance that scales.',
+    Icon: BriefcaseIcon,
+    headerClassName: 'border-sky-200/70 bg-gradient-to-br from-sky-500/15 via-white to-cyan-500/10 dark:border-sky-500/20 dark:from-sky-500/20 dark:via-slate-900 dark:to-cyan-500/10',
+    iconShellClassName: 'bg-sky-500/15 text-sky-600 dark:bg-sky-500/20 dark:text-sky-300',
+    iconClassName: 'text-sky-500 dark:text-sky-300',
+    itemShellClassName: 'bg-white dark:bg-slate-800/50 border border-slate-100 dark:border-white/10 hover:border-sky-400/50 hover:bg-sky-50 dark:hover:bg-sky-500/10',
+    itemIconShellClassName: 'bg-sky-500/10 group-hover:bg-sky-500/20',
+    itemIconClassName: 'text-sky-500',
+    itemChevronClassName: 'text-sky-400',
+  },
+};
+
+const fallbackCategoryMap: Record<string, ServiceCategory> = {
+  'Cybersecurity & Hacking': 'cybersecurity',
+  'Software Development': 'development',
+  'Design & Architecture': 'design',
+};
+
+const containerVariants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.12,
+    },
+  },
+};
+
+const columnVariants = {
+  hidden: { opacity: 0, y: 32 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.55, ease: 'easeOut' },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 18 },
+  visible: (index: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: {
+      delay: index * 0.08,
+      duration: 0.38,
+      ease: 'easeOut',
+    },
+  }),
 };
 
 const Expertise: React.FC = () => {
   const { services } = usePublicSiteContent();
-
-  const cardVariants = {
-    hidden: { opacity: 0, y: 50 },
-    visible: (i: number) => ({
-      opacity: 1,
-      y: 0,
-      transition: {
-        delay: i * 0.1,
-        duration: 0.5,
-      },
-    }),
-  };
 
   const groupedServices = useMemo(() => {
     return services.reduce<Record<ServiceCategory, PublicService[]>>(
@@ -72,88 +181,111 @@ const Expertise: React.FC = () => {
     );
   }, [services]);
 
-  const dynamicCategories = useMemo(
-    () =>
-      (Object.keys(categoryMeta) as ServiceCategory[])
+  const categories = useMemo<SkillCategory[]>(() => {
+    if (services.length > 0) {
+      return (Object.keys(categoryMeta) as ServiceCategory[])
         .map((category) => ({
           category,
-          title: categoryMeta[category].title,
-          Icon: categoryMeta[category].Icon,
-          services: groupedServices[category],
+          ...categoryMeta[category],
+          skills: groupedServices[category].map((service) => ({
+            id: service._id,
+            name: service.title,
+            Icon: categoryMeta[category].Icon,
+          })),
         }))
-        .filter((entry) => entry.services.length > 0),
-    [groupedServices],
-  );
+        .filter((category) => category.skills.length > 0);
+    }
+
+    return EXPERTISE_DATA.map((category) => {
+      const mappedCategory = fallbackCategoryMap[category.title];
+      const meta = categoryMeta[mappedCategory];
+
+      return {
+        category: mappedCategory,
+        ...meta,
+        skills: category.skills.map((skill) => ({
+          id: `${category.title}-${skill.name}`,
+          name: skill.name,
+          Icon: skill.Icon,
+        })),
+      };
+    });
+  }, [groupedServices, services.length]);
 
   return (
-    <section id="expertise" className="py-12 sm:py-16 md:py-20">
-      <SectionHeader tag="Expertise" title="What I Do Best" />
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 px-4 sm:px-6 max-w-7xl mx-auto">
-        {dynamicCategories.length > 0
-          ? dynamicCategories.map((category) => (
-              <motion.div
-                key={category.category}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true, amount: 0.3 }}
-                transition={{ duration: 0.6 }}
-                className="bg-slate-100 dark:bg-slate-800/40 dark:border-slate-700/50 p-4 sm:p-6 rounded-lg shadow-md border border-slate-200 dark:border-slate-700/50 dark:shadow-slate-900/50"
-              >
-                <h3 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-white mb-4 sm:mb-6 text-center">{category.title}</h3>
-                <div className="space-y-3 sm:space-y-4">
-                  {category.services.map((service, serviceIndex) => (
-                    <motion.div
-                      key={service._id}
-                      custom={serviceIndex}
-                      variants={cardVariants}
-                      initial="hidden"
-                      whileInView="visible"
-                      viewport={{ once: true, amount: 0.8 }}
-                      className="group flex items-start gap-3 sm:gap-4 p-3 sm:p-4 bg-white dark:bg-slate-700/30 dark:border dark:border-slate-600/30 rounded-md transition-all duration-300 hover:bg-blue-50 dark:hover:bg-blue-500/10 dark:hover:border-blue-500/50 dark:hover:shadow-blue-500/10 hover:shadow-sm"
-                    >
-                      <category.Icon className="w-6 h-6 sm:w-8 sm:h-8 text-blue-500 flex-shrink-0 mt-1" />
-                      <div className="min-w-0">
-                        <span className="block text-sm sm:text-base font-semibold text-slate-700 dark:text-gray-200">{service.title}</span>
-                        <p className="mt-1 text-xs sm:text-sm text-slate-500 dark:text-gray-400">{service.description}</p>
-                        {service.features.length > 0 && (
-                          <p className="mt-2 text-xs text-slate-400 dark:text-gray-500">
-                            {service.features.slice(0, 3).join(' • ')}
-                          </p>
-                        )}
-                      </div>
-                    </motion.div>
-                  ))}
-                </div>
-              </motion.div>
-            ))
-          : EXPERTISE_DATA.map((category) => (
-              <motion.div
-                key={category.title}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true, amount: 0.3 }}
-                transition={{ duration: 0.6 }}
-                className="bg-slate-100 dark:bg-slate-800/40 dark:border-slate-700/50 p-4 sm:p-6 rounded-lg shadow-md border border-slate-200 dark:border-slate-700/50 dark:shadow-slate-900/50"
-              >
-                <h3 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-white mb-4 sm:mb-6 text-center">{category.title}</h3>
-                <div className="space-y-3 sm:space-y-4">
-                  {category.skills.map((skill, skillIndex) => (
-                    <motion.div
-                      key={skill.name}
-                      custom={skillIndex}
-                      variants={cardVariants}
-                      initial="hidden"
-                      whileInView="visible"
-                      viewport={{ once: true, amount: 0.8 }}
-                      className="group flex items-center gap-3 sm:gap-4 p-2 sm:p-3 bg-white dark:bg-slate-700/30 dark:border dark:border-slate-600/30 rounded-md transition-all duration-300 hover:bg-blue-50 dark:hover:bg-blue-500/10 dark:hover:border-blue-500/50 dark:hover:shadow-blue-500/10 hover:shadow-sm"
-                    >
-                      <skill.Icon className="w-6 h-6 sm:w-8 sm:h-8 text-blue-500 flex-shrink-0" />
-                      <span className="text-sm sm:text-base font-semibold text-slate-700 dark:text-gray-200">{skill.name}</span>
-                    </motion.div>
-                  ))}
-                </div>
-              </motion.div>
-            ))}
+    <section id="skills" className="relative py-12 sm:py-16 md:py-20">
+      <div id="expertise" className="absolute -top-24" aria-hidden="true"></div>
+      <SectionHeader
+        tag="Expertise"
+        title="What I Do Best"
+        subtitle="Focused areas of work spanning secure systems, full-stack delivery, and experience-led product design."
+      />
+
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+        className="mx-auto grid max-w-7xl grid-cols-1 gap-6 px-4 sm:px-6 lg:grid-cols-3"
+      >
+        {categories.map((category) => (
+          <motion.div
+            key={category.category}
+            variants={columnVariants}
+            className="rounded-[28px] border border-slate-200/80 bg-white/80 p-4 shadow-lg shadow-slate-200/60 backdrop-blur-sm dark:border-white/10 dark:bg-slate-900/50 dark:shadow-slate-950/30"
+          >
+            <div className={`rounded-3xl border p-6 text-center ${category.headerClassName}`}>
+              <div className={`mx-auto flex h-20 w-20 items-center justify-center rounded-3xl ${category.iconShellClassName}`}>
+                <category.Icon className={`h-12 w-12 ${category.iconClassName}`} />
+              </div>
+              <h3 className="mt-4 text-xl font-bold text-slate-900 dark:text-white">{category.title}</h3>
+              <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-300">{category.description}</p>
+            </div>
+
+            <div className="mt-5 space-y-3">
+              {category.skills.map((skill, skillIndex) => (
+                <motion.div
+                  key={skill.id}
+                  custom={skillIndex}
+                  variants={itemVariants}
+                  className={`group flex items-center gap-3 rounded-xl p-3 transition-all duration-300 ${category.itemShellClassName}`}
+                >
+                  <div className={`flex h-10 w-10 items-center justify-center rounded-xl transition-colors ${category.itemIconShellClassName}`}>
+                    <skill.Icon className={`h-5 w-5 ${category.itemIconClassName}`} />
+                  </div>
+                  <span className="text-sm font-semibold text-slate-700 dark:text-gray-200">{skill.name}</span>
+                  <div className="ml-auto opacity-0 transition-opacity group-hover:opacity-100">
+                    <ChevronRight className={`h-4 w-4 ${category.itemChevronClassName}`} />
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+        ))}
+      </motion.div>
+
+      <div className="mx-auto mt-12 max-w-7xl px-4 sm:px-6">
+        <div className="rounded-[28px] border border-slate-200/80 bg-white/70 p-5 shadow-lg shadow-slate-200/50 backdrop-blur-sm dark:border-white/10 dark:bg-slate-900/40 dark:shadow-slate-950/30">
+          <div className="flex items-center justify-between gap-4">
+            <div>
+              <p className="text-sm font-bold uppercase tracking-[0.28em] text-blue-500">Tech Stack Logos</p>
+              <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">Core tools and platforms I regularly ship with.</p>
+            </div>
+          </div>
+
+          <div className="mt-5 overflow-x-auto pb-2">
+            <div className="flex min-w-max items-center gap-3">
+              {TECH_STACK.map((tech) => (
+                <span
+                  key={tech}
+                  className="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-600 dark:border-white/10 dark:bg-slate-800/50 dark:text-slate-300"
+                >
+                  {tech}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );
