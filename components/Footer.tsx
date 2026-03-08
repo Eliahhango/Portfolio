@@ -75,7 +75,8 @@ const Footer: React.FC<FooterProps> = () => {
               </span>
               <div>
                 <p className="text-xl font-black tracking-tight">
-                  <span className="text-blue-400">&lt;Eli&gt;</span>TechWiz
+                  <span className="font-black text-blue-400">Eli</span>
+                  <span className="font-black tracking-tight">TechWiz</span>
                 </p>
               </div>
             </div>

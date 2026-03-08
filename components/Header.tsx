@@ -133,7 +133,8 @@ const Header: React.FC<HeaderProps> = ({ activeSection }) => {
               <ShieldCheck className="h-5 w-5" />
             </span>
             <span className="text-xl font-black tracking-tight sm:text-2xl group-hover:text-blue-600 dark:group-hover:text-blue-400">
-              <span className="text-blue-500">&lt;Eli&gt;</span>TechWiz
+              <span className="font-black text-blue-500">Eli</span>
+              <span className="font-black tracking-tight">TechWiz</span>
             </span>
           </a>
 
