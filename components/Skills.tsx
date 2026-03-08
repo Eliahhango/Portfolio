@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { EXPERTISE_DATA } from '../constants';
 import { usePublicSiteContent } from '../contexts/PublicSiteContentContext';
 import type { PublicService } from '../types';
+import SectionHeader from './SectionHeader';
 
 type IconProps = React.SVGProps<SVGSVGElement>;
 type ServiceCategory = PublicService['category'];
@@ -86,8 +87,7 @@ const Expertise: React.FC = () => {
 
   return (
     <section id="expertise" className="py-12 sm:py-16 md:py-20">
-      <h2 className="text-2xl sm:text-3xl font-bold text-center text-slate-900 dark:text-white mb-4 px-4">Areas of Expertise</h2>
-      <div className="w-20 h-1 bg-blue-500 mx-auto mb-8 sm:mb-12"></div>
+      <SectionHeader tag="Expertise" title="What I Do Best" />
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 px-4 sm:px-6 max-w-7xl mx-auto">
         {dynamicCategories.length > 0
           ? dynamicCategories.map((category) => (

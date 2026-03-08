@@ -1,6 +1,7 @@
 // FIX: Create content for the file to define the Journey component.
 import React from 'react';
 import { motion } from 'framer-motion';
+import SectionHeader from './SectionHeader';
 
 const JOURNEY_DATA = [
     {
@@ -26,8 +27,7 @@ const JOURNEY_DATA = [
 const Journey: React.FC = () => {
     return (
         <section id="journey" className="py-12 sm:py-16 md:py-20">
-            <h2 className="text-2xl sm:text-3xl font-bold text-center text-slate-900 dark:text-white mb-4 px-4">My Journey</h2>
-            <div className="w-20 h-1 bg-blue-500 mx-auto mb-8 sm:mb-12"></div>
+            <SectionHeader tag="Experience" title="My Journey" />
             <div className="max-w-3xl mx-auto relative px-4 sm:px-6">
                 <div className="absolute left-4 md:left-1/2 transform md:-translate-x-1/2 h-full w-0.5 bg-slate-200 dark:bg-gray-700"></div>
                 {JOURNEY_DATA.map((item, index) => (

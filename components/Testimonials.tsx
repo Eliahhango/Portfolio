@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { TESTIMONIALS_DATA } from '../constants';
+import SectionHeader from './SectionHeader';
 
 const Testimonials: React.FC = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -21,8 +22,7 @@ const Testimonials: React.FC = () => {
 
     return (
         <section id="testimonials" className="py-12 sm:py-16 md:py-20">
-            <h2 className="text-2xl sm:text-3xl font-bold text-center text-slate-900 dark:text-white mb-4 px-4">What They Say</h2>
-            <div className="w-20 h-1 bg-blue-500 mx-auto mb-8 sm:mb-12"></div>
+            <SectionHeader tag="Testimonials" title="What Clients Say" />
             <div className="max-w-3xl mx-auto relative h-56 sm:h-64 px-4 sm:px-6">
                 <AnimatePresence mode="wait">
                     <motion.div

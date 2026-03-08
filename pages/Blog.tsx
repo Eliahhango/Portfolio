@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import SectionHeader from '../components/SectionHeader';
 
 type ApiPost = { _id: string; title: string; slug: string; description?: string; tags?: string[]; createdAt?: string; cover?: string };
 
@@ -29,8 +30,13 @@ const Blog: React.FC = () => {
   return (
     <section id="blog" className="pt-24 pb-16">
       <div className="max-w-5xl mx-auto px-4 sm:px-6">
-        <h1 className="text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white">Blog</h1>
-        <p className="mt-2 text-slate-600 dark:text-gray-400">Articles on security, software, and design.</p>
+        <h1 className="sr-only">Articles &amp; Insights</h1>
+        <SectionHeader
+          tag="Blog"
+          title="Articles & Insights"
+          subtitle="Articles on security, software, and design."
+          align="left"
+        />
         <div className="mt-8 grid gap-6 sm:grid-cols-2">
           {list.map((p) => (
             <Link
