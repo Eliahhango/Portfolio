@@ -102,10 +102,10 @@ const Header: React.FC<HeaderProps> = ({ activeSection }) => {
   };
 
   const desktopLinkClassName = (isActive: boolean) =>
-    `inline-flex items-center border-b-2 pb-1 pt-1 text-sm font-medium transition-colors ${
+    `inline-flex items-center rounded-full px-3 py-1.5 text-sm font-medium transition-colors ${
       isActive
-        ? 'border-blue-500 text-blue-600 dark:text-blue-400'
-        : 'border-transparent text-slate-600 hover:text-blue-600 dark:text-slate-300 dark:hover:text-blue-400'
+        ? 'bg-blue-50 text-blue-700 dark:bg-blue-500/15 dark:text-blue-300'
+        : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-white/10 dark:hover:text-white'
     }`;
 
   const mobileLinkClassName = (isActive: boolean) =>
@@ -127,14 +127,18 @@ const Header: React.FC<HeaderProps> = ({ activeSection }) => {
           <a
             href="#home"
             onClick={(event) => onSectionClick(event, '#home')}
-            className="group inline-flex items-center gap-2.5 rounded-2xl px-1 py-1 text-slate-900 transition-all dark:text-white"
+            className="group inline-flex items-center gap-3 rounded-2xl px-1 py-1 text-slate-900 transition-all dark:text-white"
           >
             <span className="flex h-10 w-10 items-center justify-center rounded-2xl bg-blue-500/12 text-blue-500 transition-all duration-300 group-hover:bg-blue-500/18 group-hover:shadow-[0_0_18px_rgba(59,130,246,0.28)]">
               <ShieldCheck className="h-5 w-5" />
             </span>
-            <span className="text-xl font-black tracking-tight sm:text-2xl group-hover:text-blue-600 dark:group-hover:text-blue-400">
-              <span className="font-black text-blue-500">Eli</span>
-              <span className="font-black tracking-tight">TechWiz</span>
+            <span>
+              <span className="block text-xl font-black tracking-tight sm:text-2xl group-hover:text-blue-600 dark:group-hover:text-blue-400">
+                EliTechWiz
+              </span>
+              <span className="hidden text-[10px] font-semibold uppercase tracking-[0.24em] text-slate-500 dark:text-slate-400 sm:block">
+                Security + Product Engineering
+              </span>
             </span>
           </a>
 

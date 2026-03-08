@@ -28,6 +28,7 @@ const Testimonials: React.FC = () => {
         tag="Testimonials"
         title="What Clients Say"
         subtitle="A few words from clients and collaborators across security, product, and design work."
+        variant="proof"
       />
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6">

@@ -69,6 +69,7 @@ const Journey: React.FC = () => {
         tag="Experience"
         title="My Journey"
         subtitle="A timeline of leadership, security work, and product delivery across the roles that shaped how I build today."
+        variant="timeline"
       />
 
       <div className="mx-auto max-w-6xl px-4 sm:px-6">

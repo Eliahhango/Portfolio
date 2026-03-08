@@ -52,7 +52,8 @@ const Hero: React.FC = () => {
       id="home"
       className="relative flex min-h-screen items-center overflow-hidden pb-16 pt-28 sm:pt-32 lg:pt-24"
     >
-      <div className="absolute inset-0 -z-10 bg-gradient-to-br from-slate-50 via-blue-50/30 to-slate-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950" />
+      <div className="absolute inset-0 -z-10 bg-gradient-to-b from-white via-blue-50/40 to-white dark:from-slate-950 dark:via-slate-900 dark:to-slate-950" />
+      <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_15%_20%,rgba(59,130,246,0.18),transparent_38%),radial-gradient(circle_at_85%_80%,rgba(14,165,233,0.14),transparent_36%)] dark:bg-[radial-gradient(circle_at_15%_20%,rgba(59,130,246,0.28),transparent_36%),radial-gradient(circle_at_85%_80%,rgba(14,165,233,0.2),transparent_34%)]" />
 
       <motion.div
         initial="hidden"
@@ -61,21 +62,18 @@ const Hero: React.FC = () => {
         className="relative z-10 mx-auto grid w-full max-w-7xl items-center gap-12 px-4 sm:px-6 lg:grid-cols-2 lg:gap-16 lg:px-8"
       >
         <div className="text-center lg:text-left">
-          <motion.div
+          <motion.p
             variants={itemVariants}
-            className="inline-flex rounded-full border border-emerald-400/25 bg-white/80 px-4 py-2 text-sm font-semibold text-slate-700 shadow-lg shadow-slate-900/5 backdrop-blur dark:border-emerald-400/20 dark:bg-white/5 dark:text-slate-200"
+            className="text-xs font-semibold uppercase tracking-[0.28em] text-blue-600 dark:text-blue-300"
           >
-            <span className="mr-3 flex h-5 w-5 items-center justify-center rounded-full bg-emerald-500/15">
-              <span className="h-2.5 w-2.5 animate-pulse rounded-full bg-emerald-400" />
-            </span>
-            <span>Available for Projects</span>
-          </motion.div>
+            Based in Dar es Salaam, building secure digital products
+          </motion.p>
 
           <motion.h1
             variants={itemVariants}
             className="mt-8 text-5xl font-black tracking-tight text-slate-900 dark:text-white sm:text-6xl lg:text-7xl"
           >
-            <span className="block">I Build</span>
+            <span className="block">I Design & Build</span>
             <span className="mt-3 block min-h-[1.1em]">
               <Typewriter
                 words={heroContent.roles}
@@ -112,31 +110,32 @@ const Hero: React.FC = () => {
             </a>
           </motion.div>
 
-          <motion.div
+          <motion.dl
             variants={itemVariants}
-            className="mt-8 flex flex-wrap items-center justify-center gap-3 lg:justify-start"
+            className="mt-10 grid max-w-xl grid-cols-3 gap-4 border-t border-slate-200/80 pt-6 dark:border-white/10"
           >
             {miniStats.map((stat) => (
               <div
                 key={stat.label}
-                className="rounded-full border border-slate-200 bg-white/80 px-4 py-3 shadow-sm backdrop-blur dark:border-white/10 dark:bg-white/5"
+                className="text-center lg:text-left"
               >
-                <span className="text-lg font-bold text-blue-500">{stat.value}</span>
-                <span className="ml-2 text-sm font-medium text-slate-600 dark:text-slate-300">
-                  {stat.label}
-                </span>
+                <dt className="text-xs uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400">{stat.label}</dt>
+                <dd className="mt-2 text-2xl font-black text-slate-900 dark:text-white">{stat.value}</dd>
               </div>
             ))}
-          </motion.div>
+          </motion.dl>
         </div>
 
         <motion.div variants={itemVariants} className="mx-auto w-full max-w-md lg:max-w-xl">
-          <img
-            src={aboutContent.imageUrl}
-            alt="EliTechWiz"
-            className="aspect-[4/5] w-full rounded-3xl object-cover shadow-2xl ring-1 ring-slate-200 dark:ring-white/10"
-            loading="eager"
-          />
+          <div className="relative">
+            <div className="absolute -inset-3 rounded-[2rem] bg-gradient-to-br from-blue-500/20 to-cyan-400/10 blur-xl" aria-hidden="true" />
+            <img
+              src={aboutContent.imageUrl}
+              alt="EliTechWiz"
+              className="relative aspect-[4/5] w-full rounded-3xl border border-white/40 object-cover shadow-2xl ring-1 ring-slate-200 dark:border-white/10 dark:ring-white/10"
+              loading="eager"
+            />
+          </div>
         </motion.div>
       </motion.div>
 
