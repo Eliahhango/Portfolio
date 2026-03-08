@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import './styles/main.css';
-import { AdminAuthProvider } from './src/contexts/AdminAuthContext';
 
 const rootElement = document.getElementById('root');
 if (!rootElement) {
@@ -14,9 +13,7 @@ const root = ReactDOM.createRoot(rootElement);
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-      <AdminAuthProvider>
-        <App />
-      </AdminAuthProvider>
+      <App />
     </BrowserRouter>
   </React.StrictMode>
 );

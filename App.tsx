@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, lazy, Suspense } from 'react';
 import { Loader2 } from 'lucide-react';
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import { initVisitorTracking } from './utils/visitorTracking';
 import Header from './components/Header';
 import Hero from './components/Hero';
@@ -50,16 +50,7 @@ const DnsmpiModal = lazy(() => import('./components/DnsmpiModal'));
 const CommunityModal = lazy(() => import('./components/CommunityModal'));
 const StatusModal = lazy(() => import('./components/StatusModal'));
 
-const ProtectedRoute = lazy(() => import('./src/components/admin/ProtectedRoute'));
-const AdminLogin = lazy(() => import('./src/pages/admin/AdminLogin'));
-const AdminLayout = lazy(() => import('./src/pages/admin/AdminLayout'));
-const Dashboard = lazy(() => import('./src/pages/admin/Dashboard'));
-const Messages = lazy(() => import('./src/pages/admin/Messages'));
-const NewsletterAdmin = lazy(() => import('./src/pages/admin/Newsletter'));
-const BlogManager = lazy(() => import('./src/pages/admin/BlogManager'));
-const Visitors = lazy(() => import('./src/pages/admin/Visitors'));
-const ServicesAdmin = lazy(() => import('./src/pages/admin/Services'));
-const SettingsPage = lazy(() => import('./src/pages/admin/SettingsPage'));
+const AdminEntry = lazy(() => import('./src/pages/admin/AdminEntry'));
 
 const RouteLoader: React.FC = () => {
   return (
@@ -180,26 +171,7 @@ const App: React.FC = () => {
           <Route path="/docs" element={<Docs />} />
           <Route path="/cookies" element={<Cookies />} />
           <Route path="/dnsmpi" element={<DNSMPI />} />
-
-          <Route path="/admin/login" element={<AdminLogin />} />
-          <Route
-            path="/admin"
-            element={(
-              <ProtectedRoute>
-                <AdminLayout />
-              </ProtectedRoute>
-            )}
-          >
-            <Route index element={<Navigate to="dashboard" replace />} />
-            <Route path="dashboard" element={<Dashboard />} />
-            <Route path="messages" element={<Messages />} />
-            <Route path="newsletter" element={<NewsletterAdmin />} />
-            <Route path="blog" element={<BlogManager />} />
-            <Route path="visitors" element={<Visitors />} />
-            <Route path="services" element={<ServicesAdmin />} />
-            <Route path="settings" element={<SettingsPage />} />
-            <Route path="*" element={<Navigate to="dashboard" replace />} />
-          </Route>
+          <Route path="/admin/*" element={<AdminEntry />} />
 
           <Route path="*" element={<NotFound />} />
         </Routes>
