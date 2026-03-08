@@ -10,7 +10,7 @@ export interface IContactMessage extends Document {
   userAgent?: string;
   status: 'new' | 'read' | 'replied' | 'archived';
   repliedAt?: Date;
-  repliedBy?: mongoose.Types.ObjectId;
+  repliedBy?: string;
   notes?: string;
 }
 
@@ -29,7 +29,7 @@ const ContactMessageSchema = new Schema<IContactMessage>({
     index: true
   },
   repliedAt: { type: Date },
-  repliedBy: { type: Schema.Types.ObjectId, ref: 'Admin' },
+  repliedBy: { type: String },
   notes: { type: String },
 }, {
   timestamps: true,

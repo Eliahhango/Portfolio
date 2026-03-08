@@ -11,8 +11,8 @@ export interface IService extends Document {
   };
   isActive: boolean;
   order: number;
-  createdBy: mongoose.Types.ObjectId;
-  updatedBy: mongoose.Types.ObjectId;
+  createdBy: string;
+  updatedBy: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -51,13 +51,11 @@ const ServiceSchema = new Schema<IService>({
     default: 0,
   },
   createdBy: {
-    type: Schema.Types.ObjectId,
-    ref: 'Admin',
+    type: String,
     required: true,
   },
   updatedBy: {
-    type: Schema.Types.ObjectId,
-    ref: 'Admin',
+    type: String,
     required: true,
   },
 }, {

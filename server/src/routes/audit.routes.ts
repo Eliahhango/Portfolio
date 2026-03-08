@@ -1,10 +1,10 @@
 import express, { Response } from 'express';
-import { authenticate, requireMainAdmin, AuthRequest } from '../middleware/auth.middleware.js';
+import { requireAdmin, requireMainAdmin, verifyFirebaseToken, type FirebaseAuthRequest } from '../middleware/firebaseAuth.middleware.js';
 import Audit from '../models/Audit.model.js';
 
 const router = express.Router();
 
-router.get('/', authenticate, requireMainAdmin, async (req: AuthRequest, res: Response) => {
+router.get('/', verifyFirebaseToken, requireAdmin, requireMainAdmin, async (req: FirebaseAuthRequest, res: Response) => {
   try {
     const { limit = 50, page = 1 } = req.query;
     const l = Math.min(Number(limit), 200);

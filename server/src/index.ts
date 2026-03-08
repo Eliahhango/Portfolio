@@ -14,6 +14,7 @@ import visitorRoutes from './routes/visitor.routes.js';
 import contactRoutes from './routes/contact.routes.js';
 import newsletterRoutes from './routes/newsletter.routes.js';
 import blogRoutes from './routes/blog.routes.js';
+import adminRoutes from './routes/admin.routes.js';
 import BlogPost from './models/BlogPost.model.js';
 
 dotenv.config();
@@ -208,6 +209,7 @@ app.use('/api/visitors', visitorRoutes);
 app.use('/api/contact', contactRoutes);
 app.use('/api/newsletter', newsletterRoutes);
 app.use('/api/blog', blogRoutes);
+app.use('/api/admin', adminRoutes);
 
 // Health check
 app.get('/api/health', (req: express.Request, res: express.Response) => {

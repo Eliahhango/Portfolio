@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useMemo, useCallback, lazy, Suspense } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import React, { useState, useEffect, useCallback, lazy, Suspense } from 'react';
+import { Loader2 } from 'lucide-react';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import { initVisitorTracking } from './utils/visitorTracking';
 import Header from './components/Header';
 import Hero from './components/Hero';
@@ -24,8 +25,22 @@ import type { Project } from './types';
 import SEO from './components/SEO';
 import NotFound from './pages/NotFound';
 import ErrorBoundary from './pages/ErrorBoundary';
+import Blog from './pages/Blog';
+import BlogPost from './pages/BlogPost';
+import CaseStudies from './pages/CaseStudies';
+import CaseStudy from './pages/CaseStudy';
+import ConfirmSubscription from './pages/ConfirmSubscription';
+import Booking from './pages/Booking';
+import Downloads from './pages/Downloads';
+import Terms from './pages/Terms';
+import Privacy from './pages/Privacy';
+import Security from './pages/Security';
+import Status from './pages/Status';
+import Community from './pages/Community';
+import Docs from './pages/Docs';
+import Cookies from './pages/Cookies';
+import DNSMPI from './pages/DNSMPI';
 
-// Lazy load modals for better performance
 const PrivacyModal = lazy(() => import('./components/PrivacyModal'));
 const DocumentationModal = lazy(() => import('./components/DocumentationModal'));
 const TermsModal = lazy(() => import('./components/TermsModal'));
@@ -35,7 +50,29 @@ const DnsmpiModal = lazy(() => import('./components/DnsmpiModal'));
 const CommunityModal = lazy(() => import('./components/CommunityModal'));
 const StatusModal = lazy(() => import('./components/StatusModal'));
 
-const App: React.FC = () => {
+const ProtectedRoute = lazy(() => import('./src/components/admin/ProtectedRoute'));
+const AdminLogin = lazy(() => import('./src/pages/admin/AdminLogin'));
+const AdminLayout = lazy(() => import('./src/pages/admin/AdminLayout'));
+const Dashboard = lazy(() => import('./src/pages/admin/Dashboard'));
+const Messages = lazy(() => import('./src/pages/admin/Messages'));
+const NewsletterAdmin = lazy(() => import('./src/pages/admin/Newsletter'));
+const BlogManager = lazy(() => import('./src/pages/admin/BlogManager'));
+const Visitors = lazy(() => import('./src/pages/admin/Visitors'));
+const ServicesAdmin = lazy(() => import('./src/pages/admin/Services'));
+const SettingsPage = lazy(() => import('./src/pages/admin/SettingsPage'));
+
+const RouteLoader: React.FC = () => {
+  return (
+    <div className="flex min-h-screen items-center justify-center bg-slate-950 text-slate-100">
+      <div className="flex items-center gap-3 rounded-full border border-white/10 bg-white/5 px-5 py-3 shadow-2xl backdrop-blur">
+        <Loader2 className="h-5 w-5 animate-spin text-blue-400" />
+        <span className="text-sm font-medium">Loading...</span>
+      </div>
+    </div>
+  );
+};
+
+const PortfolioHome: React.FC = () => {
   const [activeSection, setActiveSection] = useState('home');
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [isPrivacyModalOpen, setIsPrivacyModalOpen] = useState(false);
@@ -49,12 +86,11 @@ const App: React.FC = () => {
   const [isChatbotOpen, setIsChatbotOpen] = useState(false);
 
   useEffect(() => {
-    // Initialize visitor tracking
     initVisitorTracking();
 
     const sections = document.querySelectorAll('section');
     const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
+      entries.forEach((entry) => {
         if (entry.isIntersecting) {
           setActiveSection(entry.target.id);
         }
@@ -62,22 +98,10 @@ const App: React.FC = () => {
     }, { rootMargin: '-30% 0px -70% 0px' });
 
     const validSections = Array.from(sections).filter((section): section is HTMLElement => section !== null);
-    validSections.forEach(section => observer.observe(section));
+    validSections.forEach((section) => observer.observe(section));
 
-    return () => validSections.forEach(section => observer.unobserve(section));
+    return () => validSections.forEach((section) => observer.unobserve(section));
   }, []);
-
-  // Memoize modal handlers to prevent unnecessary re-renders
-  const modalHandlers = {
-    privacy: useCallback(() => setIsPrivacyModalOpen(true), []),
-    docs: useCallback(() => setIsDocsModalOpen(true), []),
-    terms: useCallback(() => setIsTermsModalOpen(true), []),
-    security: useCallback(() => setIsSecurityModalOpen(true), []),
-    cookie: useCallback(() => setIsCookieModalOpen(true), []),
-    dnsmpi: useCallback(() => setIsDnsmpiModalOpen(true), []),
-    community: useCallback(() => setIsCommunityModalOpen(true), []),
-    status: useCallback(() => setIsStatusModalOpen(true), []),
-  };
 
   const modalCloseHandlers = {
     privacy: useCallback(() => setIsPrivacyModalOpen(false), []),
@@ -91,58 +115,96 @@ const App: React.FC = () => {
   };
 
   return (
-      <ErrorBoundary>
-        <div className="bg-white dark:bg-gradient-to-br dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 text-slate-600 dark:text-gray-200 min-h-screen" style={{ overflowX: 'hidden' }}>
-          <SEO />
-          <SkipToContent />
-          <ScrollProgress />
-          <AnimatedParticles />
-          <Header 
-            activeSection={activeSection} 
-          />
-          <main className="relative z-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-            <Routes>
-              <Route path="/" element={
-                <>
-                  <Hero />
-                  <About />
-                  <Expertise />
-                  <Journey />
-                  <Projects onProjectClick={setSelectedProject} />
-                  <Testimonials />
-                  <CTA />
-                  <Contact />
-                </>
-              } />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </main>
-          <Newsletter />
-          <Footer />
-          
-          <div className="fixed bottom-5 right-5 z-50 flex flex-col gap-3 items-end">
-              <ScrollToTopButton />
-              <ChatbotIcon 
-                onClick={() => setIsChatbotOpen(!isChatbotOpen)} 
-                isOpen={isChatbotOpen}
-              />
-          </div>
-          
-          {isChatbotOpen && <Chatbot onClose={() => setIsChatbotOpen(false)} />}
-          
-          {selectedProject && <ProjectModal project={selectedProject} onClose={() => setSelectedProject(null)} />}
-          <Suspense fallback={<ModalSkeleton />}>
-            {isPrivacyModalOpen && <PrivacyModal onClose={modalCloseHandlers.privacy} />}
-            {isDocsModalOpen && <DocumentationModal onClose={modalCloseHandlers.docs} />}
-            {isTermsModalOpen && <TermsModal onClose={modalCloseHandlers.terms} />}
-            {isSecurityModalOpen && <SecurityModal onClose={modalCloseHandlers.security} />}
-            {isCookieModalOpen && <CookieModal onClose={modalCloseHandlers.cookie} />}
-            {isDnsmpiModalOpen && <DnsmpiModal onClose={modalCloseHandlers.dnsmpi} />}
-            {isCommunityModalOpen && <CommunityModal onClose={modalCloseHandlers.community} />}
-            {isStatusModalOpen && <StatusModal onClose={modalCloseHandlers.status} />}
-          </Suspense>
-        </div>
-      </ErrorBoundary>
+    <div
+      className="min-h-screen bg-white text-slate-600 dark:bg-gradient-to-br dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 dark:text-gray-200"
+      style={{ overflowX: 'hidden' }}
+    >
+      <SEO />
+      <SkipToContent />
+      <ScrollProgress />
+      <AnimatedParticles />
+      <Header activeSection={activeSection} />
+      <main className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <Hero />
+        <About />
+        <Expertise />
+        <Journey />
+        <Projects onProjectClick={setSelectedProject} />
+        <Testimonials />
+        <CTA />
+        <Contact />
+      </main>
+      <Newsletter />
+      <Footer />
+
+      <div className="fixed bottom-5 right-5 z-50 flex flex-col items-end gap-3">
+        <ScrollToTopButton />
+        <ChatbotIcon onClick={() => setIsChatbotOpen(!isChatbotOpen)} isOpen={isChatbotOpen} />
+      </div>
+
+      {isChatbotOpen && <Chatbot onClose={() => setIsChatbotOpen(false)} />}
+      {selectedProject && <ProjectModal project={selectedProject} onClose={() => setSelectedProject(null)} />}
+
+      <Suspense fallback={<ModalSkeleton />}>
+        {isPrivacyModalOpen && <PrivacyModal onClose={modalCloseHandlers.privacy} />}
+        {isDocsModalOpen && <DocumentationModal onClose={modalCloseHandlers.docs} />}
+        {isTermsModalOpen && <TermsModal onClose={modalCloseHandlers.terms} />}
+        {isSecurityModalOpen && <SecurityModal onClose={modalCloseHandlers.security} />}
+        {isCookieModalOpen && <CookieModal onClose={modalCloseHandlers.cookie} />}
+        {isDnsmpiModalOpen && <DnsmpiModal onClose={modalCloseHandlers.dnsmpi} />}
+        {isCommunityModalOpen && <CommunityModal onClose={modalCloseHandlers.community} />}
+        {isStatusModalOpen && <StatusModal onClose={modalCloseHandlers.status} />}
+      </Suspense>
+    </div>
+  );
+};
+
+const App: React.FC = () => {
+  return (
+    <ErrorBoundary>
+      <Suspense fallback={<RouteLoader />}>
+        <Routes>
+          <Route path="/" element={<PortfolioHome />} />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/:slug" element={<BlogPost />} />
+          <Route path="/case-studies" element={<CaseStudies />} />
+          <Route path="/case-studies/:slug" element={<CaseStudy />} />
+          <Route path="/newsletter/confirm/:token" element={<ConfirmSubscription />} />
+          <Route path="/booking" element={<Booking />} />
+          <Route path="/downloads" element={<Downloads />} />
+          <Route path="/terms" element={<Terms />} />
+          <Route path="/privacy" element={<Privacy />} />
+          <Route path="/security" element={<Security />} />
+          <Route path="/status" element={<Status />} />
+          <Route path="/community" element={<Community />} />
+          <Route path="/docs" element={<Docs />} />
+          <Route path="/cookies" element={<Cookies />} />
+          <Route path="/dnsmpi" element={<DNSMPI />} />
+
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route
+            path="/admin"
+            element={(
+              <ProtectedRoute>
+                <AdminLayout />
+              </ProtectedRoute>
+            )}
+          >
+            <Route index element={<Navigate to="dashboard" replace />} />
+            <Route path="dashboard" element={<Dashboard />} />
+            <Route path="messages" element={<Messages />} />
+            <Route path="newsletter" element={<NewsletterAdmin />} />
+            <Route path="blog" element={<BlogManager />} />
+            <Route path="visitors" element={<Visitors />} />
+            <Route path="services" element={<ServicesAdmin />} />
+            <Route path="settings" element={<SettingsPage />} />
+            <Route path="*" element={<Navigate to="dashboard" replace />} />
+          </Route>
+
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </Suspense>
+    </ErrorBoundary>
   );
 };
 

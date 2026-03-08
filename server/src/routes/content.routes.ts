@@ -6,9 +6,7 @@ const router = express.Router();
 // Get all content (public - only active)
 router.get('/', async (req: Request, res: Response) => {
   try {
-    const content = await Content.find()
-      .populate('updatedBy', 'name email')
-      .sort({ section: 1, key: 1 });
+    const content = await Content.find().sort({ section: 1, key: 1 });
     res.json(content);
   } catch (error: any) {
     res.status(500).json({ message: 'Server error', error: error.message });
@@ -18,9 +16,7 @@ router.get('/', async (req: Request, res: Response) => {
 // Get content by section
 router.get('/section/:section', async (req: Request, res: Response) => {
   try {
-    const content = await Content.find({ section: req.params.section })
-      .populate('updatedBy', 'name email')
-      .sort({ key: 1 });
+    const content = await Content.find({ section: req.params.section }).sort({ key: 1 });
     res.json(content);
   } catch (error: any) {
     res.status(500).json({ message: 'Server error', error: error.message });
@@ -30,8 +26,7 @@ router.get('/section/:section', async (req: Request, res: Response) => {
 // Get single content item
 router.get('/:key', async (req: Request, res: Response) => {
   try {
-    const content = await Content.findOne({ key: req.params.key })
-      .populate('updatedBy', 'name email');
+    const content = await Content.findOne({ key: req.params.key });
     
     if (!content) {
       return res.status(404).json({ message: 'Content not found' });
