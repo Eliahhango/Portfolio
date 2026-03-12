@@ -1,6 +1,4 @@
 // Visitor tracking utility
-import { buildApiUrl, isApiConfigured } from './api';
-
 let sessionId: string | null = null;
 let lastTrackedPath: string = '';
 
@@ -20,14 +18,14 @@ const getSessionId = (): string => {
 export const trackPageVisit = async (path: string = window.location.pathname) => {
   // Don't track admin pages
   if (path.includes('/admin')) return;
-  if (!isApiConfigured) return;
 
   // Don't track same path multiple times quickly
   if (path === lastTrackedPath) return;
   lastTrackedPath = path;
 
   try {
-    await fetch(buildApiUrl('/api/visitors/track'), {
+    const apiUrl = import.meta.env.VITE_API_URL || '';
+    await fetch(`${apiUrl}/api/visitors/track`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -46,10 +44,9 @@ export const trackPageVisit = async (path: string = window.location.pathname) =>
 
 // Track page duration (when user leaves)
 export const trackPageDuration = async (duration: number) => {
-  if (!isApiConfigured) return;
-
   try {
-    await fetch(buildApiUrl('/api/visitors/track'), {
+    const apiUrl = import.meta.env.VITE_API_URL || '';
+    await fetch(`${apiUrl}/api/visitors/track`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -87,19 +84,16 @@ export const initVisitorTracking = () => {
 
   // Track before page unload
   window.addEventListener('beforeunload', () => {
-    if (!isApiConfigured) {
-      return;
-    }
-
     const duration = (Date.now() - startTime) / 1000;
     if (duration > 5) {
       // Use sendBeacon for reliability during page unload
+      const apiUrl = import.meta.env.VITE_API_URL || '';
       const data = JSON.stringify({
         path: window.location.pathname,
         sessionId: getSessionId(),
         duration: Math.round(duration),
       });
-      navigator.sendBeacon(buildApiUrl('/api/visitors/track'), data);
+      navigator.sendBeacon(`${apiUrl}/api/visitors/track`, data);
     }
   });
 };

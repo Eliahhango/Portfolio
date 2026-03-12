@@ -4,15 +4,9 @@ import React, { useState, useEffect, useRef } from 'react';
 
 interface TypewriterProps {
   words: string[];
-  className?: string;
-  cursorClassName?: string;
 }
 
-const Typewriter: React.FC<TypewriterProps> = ({
-  words,
-  className = 'text-blue-500 font-bold',
-  cursorClassName = '',
-}) => {
+const Typewriter: React.FC<TypewriterProps> = ({ words }) => {
   const [index, setIndex] = useState(0);
   const [subIndex, setSubIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -53,9 +47,9 @@ const Typewriter: React.FC<TypewriterProps> = ({
   }, []);
 
   return (
-    <span className={className}>
+    <span className="text-blue-500 font-bold">
       {words[index] ? `${words[index].substring(0, subIndex)}` : ''}
-      <span className={`${cursorClassName} ${blink ? 'opacity-100' : 'opacity-0'} transition-opacity`}>|</span>
+      <span className={`${blink ? 'opacity-100' : 'opacity-0'} transition-opacity`}>|</span>
     </span>
   );
 };

@@ -1,8 +1,5 @@
 // This file is a placeholder to keep TypeScript projects happy.
 // The actual build-time script is generate-sitemap.mjs (plain Node ESM).
-import fs from 'fs';
-import path from 'path';
-
 export {};
 
 const BASE_URL = process.env.SITE_URL || 'https://www.elitechwiz.site';

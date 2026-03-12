@@ -5,7 +5,7 @@ export interface IContent extends Document {
   value: string | object;
   type: 'text' | 'html' | 'json';
   section: string; // e.g., 'hero', 'about', 'contact', 'footer'
-  updatedBy: string;
+  updatedBy: mongoose.Types.ObjectId;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -32,7 +32,8 @@ const ContentSchema = new Schema<IContent>({
     trim: true,
   },
   updatedBy: {
-    type: String,
+    type: Schema.Types.ObjectId,
+    ref: 'Admin',
     required: true,
   },
 }, {

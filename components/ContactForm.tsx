@@ -1,68 +1,45 @@
-import React, { useMemo, useState } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
-import { ArrowRight, CheckCircle2, Send } from 'lucide-react';
-import { buildApiUrl } from '../utils/api';
-
-const subjectOptions = ['Project Inquiry', 'Consultation', 'Partnership', 'Other'];
-
-const confettiDots = [
-  { top: '10%', left: '18%', color: 'bg-blue-400', delay: 0 },
-  { top: '18%', right: '20%', color: 'bg-cyan-400', delay: 0.08 },
-  { bottom: '22%', left: '14%', color: 'bg-emerald-400', delay: 0.12 },
-  { bottom: '14%', right: '16%', color: 'bg-amber-400', delay: 0.18 },
-  { top: '48%', left: '8%', color: 'bg-violet-400', delay: 0.22 },
-  { top: '44%', right: '10%', color: 'bg-sky-400', delay: 0.28 },
-];
+import React, { useState } from 'react';
+import { motion } from 'framer-motion';
+import { MailIcon, PhoneIcon } from '../constants';
 
 const ContactForm: React.FC = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    countryCode: '+255',
     phone: '',
-    subject: 'Project Inquiry',
+    subject: '',
     message: '',
   });
-  const [focusedField, setFocusedField] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const siteKey = import.meta.env.VITE_TURNSTILE_SITE_KEY || '';
 
-  const messageCount = useMemo(() => formData.message.length, [formData.message]);
-
-  const handleChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
-  ) => {
-    setFormData((current) => ({
-      ...current,
-      [event.target.name]: event.target.value,
-    }));
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
   };
 
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
     setError('');
     setLoading(true);
 
     try {
       const tokenInput = document.querySelector('input[name="cf-turnstile-response"]') as HTMLInputElement | null;
       const turnstileToken = tokenInput?.value || '';
-
       if (!turnstileToken) {
         throw new Error('Please complete the CAPTCHA verification.');
       }
-
-      const response = await fetch(buildApiUrl('/api/contact/submit'), {
+      const apiUrl = import.meta.env.VITE_API_URL || '';
+      const response = await fetch(`${apiUrl}/api/contact/submit`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          ...formData,
-          phone: formData.phone.trim() ? `${formData.countryCode} ${formData.phone.trim()}` : '',
-          turnstileToken,
-        }),
+        body: JSON.stringify({ ...formData, turnstileToken }),
       });
 
       const data = await response.json();
@@ -72,279 +49,138 @@ const ContactForm: React.FC = () => {
       }
 
       setSubmitted(true);
-      setFormData({
-        name: '',
-        email: '',
-        countryCode: '+255',
-        phone: '',
-        subject: 'Project Inquiry',
-        message: '',
-      });
-
+      setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
+      // Reset the token by reloading the widget container
       const container = document.getElementById('cf-turnstile-container');
       if (container) {
         container.innerHTML = `<div class="cf-turnstile" data-sitekey="${siteKey}" data-theme="auto"></div>`;
       }
-
-      window.setTimeout(() => {
+      
+      setTimeout(() => {
         setSubmitted(false);
       }, 5000);
-    } catch (submitError: unknown) {
-      const message = submitError instanceof Error ? submitError.message : 'Failed to send message. Please try again.';
-      setError(message);
-      console.error('Contact form error:', submitError);
+    } catch (err: any) {
+      setError(err.message || 'Failed to send message. Please try again.');
+      console.error('Contact form error:', err);
     } finally {
       setLoading(false);
     }
   };
 
-  const getFieldState = (fieldName: keyof typeof formData) => {
-    return focusedField === fieldName || Boolean(formData[fieldName]);
-  };
-
-  const fieldClassName =
-    'peer w-full rounded-2xl border border-slate-200 bg-white px-4 pb-3 pt-6 text-sm text-slate-900 outline-none transition focus:border-blue-300 dark:border-white/10 dark:bg-slate-950/40 dark:text-white';
-
   return (
-    <div className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-xl shadow-slate-200/50 dark:border-white/10 dark:bg-slate-900/60 dark:shadow-black/20 sm:p-8">
-      <div className="flex items-center justify-between gap-4">
-        <div>
-          <p className="text-sm font-semibold uppercase tracking-[0.24em] text-blue-500">Contact Form</p>
-          <h3 className="mt-2 text-2xl font-bold text-slate-900 dark:text-white">Send Me a Message</h3>
+    <div className="bg-slate-100 dark:bg-gray-950 rounded-lg p-6 sm:p-8 md:p-10">
+      <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-6">Send Me a Message</h3>
+      {submitted && (
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="bg-green-100 dark:bg-green-900/30 border border-green-400 text-green-700 dark:text-green-400 px-4 py-3 rounded-lg mb-6"
+        >
+          <p className="font-semibold">Thank you! Your message has been sent successfully. I'll get back to you soon! 🎉</p>
+        </motion.div>
+      )}
+      {error && (
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="bg-red-100 dark:bg-red-900/30 border border-red-400 text-red-700 dark:text-red-400 px-4 py-3 rounded-lg mb-6"
+        >
+          <p className="font-semibold">{error}</p>
+        </motion.div>
+      )}
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label htmlFor="name" className="block text-sm font-medium text-slate-700 dark:text-gray-300 mb-2">
+              Your Name *
+            </label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              required
+              className="w-full px-4 py-3 rounded-lg border border-slate-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+              placeholder="John Doe"
+            />
+          </div>
+          <div>
+            <label htmlFor="email" className="block text-sm font-medium text-slate-700 dark:text-gray-300 mb-2">
+              Email Address *
+            </label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+              className="w-full px-4 py-3 rounded-lg border border-slate-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+              placeholder="john@example.com"
+            />
+          </div>
         </div>
-      </div>
-
-      <AnimatePresence mode="wait">
-        {submitted ? (
-          <motion.div
-            key="success"
-            initial={{ opacity: 0, scale: 0.94 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.94 }}
-            transition={{ duration: 0.28 }}
-            className="relative mt-8 overflow-hidden rounded-[2rem] border border-emerald-200 bg-emerald-50 px-6 py-10 text-center dark:border-emerald-500/20 dark:bg-emerald-500/10"
-          >
-            {confettiDots.map((dot, index) => (
-              <motion.span
-                key={index}
-                className={`absolute h-3 w-3 rounded-full ${dot.color}`}
-                style={dot}
-                initial={{ opacity: 0, scale: 0.4 }}
-                animate={{ opacity: [0, 1, 0.7], scale: [0.4, 1, 0.9], y: [0, -10, 4] }}
-                transition={{ duration: 1.4, delay: dot.delay, repeat: Infinity, repeatType: 'mirror' }}
-              />
-            ))}
-
-            <motion.div
-              initial={{ scale: 0.85, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ delay: 0.08, duration: 0.25 }}
-              className="relative mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-white text-emerald-500 shadow-lg"
-            >
-              <CheckCircle2 className="h-10 w-10" />
-            </motion.div>
-            <h4 className="mt-6 text-2xl font-bold text-slate-900 dark:text-white">Message Sent</h4>
-            <p className="mx-auto mt-3 max-w-md text-sm leading-7 text-slate-600 dark:text-slate-200">
-              Thank you. Your message has been sent successfully and I will get back to you soon.
-            </p>
-          </motion.div>
-        ) : (
-          <motion.form
-            key="form"
-            onSubmit={handleSubmit}
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -12 }}
-            transition={{ duration: 0.25 }}
-            className="mt-8 space-y-4"
-          >
-            {error && (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                className="rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm font-medium text-rose-700"
-              >
-                {error}
-              </motion.div>
-            )}
-
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <div className="relative">
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  onFocus={() => setFocusedField('name')}
-                  onBlur={() => setFocusedField('')}
-                  required
-                  placeholder=" "
-                  className={fieldClassName}
-                />
-                <label
-                  htmlFor="name"
-                  className={`pointer-events-none absolute left-4 transition-all ${
-                    getFieldState('name')
-                      ? 'top-2 text-xs font-semibold text-blue-500'
-                      : 'top-1/2 -translate-y-1/2 text-sm text-slate-400'
-                  }`}
-                >
-                  Your Name *
-                </label>
-              </div>
-
-              <div className="relative">
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  onFocus={() => setFocusedField('email')}
-                  onBlur={() => setFocusedField('')}
-                  required
-                  placeholder=" "
-                  className={fieldClassName}
-                />
-                <label
-                  htmlFor="email"
-                  className={`pointer-events-none absolute left-4 transition-all ${
-                    getFieldState('email')
-                      ? 'top-2 text-xs font-semibold text-blue-500'
-                      : 'top-1/2 -translate-y-1/2 text-sm text-slate-400'
-                  }`}
-                >
-                  Email Address *
-                </label>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-[150px_1fr]">
-              <div className="relative">
-                <select
-                  id="countryCode"
-                  name="countryCode"
-                  value={formData.countryCode}
-                  onChange={handleChange}
-                  onFocus={() => setFocusedField('countryCode')}
-                  onBlur={() => setFocusedField('')}
-                  className={fieldClassName}
-                >
-                  <option value="+255">🇹🇿 +255</option>
-                </select>
-                <label
-                  htmlFor="countryCode"
-                  className={`pointer-events-none absolute left-4 transition-all ${
-                    getFieldState('countryCode')
-                      ? 'top-2 text-xs font-semibold text-blue-500'
-                      : 'top-1/2 -translate-y-1/2 text-sm text-slate-400'
-                  }`}
-                >
-                  Code
-                </label>
-              </div>
-
-              <div className="relative">
-                <input
-                  type="tel"
-                  id="phone"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleChange}
-                  onFocus={() => setFocusedField('phone')}
-                  onBlur={() => setFocusedField('')}
-                  placeholder=" "
-                  className={fieldClassName}
-                />
-                <label
-                  htmlFor="phone"
-                  className={`pointer-events-none absolute left-4 transition-all ${
-                    getFieldState('phone')
-                      ? 'top-2 text-xs font-semibold text-blue-500'
-                      : 'top-1/2 -translate-y-1/2 text-sm text-slate-400'
-                  }`}
-                >
-                  Phone Number
-                </label>
-              </div>
-            </div>
-
-            <div className="relative">
-              <select
-                id="subject"
-                name="subject"
-                value={formData.subject}
-                onChange={handleChange}
-                onFocus={() => setFocusedField('subject')}
-                onBlur={() => setFocusedField('')}
-                className={fieldClassName}
-              >
-                {subjectOptions.map((option) => (
-                  <option key={option} value={option}>
-                    {option}
-                  </option>
-                ))}
-              </select>
-              <label
-                htmlFor="subject"
-                className={`pointer-events-none absolute left-4 transition-all ${
-                  getFieldState('subject')
-                    ? 'top-2 text-xs font-semibold text-blue-500'
-                    : 'top-1/2 -translate-y-1/2 text-sm text-slate-400'
-                }`}
-              >
-                Subject *
-              </label>
-            </div>
-
-            <div className="relative">
-              <textarea
-                id="message"
-                name="message"
-                value={formData.message}
-                onChange={handleChange}
-                onFocus={() => setFocusedField('message')}
-                onBlur={() => setFocusedField('')}
-                required
-                rows={7}
-                maxLength={5000}
-                placeholder=" "
-                className={`${fieldClassName} resize-none`}
-              />
-              <label
-                htmlFor="message"
-                className={`pointer-events-none absolute left-4 transition-all ${
-                  getFieldState('message')
-                    ? 'top-2 text-xs font-semibold text-blue-500'
-                    : 'top-6 text-sm text-slate-400'
-                }`}
-              >
-                Message *
-              </label>
-              <span className="absolute bottom-3 right-4 text-xs font-medium text-slate-400">
-                {messageCount} / 5000
-              </span>
-            </div>
-
-            <div id="cf-turnstile-container" className="pt-2">
-              <div className="cf-turnstile" data-sitekey={siteKey} data-theme="auto"></div>
-            </div>
-
-            <button
-              type="submit"
-              disabled={loading}
-              className="group inline-flex w-full items-center justify-center gap-3 rounded-2xl bg-blue-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-500/20 transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
-            >
-              <Send className="h-4 w-4" />
-              <span>{loading ? 'Sending...' : 'Send Message'}</span>
-              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-            </button>
-          </motion.form>
-        )}
-      </AnimatePresence>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label htmlFor="phone" className="block text-sm font-medium text-slate-700 dark:text-gray-300 mb-2">
+              Phone Number
+            </label>
+            <input
+              type="tel"
+              id="phone"
+              name="phone"
+              value={formData.phone}
+              onChange={handleChange}
+              className="w-full px-4 py-3 rounded-lg border border-slate-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+              placeholder="+255 688 164 510"
+            />
+          </div>
+          <div>
+            <label htmlFor="subject" className="block text-sm font-medium text-slate-700 dark:text-gray-300 mb-2">
+              Subject *
+            </label>
+            <input
+              type="text"
+              id="subject"
+              name="subject"
+              value={formData.subject}
+              onChange={handleChange}
+              required
+              className="w-full px-4 py-3 rounded-lg border border-slate-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+              placeholder="Project Inquiry"
+            />
+          </div>
+        </div>
+        <div>
+          <label htmlFor="message" className="block text-sm font-medium text-slate-700 dark:text-gray-300 mb-2">
+            Message *
+          </label>
+          <textarea
+            id="message"
+            name="message"
+            value={formData.message}
+            onChange={handleChange}
+            required
+            rows={6}
+            className="w-full px-4 py-3 rounded-lg border border-slate-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all resize-none"
+            placeholder="Tell me about your project or inquiry..."
+          />
+        </div>
+        <div id="cf-turnstile-container" className="mt-2">
+          <div className="cf-turnstile" data-sitekey={siteKey} data-theme="auto"></div>
+        </div>
+        <button
+          type="submit"
+          disabled={loading}
+          className="w-full sm:w-auto px-8 py-3 bg-blue-500 hover:bg-blue-600 disabled:bg-blue-400 disabled:cursor-not-allowed text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 disabled:transform-none"
+        >
+          {loading ? 'Sending...' : 'Send Message'}
+        </button>
+      </form>
     </div>
   );
 };
 
 export default ContactForm;
+

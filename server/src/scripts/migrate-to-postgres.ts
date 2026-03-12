@@ -5,7 +5,6 @@ import mongoose from 'mongoose';
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
-type LooseMongoDocument = Record<string, any> & { _id: { toString(): string } };
 
 async function migrate() {
   console.log('🔄 Starting migration from MongoDB to PostgreSQL...');
@@ -32,7 +31,7 @@ async function migrate() {
     const Visitor = mongoose.model('Visitor', new mongoose.Schema({}, { strict: false }));
 
     // Migrate Admins
-    const admins = (await Admin.find()) as LooseMongoDocument[];
+    const admins = await Admin.find();
     console.log(`📦 Migrating ${admins.length} admins...`);
     for (const admin of admins) {
       await prisma.admin.upsert({
@@ -50,7 +49,7 @@ async function migrate() {
     }
 
     // Migrate Services
-    const services = (await Service.find()) as LooseMongoDocument[];
+    const services = await Service.find();
     console.log(`📦 Migrating ${services.length} services...`);
     for (const service of services) {
       await prisma.service.create({
@@ -72,7 +71,7 @@ async function migrate() {
     }
 
     // Migrate Content
-    const content = (await Content.find()) as LooseMongoDocument[];
+    const content = await Content.find();
     console.log(`📦 Migrating ${content.length} content items...`);
     for (const item of content) {
       await prisma.content.upsert({
@@ -90,7 +89,7 @@ async function migrate() {
     }
 
     // Migrate Contact Messages
-    const messages = (await ContactMessage.find()) as LooseMongoDocument[];
+    const messages = await ContactMessage.find();
     console.log(`📦 Migrating ${messages.length} contact messages...`);
     for (const message of messages) {
       await prisma.contactMessage.create({
@@ -112,7 +111,7 @@ async function migrate() {
     }
 
     // Migrate Visitors
-    const visitors = (await Visitor.find()) as LooseMongoDocument[];
+    const visitors = await Visitor.find();
     console.log(`📦 Migrating ${visitors.length} visitors...`);
     for (const visitor of visitors) {
       await prisma.visitor.create({

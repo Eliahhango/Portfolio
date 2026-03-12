@@ -1,156 +1,58 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ChevronDown } from 'lucide-react';
 import Typewriter from './Typewriter';
-import { usePublicSiteContent } from '../contexts/PublicSiteContentContext';
+import { GithubIcon } from '../constants';
 import { scrollToSection } from '../utils/scrollUtils';
 
 const Hero: React.FC = () => {
-  const { heroContent, aboutContent } = usePublicSiteContent();
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.12,
-        delayChildren: 0.12,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 28 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.7,
-        ease: [0.22, 1, 0.36, 1] as const,
-      },
-    },
-  };
-
-  const miniStats = [
-    { value: '10+', label: 'Years' },
-    { value: '50+', label: 'Projects' },
-    { value: '100+', label: 'Clients' },
-  ];
-
-  const handleContactClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
-    event.preventDefault();
-    scrollToSection('contact');
-  };
-
-  const handleProjectsClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
-    event.preventDefault();
-    scrollToSection('projects');
-  };
-
-  return (
-    <section
-      id="home"
-      className="relative flex min-h-screen items-center overflow-hidden pb-16 pt-28 sm:pt-32 lg:pt-24"
-    >
-      <div className="absolute inset-0 -z-10 bg-gradient-to-b from-white via-blue-50/40 to-white dark:from-slate-950 dark:via-slate-900 dark:to-slate-950" />
-      <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_15%_20%,rgba(59,130,246,0.18),transparent_38%),radial-gradient(circle_at_85%_80%,rgba(14,165,233,0.14),transparent_36%)] dark:bg-[radial-gradient(circle_at_15%_20%,rgba(59,130,246,0.28),transparent_36%),radial-gradient(circle_at_85%_80%,rgba(14,165,233,0.2),transparent_34%)]" />
-
-      <motion.div
-        initial="hidden"
-        animate="visible"
-        variants={containerVariants}
-        className="relative z-10 mx-auto grid w-full max-w-7xl items-center gap-12 px-4 sm:px-6 lg:grid-cols-2 lg:gap-16 lg:px-8"
-      >
-        <div className="text-center lg:text-left">
-          <motion.p
-            variants={itemVariants}
-            className="text-xs font-semibold uppercase tracking-[0.28em] text-blue-600 dark:text-blue-300"
-          >
-            Based in Dar es Salaam, building secure digital products
-          </motion.p>
-
-          <motion.h1
-            variants={itemVariants}
-            className="mt-8 text-5xl font-black tracking-tight text-slate-900 dark:text-white sm:text-6xl lg:text-7xl"
-          >
-            <span className="block">I Design & Build</span>
-            <span className="mt-3 block min-h-[1.1em]">
-              <Typewriter
-                words={heroContent.roles}
-                className="bg-gradient-to-r from-blue-500 via-sky-400 to-cyan-400 bg-clip-text font-black text-transparent"
-                cursorClassName="text-cyan-400"
-              />
-            </span>
-          </motion.h1>
-
-          <motion.p
-            variants={itemVariants}
-            className="mx-auto mt-6 max-w-2xl text-base leading-8 text-slate-600 dark:text-slate-300 lg:mx-0 lg:text-lg"
-          >
-            {heroContent.description}
-          </motion.p>
-
-          <motion.div
-            variants={itemVariants}
-            className="mt-8 flex flex-col items-center gap-4 sm:flex-row lg:items-start"
-          >
-            <a
-              href="#contact"
-              onClick={handleContactClick}
-              className="inline-flex w-full items-center justify-center rounded-2xl bg-gradient-to-r from-blue-600 to-cyan-500 px-8 py-4 text-sm font-semibold text-white shadow-lg shadow-blue-500/25 transition duration-300 hover:-translate-y-0.5 hover:from-blue-500 hover:to-cyan-400 sm:w-auto"
-            >
-              Hire Me
-            </a>
-            <a
-              href="#projects"
-              onClick={handleProjectsClick}
-              className="inline-flex w-full items-center justify-center rounded-2xl border border-slate-300 bg-white/70 px-8 py-4 text-sm font-semibold text-slate-700 shadow-sm backdrop-blur transition duration-300 hover:-translate-y-0.5 hover:border-blue-300 hover:text-blue-600 dark:border-white/20 dark:bg-white/5 dark:text-slate-100 dark:hover:border-cyan-400/40 dark:hover:text-cyan-300 sm:w-auto"
-            >
-              View Projects
-            </a>
-          </motion.div>
-
-          <motion.dl
-            variants={itemVariants}
-            className="mt-10 grid max-w-xl grid-cols-3 gap-4 border-t border-slate-200/80 pt-6 dark:border-white/10"
-          >
-            {miniStats.map((stat) => (
-              <div
-                key={stat.label}
-                className="text-center lg:text-left"
-              >
-                <dt className="text-xs uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400">{stat.label}</dt>
-                <dd className="mt-2 text-2xl font-black text-slate-900 dark:text-white">{stat.value}</dd>
-              </div>
-            ))}
-          </motion.dl>
-        </div>
-
-        <motion.div variants={itemVariants} className="mx-auto w-full max-w-md lg:max-w-xl">
-          <div className="relative">
-            <div className="absolute -inset-3 rounded-[2rem] bg-gradient-to-br from-blue-500/20 to-cyan-400/10 blur-xl" aria-hidden="true" />
-            <img
-              src={aboutContent.imageUrl}
-              alt="EliTechWiz"
-              className="relative aspect-[4/5] w-full rounded-3xl border border-white/40 object-cover shadow-2xl ring-1 ring-slate-200 dark:border-white/10 dark:ring-white/10"
-              loading="eager"
-            />
-          </div>
-        </motion.div>
-      </motion.div>
-
-      <motion.button
-        type="button"
-        aria-label="Scroll to next section"
-        onClick={() => scrollToSection('about')}
-        className="absolute bottom-6 left-1/2 z-10 -translate-x-1/2 rounded-full border border-slate-200/80 bg-white/70 p-3 text-slate-600 backdrop-blur transition hover:border-blue-300 hover:text-blue-600 dark:border-white/10 dark:bg-white/5 dark:text-slate-200 dark:hover:border-cyan-400/40 dark:hover:text-cyan-300"
-        animate={{ y: [0, 10, 0] }}
-        transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
-      >
-        <ChevronDown className="h-5 w-5" />
-      </motion.button>
-    </section>
-  );
+    const handleContactClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+        e.preventDefault();
+        scrollToSection('contact');
+    };
+    return (
+        <section id="home" className="relative min-h-[85vh] sm:min-h-[90vh] flex items-center justify-center text-center pt-20 pb-12">
+            <div className="absolute inset-0 -z-10 bg-gradient-to-b from-blue-50/40 via-transparent to-transparent dark:from-blue-500/20 dark:via-blue-600/10 dark:to-transparent" />
+            <div className="max-w-5xl px-4 sm:px-6">
+                <motion.h1 
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8 }}
+                    className="mt-4 text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tighter leading-tight"
+                >
+                    <span className="bg-clip-text text-transparent bg-gradient-to-r from-slate-900 via-blue-700 to-slate-900 dark:from-white dark:via-blue-400 dark:to-white">
+                        I Am EliTechWiz
+                    </span>
+                    <br />
+                    A <Typewriter words={['Cybersecurity Expert', 'Software Architect', 'Creative Designer', 'Visionary Hacker']} />
+                </motion.h1>
+                <motion.p 
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, delay: 0.2 }}
+                    className="mt-4 sm:mt-6 text-base sm:text-lg md:text-xl text-slate-600 dark:text-gray-300 max-w-2xl mx-auto px-4"
+                >
+                   Merging technology, design, and strategy to build secure, innovative, and impactful digital experiences.
+                </motion.p>
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, delay: 0.4 }}
+                    className="mt-8 sm:mt-10 flex flex-col sm:flex-row justify-center items-center gap-4 px-4"
+                >
+                    <a 
+                        href="#contact" 
+                        onClick={handleContactClick}
+                        className="px-8 sm:px-10 py-3 sm:py-4 bg-blue-600 text-white font-semibold rounded-xl shadow-lg hover:bg-blue-700 transition-all duration-300 transform hover:scale-105 w-full sm:w-auto text-sm sm:text-base cursor-pointer"
+                    >
+                        Let's Innovate Together
+                    </a>
+                    <a href="https://github.com/Eliahhango" target="_blank" rel="noopener noreferrer" className="px-8 sm:px-10 py-3 sm:py-4 bg-slate-200 dark:bg-slate-800/50 dark:border dark:border-slate-700/50 text-slate-800 dark:text-gray-100 font-semibold rounded-xl shadow-lg hover:bg-slate-300 dark:hover:bg-slate-700/50 dark:hover:border-blue-500/50 dark:hover:shadow-blue-500/20 transition-all duration-300 transform hover:scale-105 flex items-center justify-center gap-2 w-full sm:w-auto text-sm sm:text-base">
+                        <GithubIcon className="w-5 h-5" /> GitHub
+                    </a>
+                </motion.div>
+            </div>
+        </section>
+    );
 };
 
 export default Hero;

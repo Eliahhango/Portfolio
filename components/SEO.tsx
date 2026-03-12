@@ -1,6 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
-import { useOptionalPublicSiteContent } from '../contexts/PublicSiteContentContext';
-import { defaultContactContent } from '../utils/siteContent';
+import React, { useEffect } from 'react';
 
 type SEOProps = {
   title?: string;
@@ -13,82 +11,58 @@ type SEOProps = {
 
 const DEFAULTS = {
   title: 'EliTechWiz | Cybersecurity Expert & Software Architect',
-  description: 'Secure, innovative software and design. Cybersecurity, full-stack engineering, and architecture with impact.',
+  description:
+    'Secure, innovative software and design. Cybersecurity, full‑stack engineering, and architecture with impact.',
   image: 'https://files.catbox.moe/qgbtyt.png',
-  url: 'https://www.elitechwiz.site/',
+  url: 'https://www.elitechwiz.site/'
 };
 
-const SEO: React.FC<SEOProps> = ({ title, description, image, url, canonical, type = 'website' }) => {
-  const publicContent = useOptionalPublicSiteContent();
-  const resolvedTitle = title || DEFAULTS.title;
-  const resolvedDescription = description || publicContent?.heroContent.description || DEFAULTS.description;
-  const resolvedImage = image || publicContent?.aboutContent.imageUrl || DEFAULTS.image;
-  const resolvedUrl = url || DEFAULTS.url;
-  const contactEmail = publicContent?.contactContent.email || defaultContactContent.email;
-  const contactPhone = publicContent?.contactContent.phone || defaultContactContent.phone;
-  const sameAs = useMemo(
-    () =>
-      [
-        publicContent?.contactContent.githubUrl || defaultContactContent.githubUrl,
-        publicContent?.contactContent.youtubeUrl || defaultContactContent.youtubeUrl,
-      ].filter(Boolean),
-    [publicContent?.contactContent.githubUrl, publicContent?.contactContent.youtubeUrl],
-  );
-  const personDescription = publicContent?.aboutContent.paragraphs[0] || resolvedDescription;
-
+const SEO: React.FC<SEOProps> = ({ title = DEFAULTS.title, description = DEFAULTS.description, image = DEFAULTS.image, url = DEFAULTS.url, canonical, type = 'website' }) => {
   useEffect(() => {
-    document.title = resolvedTitle;
-
+    document.title = title;
     const ensureMeta = (attr: [string, string], content: string) => {
       const [key, value] = attr;
       let el = document.head.querySelector(`meta[${key}="${value}"]`) as HTMLMetaElement | null;
-
       if (!el) {
         el = document.createElement('meta');
         el.setAttribute(key, value);
         document.head.appendChild(el);
       }
-
       el.setAttribute('content', content);
     };
-
     const ensureLink = (rel: string, href: string) => {
       let el = document.head.querySelector(`link[rel="${rel}"]`) as HTMLLinkElement | null;
-
       if (!el) {
         el = document.createElement('link');
         el.setAttribute('rel', rel);
         document.head.appendChild(el);
       }
-
       el.setAttribute('href', href);
     };
-
-    ensureMeta(['name', 'description'], resolvedDescription);
-    ensureLink('canonical', canonical || resolvedUrl);
+    ensureMeta(['name', 'description'], description);
+    ensureLink('canonical', canonical || url);
     ensureMeta(['property', 'og:type'], type);
-    ensureMeta(['property', 'og:title'], resolvedTitle);
-    ensureMeta(['property', 'og:description'], resolvedDescription);
-    ensureMeta(['property', 'og:image'], resolvedImage);
-    ensureMeta(['property', 'og:url'], resolvedUrl);
+    ensureMeta(['property', 'og:title'], title);
+    ensureMeta(['property', 'og:description'], description);
+    ensureMeta(['property', 'og:image'], image);
+    ensureMeta(['property', 'og:url'], url);
     ensureMeta(['name', 'twitter:card'], 'summary_large_image');
-    ensureMeta(['name', 'twitter:title'], resolvedTitle);
-    ensureMeta(['name', 'twitter:description'], resolvedDescription);
-    ensureMeta(['name', 'twitter:image'], resolvedImage);
-
+    ensureMeta(['name', 'twitter:title'], title);
+    ensureMeta(['name', 'twitter:description'], description);
+    ensureMeta(['name', 'twitter:image'], image);
+    // JSON-LD Schemas
     const addSchema = (id: string, schema: object) => {
       let script = document.getElementById(id) as HTMLScriptElement | null;
-
       if (!script) {
         script = document.createElement('script');
         script.type = 'application/ld+json';
         script.id = id;
         document.head.appendChild(script);
       }
-
       script.text = JSON.stringify(schema);
     };
 
+    // WebSite Schema
     addSchema('app-schema', {
       '@context': 'https://schema.org',
       '@type': 'WebSite',
@@ -97,48 +71,42 @@ const SEO: React.FC<SEOProps> = ({ title, description, image, url, canonical, ty
       potentialAction: {
         '@type': 'SearchAction',
         target: 'https://www.elitechwiz.site/?q={search_term_string}',
-        'query-input': 'required name=search_term_string',
-      },
+        'query-input': 'required name=search_term_string'
+      }
     });
 
+    // Person Schema
     addSchema('person-schema', {
       '@context': 'https://schema.org',
       '@type': 'Person',
       name: 'EliTechWiz',
       url: 'https://www.elitechwiz.site',
-      image: resolvedImage,
+      image: 'https://files.catbox.moe/qgbtyt.png',
       jobTitle: 'Cybersecurity Expert & Software Architect',
-      description: personDescription,
-      email: contactEmail,
-      telephone: contactPhone.replace(/[^\d+]/g, ''),
-      sameAs,
+      description: 'Visionary technologist, hacker, and creative mind. Expertise in cybersecurity, software development, UI/UX design, and architectural design.',
+      email: 'contact@elitechwiz.com',
+      telephone: '+255688164510',
+      sameAs: [
+        'https://github.com/Eliahhango',
+        'https://youtube.com/@eliahhango'
+      ],
       knowsAbout: [
         'Cybersecurity',
         'Software Development',
         'UI/UX Design',
         'Ethical Hacking',
         'Software Architecture',
-        'Web Development',
+        'Web Development'
       ],
       alumniOf: {
         '@type': 'Organization',
-        name: 'Software Development & Cybersecurity',
-      },
+        name: 'Software Development & Cybersecurity'
+      }
     });
-  }, [
-    canonical,
-    contactEmail,
-    contactPhone,
-    personDescription,
-    resolvedDescription,
-    resolvedImage,
-    resolvedTitle,
-    resolvedUrl,
-    sameAs,
-    type,
-  ]);
-
+  }, [title, description, image, url, canonical, type]);
   return null;
 };
 
 export default SEO;
+
+

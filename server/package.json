@@ -7,7 +7,6 @@
     "build": "prisma generate && tsc",
     "build:with-prisma": "prisma generate && tsc",
     "start": "node dist/index.js",
-    "firebase:create-admin": "tsx src/scripts/create-firebase-admin.ts",
     "render-build": "cd .. && npm install && npm run build && cd server && npm install && npm run build",
     "prisma:generate": "prisma generate || echo 'Prisma generation skipped (optional)'",
     "prisma:migrate": "prisma migrate dev",
@@ -21,7 +20,6 @@
     "express-mongo-sanitize": "^2.2.0",
     "express-rate-limit": "^7.1.5",
     "express-validator": "^7.0.1",
-    "firebase-admin": "^13.7.0",
     "helmet": "^7.1.0",
     "hpp": "^0.2.3",
     "mongoose": "^8.0.3"
@@ -34,8 +32,5 @@
     "prisma": "^6.19.0",
     "tsx": "^4.7.0",
     "typescript": "^5.3.3"
-  },
-  "overrides": {
-    "@tootallnate/once": "^3.0.1"
   }
 }

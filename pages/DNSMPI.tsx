@@ -6,11 +6,8 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import ScrollProgress from '../components/ScrollProgress';
 import { ArrowLeft } from 'lucide-react';
-import { useSiteContactContent } from '../hooks/useSiteContactContent';
-import { toTelHref } from '../utils/siteContent';
 
 const DNSMPI: React.FC = () => {
-  const contactContent = useSiteContactContent();
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -90,10 +87,10 @@ const DNSMPI: React.FC = () => {
                 <strong>Privacy Officer:</strong> <a href="mailto:privacy@elitechwiz.com" className="text-blue-600 dark:text-blue-400 hover:underline">privacy@elitechwiz.com</a>
               </p>
               <p className="text-slate-700 dark:text-gray-300 mb-2">
-                <strong>General Contact:</strong> <a href={`mailto:${contactContent.email}`} className="text-blue-600 dark:text-blue-400 hover:underline">{contactContent.email}</a>
+                <strong>General Contact:</strong> <a href="mailto:contact@elitechwiz.com" className="text-blue-600 dark:text-blue-400 hover:underline">contact@elitechwiz.com</a>
               </p>
               <p className="text-slate-700 dark:text-gray-300">
-                <strong>Phone:</strong> <a href={toTelHref(contactContent.phone)} className="text-blue-600 dark:text-blue-400 hover:underline">{contactContent.phone}</a>
+                <strong>Phone:</strong> <a href="tel:+255688164510" className="text-blue-600 dark:text-blue-400 hover:underline">+255 688 164 510</a>
               </p>
             </div>
           </motion.section>

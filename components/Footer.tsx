@@ -1,19 +1,6 @@
-import React, { useMemo } from 'react';
-import { MapPin, ShieldCheck } from 'lucide-react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import {
-  FacebookIcon,
-  GithubIcon,
-  LinkedInIcon,
-  MailIcon,
-  PhoneIcon,
-  TwitterIcon,
-  WhatsappIcon,
-  YoutubeIcon,
-} from '../constants';
-import { useOptionalPublicSiteContent } from '../contexts/PublicSiteContentContext';
-import { defaultContactContent, toTelHref, toWhatsAppHref } from '../utils/siteContent';
-import { handleSectionClick } from '../utils/scrollUtils';
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { GithubIcon, YoutubeIcon, LinkedInIcon, TwitterIcon, FacebookIcon, MailIcon, PhoneIcon } from '../constants';
 
 interface FooterProps {
   onPrivacyClick?: () => void;
@@ -26,68 +13,41 @@ interface FooterProps {
   onStatusClick?: () => void;
 }
 
-const NAVIGATION_LINKS = [
-  { name: 'Home', href: '#home' },
-  { name: 'About', href: '#about' },
-  { name: 'Projects', href: '#projects' },
-  { name: 'Blog', to: '/blog' },
-  { name: 'Contact', href: '#contact' },
+const FOOTER_LINKS_DATA = [
+    { name: "Terms of Service", type: 'route', path: '/terms' },
+    { name: "Privacy Policy", type: 'route', path: '/privacy' },
+    { name: "Security", type: 'route', path: '/security' },
+    { name: "Status", type: 'route', path: '/status' },
+    { name: "Community", type: 'route', path: '/community' },
+    { name: "Documentation", type: 'route', path: '/docs' },
+    { name: "Contact", type: 'link', href: '#contact' },
+    { name: "Cookie Policy", type: 'route', path: '/cookies' },
+    { name: "Do Not Sell My Info", type: 'route', path: '/dnsmpi' }
 ];
 
-const LEGAL_LINKS = [
-  { name: 'Privacy Policy', to: '/privacy' },
-  { name: 'Terms of Service', to: '/terms' },
-  { name: 'Security', to: '/security' },
-  { name: 'Cookie Policy', to: '/cookies' },
-  { name: 'Do Not Sell My Info', to: '/dnsmpi' },
-];
-
-const Footer: React.FC<FooterProps> = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const publicContent = useOptionalPublicSiteContent();
-  const contactContent = publicContent?.contactContent || defaultContactContent;
-
-  const socialLinks = useMemo(
-    () =>
-      [
-        { Icon: GithubIcon, href: contactContent.githubUrl, label: 'GitHub' },
-        { Icon: YoutubeIcon, href: contactContent.youtubeUrl, label: 'YouTube' },
-        { Icon: LinkedInIcon, href: '#', label: 'LinkedIn' },
-        { Icon: TwitterIcon, href: '#', label: 'Twitter' },
-        { Icon: FacebookIcon, href: '#', label: 'Facebook' },
-      ].filter((item) => item.href && item.href !== '#'),
-    [contactContent.githubUrl, contactContent.youtubeUrl],
-  );
-
-  const onSectionClick = (event: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    handleSectionClick(event, href, navigate, location.pathname);
-  };
+const Footer: React.FC<FooterProps> = (props) => {
+  const socialLinks = [
+    { Icon: GithubIcon, href: 'https://github.com/Eliahhango', label: 'GitHub' },
+    { Icon: YoutubeIcon, href: 'https://youtube.com/@eliahhango', label: 'YouTube' },
+    { Icon: LinkedInIcon, href: '#', label: 'LinkedIn' },
+    { Icon: TwitterIcon, href: '#', label: 'Twitter' },
+    { Icon: FacebookIcon, href: '#', label: 'Facebook' },
+  ];
 
   return (
-    <footer className="relative z-10 bg-slate-900 dark:bg-slate-950 py-16 text-white border-t-4 border-blue-600">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 xl:grid-cols-4">
-          <div className="space-y-5">
-            <div className="inline-flex items-center gap-3">
-              <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-blue-600/15 text-blue-400">
-                <ShieldCheck className="h-5 w-5" />
-              </span>
-              <div>
-                <p className="text-xl font-black tracking-tight">
-                  <span className="font-black text-blue-400">Eli</span>
-                  <span className="font-black tracking-tight">TechWiz</span>
-                </p>
-              </div>
-            </div>
-
-            <p className="max-w-xs text-sm leading-7 text-slate-300">
-              Secure digital systems, modern software delivery,
-              <br />
-              and design-led experiences built with intention.
+    <footer className="bg-slate-100 dark:bg-slate-950 dark:border-t dark:border-slate-800/50 py-8 sm:py-12 px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="max-w-7xl mx-auto">
+        {/* Main Footer Content */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+          {/* Brand Section */}
+          <div>
+            <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-4">
+              <span className="text-blue-500">Eli</span>TechWiz
+            </h3>
+            <p className="text-sm text-slate-600 dark:text-gray-300 mb-4">
+              Cybersecurity Expert, Software Architect & Creative Designer. Building secure, innovative digital experiences.
             </p>
-
-            <div className="flex flex-wrap gap-3">
+            <div className="flex items-center space-x-3">
               {socialLinks.map(({ Icon, href, label }) => (
                 <a
                   key={label}
@@ -95,82 +55,95 @@ const Footer: React.FC<FooterProps> = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={label}
-                  className="flex h-9 w-9 items-center justify-center rounded-xl bg-slate-800 text-slate-400 transition-all hover:bg-blue-600 hover:text-white"
+                  className="w-10 h-10 flex items-center justify-center rounded-full bg-slate-200 dark:bg-slate-800/50 dark:border dark:border-slate-700/50 text-slate-600 dark:text-gray-300 hover:bg-blue-500 dark:hover:bg-blue-600 dark:hover:border-blue-500/50 dark:hover:shadow-lg dark:hover:shadow-blue-500/30 hover:text-white transition-all duration-300"
                 >
-                  <Icon className="h-4 w-4" />
+                  <Icon className="w-5 h-5" />
                 </a>
               ))}
             </div>
           </div>
 
+          {/* Quick Links */}
           <div>
-            <h3 className="text-sm font-bold uppercase tracking-[0.22em] text-slate-200">Navigation</h3>
-            <ul className="mt-5 space-y-3">
-              {NAVIGATION_LINKS.map((link) => (
-                <li key={link.name}>
-                  {'href' in link ? (
-                    <a
-                      href={link.href}
-                      onClick={(event) => onSectionClick(event, link.href)}
-                      className="text-sm text-slate-300 transition-colors hover:text-blue-400"
-                    >
-                      {link.name}
-                    </a>
-                  ) : (
-                    <Link to={link.to} className="text-sm text-slate-300 transition-colors hover:text-blue-400">
-                      {link.name}
-                    </Link>
-                  )}
-                </li>
-              ))}
+            <h4 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Quick Links</h4>
+            <ul className="space-y-2">
+              <li>
+                <a href="#about" className="text-sm text-slate-600 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 transition-colors">
+                  About Me
+                </a>
+              </li>
+              <li>
+                <a href="#expertise" className="text-sm text-slate-600 dark:text-gray-400 hover:text-blue-500 transition-colors">
+                  Expertise
+                </a>
+              </li>
+              <li>
+                <a href="#projects" className="text-sm text-slate-600 dark:text-gray-400 hover:text-blue-500 transition-colors">
+                  Projects
+                </a>
+              </li>
+              <li>
+                <a href="#contact" className="text-sm text-slate-600 dark:text-gray-400 hover:text-blue-500 transition-colors">
+                  Contact
+                </a>
+              </li>
             </ul>
           </div>
 
+          {/* Contact Info */}
           <div>
-            <h3 className="text-sm font-bold uppercase tracking-[0.22em] text-slate-200">Legal</h3>
-            <ul className="mt-5 space-y-3">
-              {LEGAL_LINKS.map((link) => (
-                <li key={link.name}>
-                  <Link to={link.to} className="text-sm text-slate-300 transition-colors hover:text-blue-400">
-                    {link.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="text-sm font-bold uppercase tracking-[0.22em] text-slate-200">Get In Touch</h3>
-            <ul className="mt-5 space-y-4">
-              <li className="flex items-start gap-3 text-sm text-slate-300">
-                <MailIcon className="mt-0.5 h-4 w-4 flex-shrink-0 text-blue-400" />
-                <a href={`mailto:${contactContent.email}`} className="transition-colors hover:text-blue-400">
-                  {contactContent.email}
+            <h4 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Get In Touch</h4>
+            <ul className="space-y-3">
+              <li className="flex items-center space-x-2 text-sm text-slate-600 dark:text-gray-300">
+                <MailIcon className="w-4 h-4 text-blue-500" />
+                <a href="mailto:contact@elitechwiz.com" className="hover:text-blue-500 transition-colors">
+                  contact@elitechwiz.com
                 </a>
               </li>
-              <li className="flex items-start gap-3 text-sm text-slate-300">
-                <PhoneIcon className="mt-0.5 h-4 w-4 flex-shrink-0 text-blue-400" />
-                <a href={toTelHref(contactContent.phone)} className="transition-colors hover:text-blue-400">
-                  {contactContent.phone}
+              <li className="flex items-center space-x-2 text-sm text-slate-600 dark:text-gray-300">
+                <PhoneIcon className="w-4 h-4 text-blue-500" />
+                <a href="tel:+255688164510" className="hover:text-blue-500 transition-colors">
+                  +255 688 164 510
                 </a>
-              </li>
-              <li className="flex items-start gap-3 text-sm text-slate-300">
-                <WhatsappIcon className="mt-0.5 h-4 w-4 flex-shrink-0 text-blue-400" />
-                <a href={toWhatsAppHref(contactContent.whatsapp)} target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-blue-400">
-                  {contactContent.whatsapp}
-                </a>
-              </li>
-              <li className="flex items-start gap-3 text-sm text-slate-300">
-                <MapPin className="mt-0.5 h-4 w-4 flex-shrink-0 text-blue-400" />
-                <span>Dar es Salaam, Tanzania</span>
               </li>
             </ul>
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col gap-4 border-t border-slate-200 pt-6 text-sm text-slate-400 dark:border-white/10 md:flex-row md:items-center md:justify-between">
-          <p>&copy; 2026 EliTechWiz. All rights reserved.</p>
-          <p>Built with Love By EliTechWiz❤️</p>
+        {/* Bottom Bar */}
+        <div className="border-t border-slate-200 dark:border-gray-700 pt-6">
+          <div className="flex flex-col gap-4">
+            <div className="flex flex-wrap justify-center sm:justify-start gap-x-4 sm:gap-x-6 gap-y-2">
+              {FOOTER_LINKS_DATA.map(link => {
+                if (link.type === 'route' && link.path) {
+                  return (
+                    <Link 
+                      key={link.name} 
+                      to={link.path}
+                      className="text-xs sm:text-sm text-slate-500 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 transition-colors"
+                    >
+                      {link.name}
+                    </Link>
+                  )
+                }
+                if (link.type === 'link' && link.href) {
+                  return (
+                    <a 
+                      key={link.name} 
+                      href={link.href}
+                      className="text-xs sm:text-sm text-slate-500 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 transition-colors"
+                    >
+                      {link.name}
+                    </a>
+                  )
+                }
+                return null;
+              })}
+            </div>
+            <p className="text-xs sm:text-sm text-slate-500 dark:text-gray-300 text-center sm:text-left">
+              &copy; {new Date().getFullYear()} EliTechWiz. All rights reserved.
+            </p>
+          </div>
         </div>
       </div>
     </footer>
