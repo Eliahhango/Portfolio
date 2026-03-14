@@ -8,6 +8,7 @@ import AdminUsers from '../components/admin/AdminUsers.js';
 import AdminSettings from '../components/admin/AdminSettings.js';
 import AdminContent from '../components/admin/AdminContent.js';
 import AdminAnalytics from '../components/admin/AdminAnalytics.js';
+import AdminLogin from './AdminLogin.js';
 
 type AdminTab = 'dashboard' | 'users' | 'analytics' | 'content' | 'settings';
 
@@ -23,11 +24,6 @@ const Admin: React.FC = () => {
       const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
         if (currentUser) {
           setUser(currentUser);
-        } else {
-          // Check if we're in production and redirect to home
-          if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
-            window.location.href = '/';
-          }
         }
         setLoading(false);
       });
@@ -72,6 +68,10 @@ const Admin: React.FC = () => {
         </div>
       </div>
     );
+  }
+
+  if (!user) {
+    return <AdminLogin />;
   }
 
   const menuItems = [
