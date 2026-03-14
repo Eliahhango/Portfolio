@@ -36,7 +36,7 @@ const Privacy: React.FC = () => {
         url="https://www.elitechwiz.site/privacy"
       />
       <ScrollProgress />
-      <Header activeSection="" />
+      <Header />
       <main className="relative z-10 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto py-12 sm:py-16 md:py-20">
         <motion.div
           variants={containerVariants}
@@ -52,7 +52,7 @@ const Privacy: React.FC = () => {
               <ArrowLeft className="w-4 h-4 mr-2" />
               Back to Home
             </Link>
-            <h1 className="text-3xl sm:text-4xl font-bold mb-4 text-slate-900 dark:text-white">Privacy Policy</h1>
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 text-slate-900 dark:text-white">Privacy Policy</h1>
             <p className="text-sm text-slate-500 dark:text-gray-400">
               <strong>Last Updated:</strong> {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
             </p>

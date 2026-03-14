@@ -101,7 +101,7 @@ const Cookies: React.FC = () => {
         url="https://www.elitechwiz.site/cookies"
       />
       <ScrollProgress />
-      <Header activeSection="" />
+      <Header />
       <main className="relative z-10 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto py-12 sm:py-16 md:py-20">
         <motion.div
           variants={containerVariants}
@@ -117,7 +117,7 @@ const Cookies: React.FC = () => {
               <ArrowLeft className="w-4 h-4 mr-2" />
               Back to Home
             </Link>
-            <h1 className="text-3xl sm:text-4xl font-bold mb-4 text-slate-900 dark:text-white">Cookie Preferences</h1>
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 text-slate-900 dark:text-white">Cookie Preferences</h1>
             <p className="text-slate-600 dark:text-gray-300 mb-4">
               We use cookies to enhance your browsing experience, analyze site traffic, and personalize content. You can manage your cookie preferences below.
             </p>
