@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Trash2, Edit2, Shield, Search, Plus } from 'lucide-react';
-import { db } from '../../firebase';
+import { db } from '../../firebase.js';
 import { collection, getDocs, deleteDoc, doc } from 'firebase/firestore';
 
 interface User {

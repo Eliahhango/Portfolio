@@ -9,7 +9,7 @@ import PaginationControl from '../components/blog/PaginationControl';
 import NewsletterCTA from '../components/blog/NewsletterCTA';
 import { BLOG_POSTS } from '../constants/blogData';
 
-type ApiPost = { _id: string; title: string; slug: string; description?: string; tags?: string[]; createdAt?: string; cover?: string };
+type ApiPost = { id: string; title: string; slug: string; description?: string; tags?: string[]; createdAt?: string; cover?: string };
 
 const POSTS_PER_PAGE = 6;
 
@@ -68,8 +68,8 @@ const Blog: React.FC = () => {
 
   // Transform ApiPost to BlogPost format
   const paginatedPosts = rawPaginatedPosts.map((post) => ({
-    id: post._id || Math.random().toString(),
-    slug: post.slug || post._id || '',
+    id: post.id || Math.random().toString(),
+    slug: post.slug || post.id || '',
     title: post.title || 'Untitled',
     excerpt: post.description || 'No description available',
     image: post.cover || 'https://images.pexels.com/photos/3587620/pexels-photo-3587620.jpeg?auto=compress&cs=tinysrgb&w=800',
@@ -87,7 +87,7 @@ const Blog: React.FC = () => {
   return (
     <div className="min-h-screen bg-white text-slate-900">
       {/* Header */}
-      <Header activeSection="blog" />
+      <Header />
 
       {/* Main Content */}
       <main className="pt-24">

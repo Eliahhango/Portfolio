@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { TrendingUp, Users, FileText, Eye, ArrowUp, Calendar } from 'lucide-react';
-import { db } from '../../firebase';
+import { db } from '../../firebase.js';
 import { collection, getDocs, query, where, limit } from 'firebase/firestore';
 
 const AdminDashboard: React.FC = () => {

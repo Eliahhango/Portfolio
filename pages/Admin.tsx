@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { LogOut, BarChart3, Users, Settings, FileText, Bell, Search, Menu, X } from 'lucide-react';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
-import { auth } from '../firebase';
+import { auth } from '../firebase.js';
 import { signOut, onAuthStateChanged } from 'firebase/auth';
-import AdminDashboard from '../components/admin/AdminDashboard';
-import AdminUsers from '../components/admin/AdminUsers';
-import AdminSettings from '../components/admin/AdminSettings';
-import AdminContent from '../components/admin/AdminContent';
-import AdminAnalytics from '../components/admin/AdminAnalytics';
+import AdminDashboard from '../components/admin/AdminDashboard.js';
+import AdminUsers from '../components/admin/AdminUsers.js';
+import AdminSettings from '../components/admin/AdminSettings.js';
+import AdminContent from '../components/admin/AdminContent.js';
+import AdminAnalytics from '../components/admin/AdminAnalytics.js';
 
 type AdminTab = 'dashboard' | 'users' | 'analytics' | 'content' | 'settings';
 
