@@ -1,10 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import SEO from '../components/SEO';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
-import ScrollProgress from '../components/ScrollProgress';
+import SEO from '../../components/SEO';
+import Header from '../../components/Header';
+import Footer from '../../components/Footer';
+import ScrollProgress from '../../components/ScrollProgress';
 import { ArrowLeft } from 'lucide-react';
 
 const Privacy: React.FC = () => {
