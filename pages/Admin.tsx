@@ -197,7 +197,7 @@ const Admin: React.FC = () => {
         <motion.header
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="sticky top-0 z-30 bg-white dark:bg-slate-800/50 backdrop-blur-lg border-b border-gray-200 dark:border-slate-700/50 px-4 sm:px-6 py-4 shadow-sm dark:shadow-none"
+          className="sticky top-0 z-30 bg-white dark:bg-slate-800/50 backdrop-blur-lg border-b border-gray-200 dark:border-slate-700/50 px-4 sm:px-6 py-3 shadow-sm dark:shadow-none"
         >
           <div className="flex items-center justify-between gap-4">
             <div className="flex items-center gap-2 sm:gap-4 min-w-0">
@@ -236,7 +236,7 @@ const Admin: React.FC = () => {
         </motion.header>
 
         {/* Page Content */}
-        <main className="p-4 sm:p-6">
+        <main className="p-4 sm:p-6 lg:p-8">
           <AnimatePresence mode="wait">
             {activeTab === 'dashboard' && <AdminDashboard key="dashboard" onNavigate={setActiveTab} />}
             {activeTab === 'users' && <AdminUsers key="users" />}
