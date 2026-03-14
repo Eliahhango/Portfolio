@@ -24,6 +24,16 @@ const Blog = lazy(() => import('./pages/Blog'));
 const BlogPost = lazy(() => import('./pages/BlogPost'));
 const ContactPage = lazy(() => import('./pages/ContactPage'));
 
+// Lazy load utility pages
+const Terms = lazy(() => import('./pages/utility/Terms'));
+const Privacy = lazy(() => import('./pages/utility/Privacy'));
+const Security = lazy(() => import('./pages/utility/Security'));
+const Status = lazy(() => import('./pages/utility/Status'));
+const Community = lazy(() => import('./pages/utility/Community'));
+const Docs = lazy(() => import('./pages/utility/Docs'));
+const Cookies = lazy(() => import('./pages/utility/Cookies'));
+const DNSMPI = lazy(() => import('./pages/utility/DNSMPI'));
+
 // Lazy load modals for better performance
 const PrivacyModal = lazy(() => import('./components/PrivacyModal'));
 const DocumentationModal = lazy(() => import('./components/DocumentationModal'));
@@ -91,6 +101,14 @@ const App: React.FC = () => {
                 <Route path="/blog" element={<Blog />} />
                 <Route path="/blog/:slug" element={<BlogPost />} />
                 <Route path="/contact" element={<ContactPage />} />
+                <Route path="/terms" element={<Terms />} />
+                <Route path="/privacy" element={<Privacy />} />
+                <Route path="/security" element={<Security />} />
+                <Route path="/status" element={<Status />} />
+                <Route path="/community" element={<Community />} />
+                <Route path="/docs" element={<Docs />} />
+                <Route path="/cookies" element={<Cookies />} />
+                <Route path="/dnsmpi" element={<DNSMPI />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </Suspense>
