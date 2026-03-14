@@ -1,0 +1,39 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Helper function to check if user is admin
+    // This assumes users have a 'role' field set to 'admin'
+    function isAdmin() {
+      return request.auth != null && 
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+    
+    // Users collection - admin only
+    match /users/{document=**} {
+      allow read, write: if isAdmin();
+    }
+    
+    // Posts collection - read if published, write if admin
+    match /posts/{document=**} {
+      allow read: if resource.data.published == true;
+      allow write: if isAdmin();
+    }
+    
+    // Visitors collection - admin only
+    match /visitors/{document=**} {
+      allow read, write: if isAdmin();
+    }
+    
+    // Settings collection - read by authenticated users, write by admin
+    match /settings/{document=**} {
+      allow read: if request.auth != null;
+      allow write: if isAdmin();
+    }
+    
+    // Default deny all other access
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
