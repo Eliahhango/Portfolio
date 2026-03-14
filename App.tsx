@@ -18,11 +18,20 @@ import ErrorBoundary from './pages/ErrorBoundary';
 // Lazy load pages
 const HomePage = lazy(() => import('./pages/HomePage'));
 const AboutPage = lazy(() => import('./pages/AboutPage'));
-const ServicesPage = lazy(() => import('./pages/ServicesPage'));
+const Services = lazy(() => import('./pages/Services'));
 const ProjectsPage = lazy(() => import('./pages/ProjectsPage'));
 const Blog = lazy(() => import('./pages/Blog'));
 const BlogPost = lazy(() => import('./pages/BlogPost'));
 const ContactPage = lazy(() => import('./pages/ContactPage'));
+const Admin = lazy(() => import('./pages/Admin'));
+
+// Lazy load service detail pages
+const WebDevelopment = lazy(() => import('./pages/services/WebDevelopment'));
+const SecurityConsulting = lazy(() => import('./pages/services/SecurityConsulting'));
+const PenetrationTesting = lazy(() => import('./pages/services/PenetrationTesting'));
+const AuthenticationSystems = lazy(() => import('./pages/services/AuthenticationSystems'));
+const SystemArchitecture = lazy(() => import('./pages/services/SystemArchitecture'));
+const CodeAuditing = lazy(() => import('./pages/services/CodeAuditing'));
 
 // Lazy load utility pages
 const Terms = lazy(() => import('./pages/utility/Terms'));
@@ -96,11 +105,18 @@ const App: React.FC = () => {
               <Routes>
                 <Route path="/" element={<HomePage />} />
                 <Route path="/about" element={<AboutPage />} />
-                <Route path="/services" element={<ServicesPage />} />
+                <Route path="/services" element={<Services />} />
+                <Route path="/services/web-development" element={<WebDevelopment />} />
+                <Route path="/services/security-consulting" element={<SecurityConsulting />} />
+                <Route path="/services/penetration-testing" element={<PenetrationTesting />} />
+                <Route path="/services/authentication-systems" element={<AuthenticationSystems />} />
+                <Route path="/services/system-architecture" element={<SystemArchitecture />} />
+                <Route path="/services/code-auditing" element={<CodeAuditing />} />
                 <Route path="/projects" element={<ProjectsPage />} />
                 <Route path="/blog" element={<Blog />} />
                 <Route path="/blog/:slug" element={<BlogPost />} />
                 <Route path="/contact" element={<ContactPage />} />
+                <Route path="/admin" element={<Admin />} />
                 <Route path="/terms" element={<Terms />} />
                 <Route path="/privacy" element={<Privacy />} />
                 <Route path="/security" element={<Security />} />
