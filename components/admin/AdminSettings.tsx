@@ -1,9 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Save, Bell, Lock, Globe, Mail, Database } from 'lucide-react';
+import { db } from '../../firebase.js';
+import { doc, setDoc, getDoc } from 'firebase/firestore';
+
+interface SiteSettings {
+  siteName: string;
+  siteUrl: string;
+  adminEmail: string;
+  timezone: string;
+  emailNotifications: boolean;
+  securityAlerts: boolean;
+  backupFrequency: string;
+  theme: string;
+}
 
 const AdminSettings: React.FC = () => {
-  const [settings, setSettings] = useState({
+  const [settings, setSettings] = useState<SiteSettings>({
     siteName: 'EliTechWiz',
     siteUrl: 'https://elitechwiz.com',
     adminEmail: 'admin@elitechwiz.com',
@@ -15,18 +28,51 @@ const AdminSettings: React.FC = () => {
   });
 
   const [isSaved, setIsSaved] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  // Load settings from Firebase on mount
+  useEffect(() => {
+    loadSettings();
+  }, []);
+
+  const loadSettings = async () => {
+    try {
+      const docRef = doc(db, 'settings', 'site');
+      const docSnap = await getDoc(docRef);
+      
+      if (docSnap.exists()) {
+        setSettings(docSnap.data() as SiteSettings);
+      }
+    } catch (err) {
+      console.error('Error loading settings:', err);
+      setError('Failed to load settings');
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target;
     const val = type === 'checkbox' ? (e.target as HTMLInputElement).checked : value;
     setSettings({ ...settings, [name]: val });
     setIsSaved(false);
+    setError(null);
   };
 
-  const handleSave = () => {
-    console.log('Settings saved:', settings);
-    setIsSaved(true);
-    setTimeout(() => setIsSaved(false), 3000);
+  const handleSave = async () => {
+    setIsLoading(true);
+    try {
+      const docRef = doc(db, 'settings', 'site');
+      await setDoc(docRef, settings);
+      setIsSaved(true);
+      setTimeout(() => setIsSaved(false), 3000);
+    } catch (err: any) {
+      console.error('Error saving settings:', err);
+      setError(err.message || 'Failed to save settings');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const settingsGroups = [
@@ -190,15 +236,40 @@ const AdminSettings: React.FC = () => {
       </motion.div>
 
       {/* Save Button */}
-      <motion.button
-        onClick={handleSave}
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-        className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-500 rounded-lg text-white font-bold hover:shadow-lg hover:shadow-blue-500/50 transition-all"
-      >
-        <Save className="w-5 h-5" />
-        Save Settings
-      </motion.button>
+      <div className="space-y-4">
+        {error && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="bg-red-100 dark:bg-red-500/10 border border-red-300 dark:border-red-500/50 rounded-lg p-4 text-red-700 dark:text-red-400 text-sm"
+          >
+            {error}
+          </motion.div>
+        )}
+        <motion.button
+          onClick={handleSave}
+          disabled={isLoading}
+          whileHover={{ scale: isLoading ? 1 : 1.05 }}
+          whileTap={{ scale: isLoading ? 1 : 0.95 }}
+          className={`flex items-center gap-2 px-6 py-3 rounded-lg text-white font-bold transition-all w-full justify-center ${
+            isLoading
+              ? 'bg-gray-400 cursor-not-allowed'
+              : 'bg-gradient-to-r from-blue-600 to-blue-500 hover:shadow-lg hover:shadow-blue-500/50'
+          }`}
+        >
+          {isLoading ? (
+            <>
+              <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+              Saving...
+            </>
+          ) : (
+            <>
+              <Save className="w-5 h-5" />
+              Save Settings
+            </>
+          )}
+        </motion.button>
+      </div>
 
       {/* Success Message */}
       {isSaved && (
