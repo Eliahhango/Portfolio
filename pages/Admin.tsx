@@ -237,7 +237,7 @@ const Admin: React.FC = () => {
         {/* Page Content */}
         <main className="p-4 sm:p-6">
           <AnimatePresence mode="wait">
-            {activeTab === 'dashboard' && <AdminDashboard key="dashboard" />}
+            {activeTab === 'dashboard' && <AdminDashboard key="dashboard" onNavigate={setActiveTab} />}
             {activeTab === 'users' && <AdminUsers key="users" />}
             {activeTab === 'analytics' && <AdminAnalytics key="analytics" />}
             {activeTab === 'content' && <AdminContent key="content" />}
