@@ -1,7 +1,7 @@
 import { initializeApp } from 'firebase/app';
 import { getFirestore, collection, setDoc, doc, Timestamp } from 'firebase/firestore';
-import { BLOG_POSTS } from '../constants/blogData.js';
-import { PROJECTS_DATA } from '../constants.js';
+import { BLOG_POSTS } from '../constants/blogData';
+import { PROJECTS_DATA } from '../constants';
 
 // Firebase config
 const firebaseConfig = {

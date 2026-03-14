@@ -20,8 +20,6 @@ interface Service {
   published?: boolean;
 }
 
-];
-
 const Services: React.FC = () => {
   const [services, setServices] = useState<Service[]>([]);
   const [loading, setLoading] = useState(true);
