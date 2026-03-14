@@ -88,30 +88,67 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigate }) => {
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1 }}
-        className="space-y-4"
+        className="space-y-3"
       >
-        <h2 className="text-lg font-bold text-gray-900 dark:text-white uppercase text-xs tracking-wider">Quick Actions</h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <h2 className="text-xs font-medium tracking-wider uppercase text-gray-500 dark:text-gray-400 mb-3">Quick Actions</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {[
-            { label: 'New blog\npost', icon: FileText, color: 'from-blue-500 to-blue-600', action: () => { onNavigate('content'); } },
-            { label: 'New\nproject', icon: Folder, color: 'from-purple-500 to-purple-600', action: () => { onNavigate('content'); } },
-            { label: 'New\nservice', icon: Settings, color: 'from-orange-500 to-orange-600', action: () => { onNavigate('content'); } },
-            { label: 'View live\nsite', icon: ExternalLink, color: 'from-indigo-500 to-indigo-600', action: () => window.open('/', '_blank') },
+            { 
+              title: 'New blog post', 
+              subtitle: 'Write & publish',
+              icon: FileText, 
+              bgColor: 'bg-blue-50 dark:bg-blue-900/20',
+              iconBg: 'bg-blue-100 dark:bg-blue-900/40',
+              textColor: 'text-blue-600 dark:text-blue-400',
+              action: () => { onNavigate('content'); } 
+            },
+            { 
+              title: 'New project', 
+              subtitle: 'Add to portfolio',
+              icon: Folder, 
+              bgColor: 'bg-green-50 dark:bg-green-900/20',
+              iconBg: 'bg-green-100 dark:bg-green-900/40',
+              textColor: 'text-green-600 dark:text-green-400',
+              action: () => { onNavigate('content'); } 
+            },
+            { 
+              title: 'New service', 
+              subtitle: 'Add offering',
+              icon: Settings, 
+              bgColor: 'bg-amber-50 dark:bg-amber-900/20',
+              iconBg: 'bg-amber-100 dark:bg-amber-900/40',
+              textColor: 'text-amber-600 dark:text-amber-400',
+              action: () => { onNavigate('content'); } 
+            },
+            { 
+              title: 'View live site', 
+              subtitle: 'elitechwiz.site',
+              icon: ExternalLink, 
+              bgColor: 'bg-purple-50 dark:bg-purple-900/20',
+              iconBg: 'bg-purple-100 dark:bg-purple-900/40',
+              textColor: 'text-purple-600 dark:text-purple-400',
+              action: () => window.open('/', '_blank') 
+            },
           ].map((item, i) => {
             const Icon = item.icon;
             return (
               <motion.button
-                key={item.label}
+                key={item.title}
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 + i * 0.05 }}
                 onClick={item.action}
-                className={`group relative overflow-hidden rounded-lg bg-gradient-to-br ${item.color} p-6 text-white hover:shadow-xl transition-all duration-300`}
+                className={`group relative overflow-hidden rounded-lg border border-gray-200 dark:border-slate-700/50 ${item.bgColor} hover:border-blue-300 dark:hover:border-blue-700 p-5 hover:shadow-md transition-all duration-300`}
               >
-                <div className="absolute inset-0 bg-white/0 group-hover:bg-white/10 transition-colors" />
-                <div className="relative flex flex-col items-center justify-center gap-3 h-full min-h-32">
-                  <Icon className="w-8 h-8" />
-                  <p className="text-sm font-semibold text-center whitespace-pre-line leading-snug">{item.label}</p>
+                <div className="flex flex-row items-center gap-4">
+                  <div className={`p-2.5 rounded-lg flex-shrink-0 ${item.iconBg}`}>
+                    <Icon className={`w-5 h-5 ${item.textColor}`} />
+                  </div>
+                  <div className="text-left flex-1">
+                    <p className="text-sm font-semibold text-gray-900 dark:text-white">{item.title}</p>
+                    <p className="text-xs text-gray-600 dark:text-gray-400 mt-0.5">{item.subtitle}</p>
+                  </div>
+                  <span className="ml-auto text-gray-300 dark:text-gray-600 text-sm flex-shrink-0">↗</span>
                 </div>
               </motion.button>
             );
@@ -127,9 +164,33 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigate }) => {
         className="grid grid-cols-1 md:grid-cols-3 gap-6"
       >
         {[
-          { label: 'Total blog posts', value: stats.totalPosts, change: '+5 this month', icon: FileText },
-          { label: 'Published projects', value: stats.publishedProjects, change: '+1 this week', icon: Folder },
-          { label: 'Active services', value: stats.activeServices, change: 'No change', icon: Settings },
+          { 
+            label: 'Total blog posts', 
+            value: stats.totalPosts, 
+            change: '+5 this month', 
+            icon: FileText,
+            wrapperBg: 'bg-blue-50 dark:bg-blue-900/20',
+            iconColor: 'text-blue-600 dark:text-blue-400',
+            borderColor: 'border-l-blue-500'
+          },
+          { 
+            label: 'Published projects', 
+            value: stats.publishedProjects, 
+            change: '+1 this week', 
+            icon: Folder,
+            wrapperBg: 'bg-green-50 dark:bg-green-900/20',
+            iconColor: 'text-green-600 dark:text-green-400',
+            borderColor: 'border-l-green-500'
+          },
+          { 
+            label: 'Active services', 
+            value: stats.activeServices, 
+            change: 'No change', 
+            icon: Settings,
+            wrapperBg: 'bg-amber-50 dark:bg-amber-900/20',
+            iconColor: 'text-amber-600 dark:text-amber-400',
+            borderColor: 'border-l-amber-500'
+          },
         ].map((stat, i) => {
           const Icon = stat.icon;
           return (
@@ -138,15 +199,15 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigate }) => {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 + i * 0.05 }}
-              className="bg-white dark:bg-slate-800/50 border border-gray-200 dark:border-slate-700/50 rounded-lg p-6"
+              className={`bg-white dark:bg-slate-800/50 border border-gray-200 dark:border-slate-700/50 border-l-4 ${stat.borderColor} rounded-lg p-6`}
             >
               <div className="flex items-start justify-between mb-4">
                 <div>
                   <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">{stat.label}</p>
                   <p className="text-3xl font-bold text-gray-900 dark:text-white">{loading ? '-' : stat.value}</p>
                 </div>
-                <div className="p-3 rounded-lg bg-gray-100 dark:bg-slate-700">
-                  <Icon className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+                <div className={`p-3 rounded-lg ${stat.wrapperBg}`}>
+                  <Icon className={`w-5 h-5 ${stat.iconColor}`} />
                 </div>
               </div>
               <p className="text-xs text-gray-500 dark:text-gray-500">{stat.change}</p>
@@ -173,18 +234,18 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigate }) => {
               Manage all <span>→</span>
             </button>
           </div>
-          <div className="space-y-3">
+          <div className="divide-y divide-gray-100 dark:divide-slate-700/50">
             {loading ? (
-              <p className="text-gray-500 dark:text-gray-400 text-sm">Loading...</p>
+              <p className="text-gray-500 dark:text-gray-400 text-sm py-3">Loading...</p>
             ) : recentPosts.length === 0 ? (
-              <p className="text-gray-500 dark:text-gray-400 text-sm">No posts yet</p>
+              <p className="text-gray-500 dark:text-gray-400 text-sm py-3">No posts yet</p>
             ) : (
               recentPosts.map(post => (
                 <motion.div
                   key={post.id}
                   initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
-                  className="flex items-start justify-between p-3 bg-gray-50 dark:bg-slate-900/50 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-800/50 transition-colors"
+                  className="flex items-start justify-between py-3 hover:bg-gray-50 dark:hover:bg-slate-700/30 px-2 -mx-2 rounded transition-colors"
                 >
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-medium text-gray-900 dark:text-white truncate">{post.title}</p>
@@ -198,7 +259,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigate }) => {
                     }`}>
                       {post.published ? 'Published' : 'Draft'}
                     </span>
-                    <button className="p-1.5 hover:bg-gray-300 dark:hover:bg-slate-700 rounded transition-colors text-gray-600 dark:text-gray-400">
+                    <button className="p-1.5 hover:bg-gray-200 dark:hover:bg-slate-700 rounded transition-colors text-gray-600 dark:text-gray-400">
                       <Edit2 className="w-4 h-4" />
                     </button>
                   </div>
@@ -224,18 +285,18 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigate }) => {
               Manage all <span>→</span>
             </button>
           </div>
-          <div className="space-y-3">
+          <div className="divide-y divide-gray-100 dark:divide-slate-700/50">
             {loading ? (
-              <p className="text-gray-500 dark:text-gray-400 text-sm">Loading...</p>
+              <p className="text-gray-500 dark:text-gray-400 text-sm py-3">Loading...</p>
             ) : recentProjects.length === 0 ? (
-              <p className="text-gray-500 dark:text-gray-400 text-sm">No projects yet</p>
+              <p className="text-gray-500 dark:text-gray-400 text-sm py-3">No projects yet</p>
             ) : (
               recentProjects.map(project => (
                 <motion.div
                   key={project.id}
                   initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
-                  className="flex items-start justify-between p-3 bg-gray-50 dark:bg-slate-900/50 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-800/50 transition-colors"
+                  className="flex items-start justify-between py-3 hover:bg-gray-50 dark:hover:bg-slate-700/30 px-2 -mx-2 rounded transition-colors"
                 >
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-medium text-gray-900 dark:text-white truncate">{project.title}</p>
@@ -249,7 +310,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigate }) => {
                     }`}>
                       {project.published ? 'Live' : 'Draft'}
                     </span>
-                    <button className="p-1.5 hover:bg-gray-300 dark:hover:bg-slate-700 rounded transition-colors text-gray-600 dark:text-gray-400">
+                    <button className="p-1.5 hover:bg-gray-200 dark:hover:bg-slate-700 rounded transition-colors text-gray-600 dark:text-gray-400">
                       <Edit2 className="w-4 h-4" />
                     </button>
                   </div>
@@ -287,7 +348,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigate }) => {
                 key={service.id}
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="p-4 bg-gray-50 dark:bg-slate-900/50 rounded-lg border border-gray-200 dark:border-slate-700"
+                className="p-4 bg-gray-50 dark:bg-slate-900/50 rounded-lg border border-gray-200 dark:border-slate-700 hover:border-gray-300 dark:hover:border-slate-600 transition-colors"
               >
                 <div className="flex items-start justify-between mb-3">
                   <div className="w-10 h-10 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400 font-bold text-sm">

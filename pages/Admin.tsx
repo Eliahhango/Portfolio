@@ -16,7 +16,7 @@ type AdminTab = 'dashboard' | 'users' | 'analytics' | 'content' | 'activities' |
 
 const Admin: React.FC = () => {
   const [activeTab, setActiveTab] = useState<AdminTab>('dashboard');
-  const [sidebarOpen, setSidebarOpen] = useState(false); // Closed by default on mobile
+  const [sidebarOpen, setSidebarOpen] = useState(window.innerWidth >= 768); // Open on desktop, closed on mobile
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -113,9 +113,9 @@ const Admin: React.FC = () => {
       {/* Sidebar */}
       <motion.aside
         initial={false}
-        animate={{ x: sidebarOpen ? 0 : -100, opacity: sidebarOpen ? 1 : 0 }}
+        animate={{ x: !isMobile ? 0 : (sidebarOpen ? 0 : -100), opacity: !isMobile ? 1 : (sidebarOpen ? 1 : 0) }}
         transition={{ duration: 0.3 }}
-        className={`fixed left-0 top-0 h-screen ${isMobile ? 'w-64 sm:w-72' : 'w-72'} bg-white dark:bg-slate-800/50 backdrop-blur-lg border-r border-gray-200 dark:border-slate-700/50 z-40 overflow-y-auto`}
+        className={`${!isMobile ? 'static' : 'fixed'} left-0 top-0 h-screen ${isMobile ? 'w-64 sm:w-72' : 'w-72'} bg-white dark:bg-slate-800/50 backdrop-blur-lg border-r border-gray-200 dark:border-slate-700/50 ${isMobile ? 'z-40' : 'z-0'} overflow-y-auto`}
       >
         <div className="p-4 md:p-6">
           <motion.div
@@ -148,8 +148,8 @@ const Admin: React.FC = () => {
                   }}
                   className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${
                     isActive
-                      ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/50 dark:shadow-blue-500/30'
-                      : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-700/50 hover:text-gray-900 dark:hover:text-white'
+                      ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-800/50'
+                      : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-700/50 hover:text-gray-900 dark:hover:text-white border border-transparent'
                   }`}
                 >
                   <Icon className="w-5 h-5 flex-shrink-0" />
@@ -157,7 +157,7 @@ const Admin: React.FC = () => {
                   {isActive && (
                     <motion.div
                       layoutId="activeIndicator"
-                      className="ml-auto w-2 h-2 rounded-full bg-white flex-shrink-0"
+                      className="ml-auto w-2 h-2 rounded-full bg-blue-600 dark:bg-blue-400 flex-shrink-0"
                     />
                   )}
                 </motion.button>
@@ -192,7 +192,7 @@ const Admin: React.FC = () => {
       )}
 
       {/* Main Content */}
-      <div className={`transition-all duration-300 ${isMobile ? (sidebarOpen ? 'ml-64 sm:ml-72' : 'ml-0') : 'ml-72'}`}>
+      <div className={`transition-all duration-300 ${isMobile ? (sidebarOpen ? 'ml-64 sm:ml-72' : 'ml-0') : 'md:ml-72'}`}>
         {/* Top Navigation Bar */}
         <motion.header
           initial={{ opacity: 0, y: -20 }}
