@@ -3,6 +3,8 @@ import { motion } from 'framer-motion';
 import { Save, Bell, Lock, Globe, Mail, Database } from 'lucide-react';
 import { db } from '../../firebase.js';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
+import { logSettingsUpdated } from '../../utils/activityLogger';
+import { auth } from '../../firebase.js';
 
 interface SiteSettings {
   siteName: string;
@@ -65,6 +67,13 @@ const AdminSettings: React.FC = () => {
     try {
       const docRef = doc(db, 'settings', 'site');
       await setDoc(docRef, settings);
+      
+      // Log activity for significant changes
+      const settingsKeys = Object.keys(settings) as (keyof SiteSettings)[];
+      for (const key of settingsKeys) {
+        await logSettingsUpdated(auth.currentUser?.email || 'Admin', key, String(settings[key]));
+      }
+      
       setIsSaved(true);
       setTimeout(() => setIsSaved(false), 3000);
     } catch (err: any) {

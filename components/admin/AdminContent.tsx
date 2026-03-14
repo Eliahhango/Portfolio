@@ -3,6 +3,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Trash2, Edit2, Search, Plus, Eye, Calendar, X } from 'lucide-react';
 import { db } from '../../firebase.js';
 import { collection, getDocs, deleteDoc, doc, setDoc } from 'firebase/firestore';
+import { logPostCreated, logPostPublished, logContentDeleted } from '../../utils/activityLogger';
+import { auth } from '../../firebase.js';
 
 interface ContentItem {
   id: string;
@@ -82,6 +84,13 @@ const AdminContent: React.FC = () => {
         createdAt: new Date(),
       });
 
+      // Log activity
+      await logPostCreated(auth.currentUser?.email || 'Admin', formData.title, contentId);
+      
+      if (formData.published) {
+        await logPostPublished(auth.currentUser?.email || 'Admin', formData.title, contentId);
+      }
+
       // Add to local state
       setContents([
         ...contents,
@@ -108,9 +117,14 @@ const AdminContent: React.FC = () => {
   };
 
   const handleDeleteContent = async (contentId: string) => {
-    if (window.confirm('Are you sure you want to delete this content?')) {
+    const content = contents.find((c) => c.id === contentId);
+    if (window.confirm(`Are you sure you want to delete "${content?.title}"?`)) {
       try {
         await deleteDoc(doc(db, 'posts', contentId));
+        
+        // Log activity
+        await logContentDeleted(auth.currentUser?.email || 'Admin', content?.title || 'Unknown', contentId);
+
         setContents(contents.filter((c) => c.id !== contentId));
       } catch (error) {
         console.error('Error deleting content:', error);

@@ -3,6 +3,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Trash2, Edit2, Shield, Search, Plus, X } from 'lucide-react';
 import { db } from '../../firebase.js';
 import { collection, getDocs, deleteDoc, doc, setDoc } from 'firebase/firestore';
+import { logUserCreated, logUserDeleted } from '../../utils/activityLogger';
+import { auth } from '../../firebase.js';
 
 interface User {
   id: string;
@@ -73,6 +75,9 @@ const AdminUsers: React.FC = () => {
         joinDate: new Date().toLocaleDateString(),
       });
 
+      // Log activity
+      await logUserCreated(auth.currentUser?.email || 'Admin', formData.email, userId);
+
       // Add to local state
       setUsers([
         ...users,
@@ -98,9 +103,14 @@ const AdminUsers: React.FC = () => {
   };
 
   const handleDeleteUser = async (userId: string) => {
-    if (window.confirm('Are you sure you want to delete this user?')) {
+    const user = users.find((u) => u.id === userId);
+    if (window.confirm(`Are you sure you want to delete ${user?.email}?`)) {
       try {
         await deleteDoc(doc(db, 'users', userId));
+        
+        // Log activity
+        await logUserDeleted(auth.currentUser?.email || 'Admin', user?.email || 'Unknown', userId);
+
         setUsers(users.filter((u) => u.id !== userId));
       } catch (error) {
         console.error('Error deleting user:', error);

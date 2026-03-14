@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { LogOut, BarChart3, Users, Settings, FileText, Bell, Search, Menu, X } from 'lucide-react';
+import { LogOut, BarChart3, Users, Settings, FileText, Bell, Search, Menu, X, Activity } from 'lucide-react';
 import { auth } from '../firebase.js';
 import { signOut, onAuthStateChanged } from 'firebase/auth';
 import AdminDashboard from '../components/admin/AdminDashboard.js';
@@ -8,9 +8,10 @@ import AdminUsers from '../components/admin/AdminUsers.js';
 import AdminSettings from '../components/admin/AdminSettings.js';
 import AdminContent from '../components/admin/AdminContent.js';
 import AdminAnalytics from '../components/admin/AdminAnalytics.js';
+import AdminActivity from '../components/admin/AdminActivity.js';
 import AdminLogin from './AdminLogin.js';
 
-type AdminTab = 'dashboard' | 'users' | 'analytics' | 'content' | 'settings';
+type AdminTab = 'dashboard' | 'users' | 'analytics' | 'content' | 'activities' | 'settings';
 
 const Admin: React.FC = () => {
   const [activeTab, setActiveTab] = useState<AdminTab>('dashboard');
@@ -100,8 +101,9 @@ const Admin: React.FC = () => {
   const menuItems = [
     { id: 'dashboard', label: 'Dashboard', icon: BarChart3 },
     { id: 'users', label: 'Users', icon: Users },
-    { id: 'analytics', label: 'Analytics', icon: FileText },
+    { id: 'analytics', label: 'Analytics', icon: BarChart3 },
     { id: 'content', label: 'Content', icon: FileText },
+    { id: 'activities', label: 'Activities', icon: Activity },
     { id: 'settings', label: 'Settings', icon: Settings },
   ];
 
@@ -239,6 +241,7 @@ const Admin: React.FC = () => {
             {activeTab === 'users' && <AdminUsers key="users" />}
             {activeTab === 'analytics' && <AdminAnalytics key="analytics" />}
             {activeTab === 'content' && <AdminContent key="content" />}
+            {activeTab === 'activities' && <AdminActivity key="activities" />}
             {activeTab === 'settings' && <AdminSettings key="settings" />}
           </AnimatePresence>
         </main>

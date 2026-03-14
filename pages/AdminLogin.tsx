@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase.js';
 import { Lock, Mail, AlertCircle } from 'lucide-react';
+import { logUserLogin } from '../utils/activityLogger';
 
 const AdminLogin: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -16,7 +17,11 @@ const AdminLogin: React.FC = () => {
     setError(null);
 
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      
+      // Log activity
+      await logUserLogin(userCredential.user.email || email);
+      
       // User will be automatically logged in and component will re-render
     } catch (err: any) {
       console.error('Login error:', err);
