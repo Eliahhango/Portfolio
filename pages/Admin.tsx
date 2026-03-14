@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { LogOut, BarChart3, Users, Settings, FileText, Bell, Search, Menu, X, Activity } from 'lucide-react';
+import { LogOut, BarChart3, Users, Settings, FileText, Bell, Search, Menu, Activity } from 'lucide-react';
 import { auth } from '../firebase.js';
 import { signOut, onAuthStateChanged } from 'firebase/auth';
 import { logError, getUserFriendlyError } from '../utils/errorHandler.js';

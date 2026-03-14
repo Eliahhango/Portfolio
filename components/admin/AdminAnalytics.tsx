@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Download, Filter, TrendingUp, Calendar } from 'lucide-react';
+import { Download, Filter, TrendingUp } from 'lucide-react';
 import { db } from '../../firebase.js';
-import { collection, getDocs, query, orderBy, where, Timestamp } from 'firebase/firestore';
+import { collection, getDocs, query, where, Timestamp } from 'firebase/firestore';
 
 interface AnalyticsData {
   day: string;
@@ -53,7 +53,8 @@ const AdminAnalytics: React.FC = () => {
       visitorsSnap.docs.forEach((doc) => {
         const data = doc.data();
         const date = data.timestamp?.toDate() || new Date();
-        const dayName = days[date.getDay()];
+        // JS getDay() is Sunday-first (0-6); map to Monday-first labels.
+        const dayName = days[(date.getDay() + 6) % 7];
         const path = data.path || '/';
         const sessionId = data.sessionId || 'unknown';
 

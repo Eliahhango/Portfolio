@@ -28,7 +28,7 @@ async function seedFirestore() {
         title: post.title,
         slug: post.slug,
         description: post.excerpt,
-        categories: [post.category],
+        categories: Array.isArray(post.categories) ? post.categories : [],
         tags: post.tags || [],
         cover: post.image,
         published: true,

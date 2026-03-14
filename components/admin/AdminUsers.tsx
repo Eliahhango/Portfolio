@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Trash2, Edit2, Shield, Search, Plus, X } from 'lucide-react';
+import { Trash2, Shield, Search, Plus, X } from 'lucide-react';
 import { db } from '../../firebase.js';
 import { collection, getDocs, deleteDoc, doc, setDoc } from 'firebase/firestore';
 import { logUserCreated, logUserDeleted } from '../../utils/activityLogger';
@@ -225,13 +225,6 @@ const AdminUsers: React.FC = () => {
                     <td className="px-6 py-4 text-gray-600 dark:text-gray-400 text-sm">{user.joinDate}</td>
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-2">
-                        <motion.button
-                          whileHover={{ scale: 1.1 }}
-                          whileTap={{ scale: 0.9 }}
-                          className="p-2 hover:bg-blue-100 dark:hover:bg-blue-900/30 rounded-lg text-blue-600 dark:text-blue-400 transition-colors"
-                        >
-                          <Edit2 className="w-4 h-4" />
-                        </motion.button>
                         <motion.button
                           whileHover={{ scale: 1.1 }}
                           whileTap={{ scale: 0.9 }}

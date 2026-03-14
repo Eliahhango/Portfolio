@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Filter, Search, Download, Trash2 } from 'lucide-react';
 import { db } from '../../firebase.js';
-import { collection, getDocs, deleteDoc, doc, query, orderBy, Timestamp } from 'firebase/firestore';
+import { collection, getDocs, deleteDoc, doc } from 'firebase/firestore';
 import { logError } from '../../utils/errorHandler.js';
 
 interface Activity {
@@ -11,6 +11,7 @@ interface Activity {
   user: string;
   description: string;
   timestamp: string;
+  sortTimestamp: number;
   details: string;
 }
 
@@ -29,19 +30,23 @@ const AdminActivity: React.FC = () => {
     try {
       const activitiesSnap = await getDocs(collection(db, 'activities'));
       const activitiesList: Activity[] = activitiesSnap.docs
-        .map((doc) => ({
-          id: doc.id,
-          type: doc.data().type || 'post_created',
-          user: doc.data().user || 'System',
-          description: doc.data().description || 'Activity occurred',
-          details: doc.data().details || '',
-          timestamp: doc.data().timestamp
-            ? new Date(doc.data().timestamp.toDate()).toLocaleString()
-            : new Date().toLocaleString(),
-        }))
+        .map((doc) => {
+          const activityData = doc.data();
+          const activityDate = activityData.timestamp?.toDate ? activityData.timestamp.toDate() : new Date();
+
+          return {
+            id: doc.id,
+            type: activityData.type || 'post_created',
+            user: activityData.user || 'System',
+            description: activityData.description || 'Activity occurred',
+            details: activityData.details || '',
+            timestamp: activityDate.toLocaleString(),
+            sortTimestamp: activityDate.getTime(),
+          };
+        })
         .sort((a, b) => {
           // Sort by date descending (newest first)
-          return new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime();
+          return b.sortTimestamp - a.sortTimestamp;
         });
       setActivities(activitiesList);
       setError(null);
