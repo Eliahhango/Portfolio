@@ -16,8 +16,72 @@ interface Service {
   path: string;
   image: string;
   order: number;
-  published: boolean;
+  published?: boolean;
 }
+
+// Fallback default services (used if Firestore is empty)
+const DEFAULT_SERVICES: Service[] = [
+  {
+    id: '1',
+    title: 'Web Development',
+    description: 'Building fast, scalable web applications with modern technologies',
+    icon: '🚀',
+    path: 'web-development',
+    image: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=600&h=400&fit=crop',
+    order: 1,
+    published: true,
+  },
+  {
+    id: '2',
+    title: 'Security Consulting',
+    description: 'Comprehensive security audits and vulnerability assessments',
+    icon: '🔒',
+    path: 'security-consulting',
+    image: 'https://images.unsplash.com/photo-1563986768609-322da13e493e?w=600&h=400&fit=crop',
+    order: 2,
+    published: true,
+  },
+  {
+    id: '3',
+    title: 'System Architecture',
+    description: 'Designing robust and scalable system architectures',
+    icon: '🏗️',
+    path: 'system-architecture',
+    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop',
+    order: 3,
+    published: true,
+  },
+  {
+    id: '4',
+    title: 'Code Auditing',
+    description: 'In-depth code reviews and quality assessments',
+    icon: '🔍',
+    path: 'code-auditing',
+    image: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=600&h=400&fit=crop',
+    order: 4,
+    published: true,
+  },
+  {
+    id: '5',
+    title: 'Penetration Testing',
+    description: 'Identifying security vulnerabilities through ethical hacking',
+    icon: '⚔️',
+    path: 'penetration-testing',
+    image: 'https://images.unsplash.com/photo-1563986768609-322da13e493e?w=600&h=400&fit=crop',
+    order: 5,
+    published: true,
+  },
+  {
+    id: '6',
+    title: 'Authentication Systems',
+    description: 'Implementing secure authentication and authorization',
+    icon: '🔐',
+    path: 'authentication-systems',
+    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop',
+    order: 6,
+    published: true,
+  },
+];
 
 const Services: React.FC = () => {
   const [services, setServices] = useState<Service[]>([]);
@@ -32,20 +96,29 @@ const Services: React.FC = () => {
           orderBy('order', 'asc')
         );
         const snapshot = await getDocs(servicesQuery);
-        const servicesData: Service[] = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          title: doc.data().title || 'Untitled',
-          description: doc.data().description || '',
-          icon: doc.data().icon || 'SVC',
-          path: doc.data().path || '/',
-          image: doc.data().image || 'https://images.pexels.com/photos/3861969/pexels-photo-3861969.jpeg?auto=compress&cs=tinysrgb&w=1200&h=600&dpr=2',
-          order: doc.data().order || 0,
-          published: doc.data().published || false,
-        }));
+        let servicesData: Service[];
+        
+        if (snapshot.empty) {
+          // Fallback to default services if Firestore is empty
+          servicesData = DEFAULT_SERVICES;
+        } else {
+          servicesData = snapshot.docs.map((doc) => ({
+            id: doc.id,
+            title: doc.data().title || 'Untitled',
+            description: doc.data().description || '',
+            icon: doc.data().icon || '📌',
+            path: doc.data().path || '/',
+            image: doc.data().image || 'https://images.pexels.com/photos/3861969/pexels-photo-3861969.jpeg?auto=compress&cs=tinysrgb&w=1200&h=600&dpr=2',
+            order: doc.data().order || 0,
+            published: doc.data().published || false,
+          }));
+        }
         setServices(servicesData);
         setLoading(false);
       } catch (error) {
         console.error('Error fetching services:', error);
+        // Fallback to default services on error
+        setServices(DEFAULT_SERVICES);
         setLoading(false);
       }
     };

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { db } from '../firebase.js';
 import { collection, getDocs, query, where } from 'firebase/firestore';
+import { PROJECTS_DATA } from '../constants.js';
 import ProjectModal from '../components/ProjectModal';
 import type { Project } from '../types';
 
@@ -19,20 +20,48 @@ const ProjectsPage: React.FC = () => {
           where('published', '==', true)
         );
         const snapshot = await getDocs(projectsQuery);
-        const projectsData: Project[] = snapshot.docs.map((doc) => ({
-          title: doc.data().title || 'Untitled',
-          description: doc.data().description || '',
-          longDescription: doc.data().longDescription || '',
-          imageUrl: doc.data().image || 'https://images.pexels.com/photos/3587620/pexels-photo-3587620.jpeg',
-          tags: doc.data().tags || [],
-          repoUrl: doc.data().githubUrl || undefined,
-          liveUrl: doc.data().liveUrl || undefined,
-          caseStudySlug: doc.data().caseStudySlug || undefined,
-        }));
+        let projectsData: Project[];
+        
+        if (snapshot.empty) {
+          // Fallback to PROJECTS_DATA if Firestore is empty
+          projectsData = PROJECTS_DATA.map(proj => ({
+            title: proj.title,
+            description: proj.description,
+            longDescription: proj.longDescription,
+            imageUrl: proj.imageUrl,
+            tags: proj.tags,
+            repoUrl: proj.repoUrl,
+            liveUrl: proj.liveUrl,
+            caseStudySlug: proj.caseStudySlug,
+          }));
+        } else {
+          projectsData = snapshot.docs.map((doc) => ({
+            title: doc.data().title || 'Untitled',
+            description: doc.data().description || '',
+            longDescription: doc.data().longDescription || '',
+            imageUrl: doc.data().image || 'https://images.pexels.com/photos/3587620/pexels-photo-3587620.jpeg',
+            tags: doc.data().tags || [],
+            repoUrl: doc.data().githubUrl || undefined,
+            liveUrl: doc.data().liveUrl || undefined,
+            caseStudySlug: doc.data().caseStudySlug || undefined,
+          }));
+        }
         setProjects(projectsData);
         setLoading(false);
       } catch (error) {
         console.error('Error fetching projects:', error);
+        // Fallback to PROJECTS_DATA on error
+        const projectsData = PROJECTS_DATA.map(proj => ({
+          title: proj.title,
+          description: proj.description,
+          longDescription: proj.longDescription,
+          imageUrl: proj.imageUrl,
+          tags: proj.tags,
+          repoUrl: proj.repoUrl,
+          liveUrl: proj.liveUrl,
+          caseStudySlug: proj.caseStudySlug,
+        }));
+        setProjects(projectsData);
         setLoading(false);
       }
     };
