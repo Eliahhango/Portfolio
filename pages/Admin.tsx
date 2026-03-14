@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { LogOut, BarChart3, Users, Settings, FileText, Bell, Search, Menu, X, Activity } from 'lucide-react';
 import { auth } from '../firebase.js';
 import { signOut, onAuthStateChanged } from 'firebase/auth';
+import { logError, getUserFriendlyError } from '../utils/errorHandler.js';
 import AdminDashboard from '../components/admin/AdminDashboard.js';
 import AdminUsers from '../components/admin/AdminUsers.js';
 import AdminSettings from '../components/admin/AdminSettings.js';
@@ -32,8 +33,8 @@ const Admin: React.FC = () => {
 
       return unsubscribe;
     } catch (error: any) {
-      console.error('Firebase initialization error:', error);
-      setError(error?.message || 'Failed to initialize Firebase. Please check your environment variables.');
+      logError('Admin.onAuthStateChanged', error);
+      setError('Unable to load admin panel. Please try again.');
       setLoading(false);
     }
   }, []);
@@ -65,7 +66,8 @@ const Admin: React.FC = () => {
       await signOut(auth);
       window.location.href = '/';
     } catch (error) {
-      console.error('Logout error:', error);
+      logError('Admin.handleLogout', error);
+      console.log('Unable to logout. Please try again.');
     }
   };
 
@@ -85,9 +87,8 @@ const Admin: React.FC = () => {
     return (
       <div className="min-h-screen bg-white dark:bg-gradient-to-br dark:from-slate-900 dark:via-blue-900/30 dark:to-slate-900 flex items-center justify-center p-4">
         <div className="bg-red-100 dark:bg-red-500/10 border border-red-300 dark:border-red-500/50 rounded-lg p-6 max-w-md">
-          <h2 className="text-red-600 dark:text-red-400 text-xl font-bold mb-2">Error</h2>
+          <h2 className="text-red-600 dark:text-red-400 text-xl font-bold mb-2">Unable to Load Admin Panel</h2>
           <p className="text-red-700 dark:text-red-300 mb-4">{error}</p>
-          <p className="text-red-600 dark:text-red-300 text-sm">Check that all Firebase environment variables are set on Vercel.</p>
           <a href="/" className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 mt-4 inline-block">← Go Home</a>
         </div>
       </div>

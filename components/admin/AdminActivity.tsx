@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Filter, Search, Download, Trash2 } from 'lucide-react';
 import { db } from '../../firebase.js';
 import { collection, getDocs, deleteDoc, doc, query, orderBy, Timestamp } from 'firebase/firestore';
+import { logError } from '../../utils/errorHandler.js';
 
 interface Activity {
   id: string;
@@ -43,9 +44,12 @@ const AdminActivity: React.FC = () => {
           return new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime();
         });
       setActivities(activitiesList);
-    } catch (error) {
-      console.error('Error fetching activities:', error);
-      setError('Failed to load activities');
+      setError(null);
+    } catch (err) {
+      logError('AdminActivity.fetchActivities', err);
+      // If collection doesn't exist, show empty state instead of error
+      setActivities([]);
+      setError(null);
     } finally {
       setLoading(false);
     }
@@ -56,9 +60,10 @@ const AdminActivity: React.FC = () => {
       try {
         await deleteDoc(doc(db, 'activities', activityId));
         setActivities(activities.filter((a) => a.id !== activityId));
-      } catch (error) {
-        console.error('Error deleting activity:', error);
-        setError('Failed to delete activity');
+        setError(null);
+      } catch (err) {
+        logError('AdminActivity.handleDeleteActivity', err);
+        setError('Failed to delete activity. Please try again.');
       }
     }
   };
