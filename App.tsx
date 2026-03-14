@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useCallback, lazy, Suspense } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import React, { useState, useEffect, useCallback, lazy, Suspense, useMemo } from 'react';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import { initVisitorTracking } from './utils/visitorTracking';
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -54,6 +54,21 @@ const CommunityModal = lazy(() => import('./components/CommunityModal'));
 const StatusModal = lazy(() => import('./components/StatusModal'));
 
 const App: React.FC = () => {
+  useEffect(() => {
+    // Initialize visitor tracking
+    initVisitorTracking();
+  }, []);
+
+  return (
+      <ErrorBoundary>
+        <AppContent />
+      </ErrorBoundary>
+  );
+};
+
+const AppContent: React.FC = () => {
+  const location = useLocation();
+  const isAdminRoute = useMemo(() => location.pathname.startsWith('/admin'), [location.pathname]);
   const [isChatbotOpen, setIsChatbotOpen] = useState(false);
   const [isPrivacyModalOpen, setIsPrivacyModalOpen] = useState(false);
   const [isDocsModalOpen, setIsDocsModalOpen] = useState(false);
@@ -63,11 +78,6 @@ const App: React.FC = () => {
   const [isDnsmpiModalOpen, setIsDnsmpiModalOpen] = useState(false);
   const [isCommunityModalOpen, setIsCommunityModalOpen] = useState(false);
   const [isStatusModalOpen, setIsStatusModalOpen] = useState(false);
-
-  useEffect(() => {
-    // Initialize visitor tracking
-    initVisitorTracking();
-  }, []);
 
   // Memoize modal handlers to prevent unnecessary re-renders
   const modalHandlers = {
@@ -93,67 +103,67 @@ const App: React.FC = () => {
   };
 
   return (
-      <ErrorBoundary>
-        <div className="bg-white dark:bg-gradient-to-br dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 text-slate-600 dark:text-gray-200 min-h-screen" style={{ overflowX: 'hidden' }}>
-          <SEO />
-          <SkipToContent />
-          <ScrollProgress />
-          <AnimatedParticles />
-          <Header />
-          <main className="relative z-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-            <Suspense fallback={<ModalSkeleton />}>
-              <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/about" element={<AboutPage />} />
-                <Route path="/services" element={<Services />} />
-                <Route path="/services/web-development" element={<WebDevelopment />} />
-                <Route path="/services/security-consulting" element={<SecurityConsulting />} />
-                <Route path="/services/penetration-testing" element={<PenetrationTesting />} />
-                <Route path="/services/authentication-systems" element={<AuthenticationSystems />} />
-                <Route path="/services/system-architecture" element={<SystemArchitecture />} />
-                <Route path="/services/code-auditing" element={<CodeAuditing />} />
-                <Route path="/projects" element={<ProjectsPage />} />
-                <Route path="/blog" element={<Blog />} />
-                <Route path="/blog/:slug" element={<BlogPost />} />
-                <Route path="/contact" element={<ContactPage />} />
-                <Route path="/admin" element={<Admin />} />
-                <Route path="/terms" element={<Terms />} />
-                <Route path="/privacy" element={<Privacy />} />
-                <Route path="/security" element={<Security />} />
-                <Route path="/status" element={<Status />} />
-                <Route path="/community" element={<Community />} />
-                <Route path="/docs" element={<Docs />} />
-                <Route path="/cookies" element={<Cookies />} />
-                <Route path="/dnsmpi" element={<DNSMPI />} />
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </Suspense>
-          </main>
-          <Newsletter />
-          <Footer />
-          
-          <div className="fixed bottom-5 right-5 z-50 flex flex-col gap-3 items-end">
-              <ScrollToTopButton />
-              <ChatbotIcon 
-                onClick={() => setIsChatbotOpen(!isChatbotOpen)} 
-                isOpen={isChatbotOpen}
-              />
-          </div>
-          
-          {isChatbotOpen && <Chatbot onClose={() => setIsChatbotOpen(false)} />}
-          
-          <Suspense fallback={<ModalSkeleton />}>
-            {isPrivacyModalOpen && <PrivacyModal onClose={modalCloseHandlers.privacy} />}
-            {isDocsModalOpen && <DocumentationModal onClose={modalCloseHandlers.docs} />}
-            {isTermsModalOpen && <TermsModal onClose={modalCloseHandlers.terms} />}
-            {isSecurityModalOpen && <SecurityModal onClose={modalCloseHandlers.security} />}
-            {isCookieModalOpen && <CookieModal onClose={modalCloseHandlers.cookie} />}
-            {isDnsmpiModalOpen && <DnsmpiModal onClose={modalCloseHandlers.dnsmpi} />}
-            {isCommunityModalOpen && <CommunityModal onClose={modalCloseHandlers.community} />}
-            {isStatusModalOpen && <StatusModal onClose={modalCloseHandlers.status} />}
-          </Suspense>
+    <div className="bg-white dark:bg-gradient-to-br dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 text-slate-600 dark:text-gray-200 min-h-screen" style={{ overflowX: 'hidden' }}>
+      <SEO />
+      {!isAdminRoute && <SkipToContent />}
+      <ScrollProgress />
+      {!isAdminRoute && <AnimatedParticles />}
+      {!isAdminRoute && <Header />}
+      <main className={`relative z-10 ${!isAdminRoute ? 'px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto' : ''}`}>
+        <Suspense fallback={<ModalSkeleton />}>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/services" element={<Services />} />
+            <Route path="/services/web-development" element={<WebDevelopment />} />
+            <Route path="/services/security-consulting" element={<SecurityConsulting />} />
+            <Route path="/services/penetration-testing" element={<PenetrationTesting />} />
+            <Route path="/services/authentication-systems" element={<AuthenticationSystems />} />
+            <Route path="/services/system-architecture" element={<SystemArchitecture />} />
+            <Route path="/services/code-auditing" element={<CodeAuditing />} />
+            <Route path="/projects" element={<ProjectsPage />} />
+            <Route path="/blog" element={<Blog />} />
+            <Route path="/blog/:slug" element={<BlogPost />} />
+            <Route path="/contact" element={<ContactPage />} />
+            <Route path="/admin" element={<Admin />} />
+            <Route path="/terms" element={<Terms />} />
+            <Route path="/privacy" element={<Privacy />} />
+            <Route path="/security" element={<Security />} />
+            <Route path="/status" element={<Status />} />
+            <Route path="/community" element={<Community />} />
+            <Route path="/docs" element={<Docs />} />
+            <Route path="/cookies" element={<Cookies />} />
+            <Route path="/dnsmpi" element={<DNSMPI />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </Suspense>
+      </main>
+      {!isAdminRoute && <Newsletter />}
+      {!isAdminRoute && <Footer />}
+      
+      {!isAdminRoute && (
+        <div className="fixed bottom-5 right-5 z-50 flex flex-col gap-3 items-end">
+            <ScrollToTopButton />
+            <ChatbotIcon 
+              onClick={() => setIsChatbotOpen(!isChatbotOpen)} 
+              isOpen={isChatbotOpen}
+            />
         </div>
-      </ErrorBoundary>
+      )}
+      
+      {isChatbotOpen && <Chatbot onClose={() => setIsChatbotOpen(false)} />}
+      
+      <Suspense fallback={<ModalSkeleton />}>
+        {isPrivacyModalOpen && <PrivacyModal onClose={modalCloseHandlers.privacy} />}
+        {isDocsModalOpen && <DocumentationModal onClose={modalCloseHandlers.docs} />}
+        {isTermsModalOpen && <TermsModal onClose={modalCloseHandlers.terms} />}
+        {isSecurityModalOpen && <SecurityModal onClose={modalCloseHandlers.security} />}
+        {isCookieModalOpen && <CookieModal onClose={modalCloseHandlers.cookie} />}
+        {isDnsmpiModalOpen && <DnsmpiModal onClose={modalCloseHandlers.dnsmpi} />}
+        {isCommunityModalOpen && <CommunityModal onClose={modalCloseHandlers.community} />}
+        {isStatusModalOpen && <StatusModal onClose={modalCloseHandlers.status} />}
+      </Suspense>
+    </div>
   );
 };
 
