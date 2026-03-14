@@ -246,6 +246,5 @@ const Admin: React.FC = () => {
     </div>
   );
 };
-};
 
 export default Admin;
