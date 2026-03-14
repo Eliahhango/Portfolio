@@ -5,19 +5,14 @@ import './styles/main.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Blog from './pages/Blog';
 import BlogPost from './pages/BlogPost';
-import CaseStudies from './pages/CaseStudies';
-import CaseStudy from './pages/CaseStudy';
-import ConfirmSubscription from './pages/ConfirmSubscription';
-import Booking from './pages/Booking';
-import Downloads from './pages/Downloads';
-import Terms from './pages/Terms';
-import Privacy from './pages/Privacy';
-import Security from './pages/Security';
-import Status from './pages/Status';
-import Community from './pages/Community';
-import Docs from './pages/Docs';
-import Cookies from './pages/Cookies';
-import DNSMPI from './pages/DNSMPI';
+import Terms from './pages/utility/Terms';
+import Privacy from './pages/utility/Privacy';
+import Security from './pages/utility/Security';
+import Status from './pages/utility/Status';
+import Community from './pages/utility/Community';
+import Docs from './pages/utility/Docs';
+import Cookies from './pages/utility/Cookies';
+import DNSMPI from './pages/utility/DNSMPI';
 
 const rootElement = document.getElementById('root');
 if (!rootElement) {
@@ -32,11 +27,6 @@ root.render(
         <Route path="/" element={<App />} />
         <Route path="/blog" element={<Blog />} />
         <Route path="/blog/:slug" element={<BlogPost />} />
-        <Route path="/case-studies" element={<CaseStudies />} />
-        <Route path="/case-studies/:slug" element={<CaseStudy />} />
-        <Route path="/newsletter/confirm/:token" element={<ConfirmSubscription />} />
-        <Route path="/booking" element={<Booking />} />
-        <Route path="/downloads" element={<Downloads />} />
         <Route path="/terms" element={<Terms />} />
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/security" element={<Security />} />
