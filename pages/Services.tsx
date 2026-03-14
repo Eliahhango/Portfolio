@@ -1,62 +1,56 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
+import { db } from '../firebase.js';
+import { collection, getDocs, query, where, orderBy } from 'firebase/firestore';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import ScrollProgress from '../components/ScrollProgress';
 
+interface Service {
+  id: string;
+  title: string;
+  description: string;
+  icon: string;
+  path: string;
+  image: string;
+  order: number;
+  published: boolean;
+}
+
 const Services: React.FC = () => {
-  const services = [
-    {
-      id: 1,
-      title: 'Web Development',
-      description: 'Build modern, responsive web applications with cutting-edge technologies. We create secure, scalable solutions that position your business for growth.',
-      icon: 'WEB',
-      path: '/services/web-development',
-      image: 'https://images.pexels.com/photos/3861969/pexels-photo-3861969.jpeg?auto=compress&cs=tinysrgb&w=1200&h=600&dpr=2'
-    },
-    {
-      id: 2,
-      title: 'Security Consulting',
-      description: 'Strategic guidance to build a comprehensive security program. We help you navigate regulatory requirements and protect your digital assets.',
-      icon: 'SEC',
-      path: '/services/security-consulting',
-      image: 'https://images.pexels.com/photos/3861969/pexels-photo-3861969.jpeg?auto=compress&cs=tinysrgb&w=1200&h=600&dpr=2'
-    },
-    {
-      id: 3,
-      title: 'Penetration Testing',
-      description: 'Comprehensive security assessment through controlled attacks. Identify vulnerabilities before real threats can exploit them.',
-      icon: 'PEN',
-      path: '/services/penetration-testing',
-      image: 'https://images.pexels.com/photos/3394650/pexels-photo-3394650.jpeg?auto=compress&cs=tinysrgb&w=1200&h=600&dpr=2'
-    },
-    {
-      id: 4,
-      title: 'Authentication Systems',
-      description: 'Secure, scalable authentication solutions with modern standards. Implement OAuth, MFA, and passwordless authentication systems.',
-      icon: 'AUTH',
-      path: '/services/authentication-systems',
-      image: 'https://images.pexels.com/photos/3394650/pexels-photo-3394650.jpeg?auto=compress&cs=tinysrgb&w=1200&h=600&dpr=2'
-    },
-    {
-      id: 5,
-      title: 'System Architecture',
-      description: 'Design resilient, scalable systems with security built in. From microservices to cloud-native solutions, we architect for growth.',
-      icon: 'ARCH',
-      path: '/services/system-architecture',
-      image: 'https://images.pexels.com/photos/3182812/pexels-photo-3182812.jpeg?auto=compress&cs=tinysrgb&w=1200&h=600&dpr=2'
-    },
-    {
-      id: 6,
-      title: 'Code Auditing',
-      description: 'Comprehensive code reviews identifying vulnerabilities and improving quality. Ensure your code meets industry best practices.',
-      icon: 'CODE',
-      path: '/services/code-auditing',
-      image: 'https://images.pexels.com/photos/3584994/pexels-photo-3584994.jpeg?auto=compress&cs=tinysrgb&w=1200&h=600&dpr=2'
-    }
-  ];
+  const [services, setServices] = useState<Service[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchServices = async () => {
+      try {
+        const servicesQuery = query(
+          collection(db, 'services'),
+          where('published', '==', true),
+          orderBy('order', 'asc')
+        );
+        const snapshot = await getDocs(servicesQuery);
+        const servicesData: Service[] = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          title: doc.data().title || 'Untitled',
+          description: doc.data().description || '',
+          icon: doc.data().icon || 'SVC',
+          path: doc.data().path || '/',
+          image: doc.data().image || 'https://images.pexels.com/photos/3861969/pexels-photo-3861969.jpeg?auto=compress&cs=tinysrgb&w=1200&h=600&dpr=2',
+          order: doc.data().order || 0,
+          published: doc.data().published || false,
+        }));
+        setServices(servicesData);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching services:', error);
+        setLoading(false);
+      }
+    };
+    fetchServices();
+  }, []);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -111,47 +105,57 @@ const Services: React.FC = () => {
             animate="visible"
             className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
           >
-            {services.map((service) => (
-              <motion.div
-                key={service.id}
-                variants={itemVariants}
-                whileHover={{ y: -5, transition: { duration: 0.3 } }}
-                className="group"
-              >
-                <Link to={service.path}>
-                  <div className="h-full bg-white dark:bg-slate-800 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300 border border-slate-200 dark:border-slate-700">
-                    <div className="relative h-48 overflow-hidden bg-gradient-to-br from-blue-400 to-blue-600 dark:from-blue-900 dark:to-blue-700">
-                      <img 
-                        src={service.image} 
-                        alt={service.title}
-                        className="w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-opacity duration-300"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent"></div>
-                    </div>
-                    
-                    <div className="p-6">
-                      <div className="flex items-center gap-3 mb-3">
-                        <span className="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 font-bold text-sm">
-                          {service.icon}
-                        </span>
-                        <h3 className="text-xl font-bold text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                          {service.title}
-                        </h3>
+            {loading ? (
+              [1, 2, 3, 4, 5, 6].map((index) => (
+                <motion.div
+                  key={index}
+                  variants={itemVariants}
+                  className="rounded-2xl overflow-hidden bg-slate-200 dark:bg-slate-700 h-96 animate-pulse"
+                />
+              ))
+            ) : (
+              services.map((service) => (
+                <motion.div
+                  key={service.id}
+                  variants={itemVariants}
+                  whileHover={{ y: -5, transition: { duration: 0.3 } }}
+                  className="group"
+                >
+                  <Link to={service.path}>
+                    <div className="h-full bg-white dark:bg-slate-800 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300 border border-slate-200 dark:border-slate-700">
+                      <div className="relative h-48 overflow-hidden bg-gradient-to-br from-blue-400 to-blue-600 dark:from-blue-900 dark:to-blue-700">
+                        <img 
+                          src={service.image} 
+                          alt={service.title}
+                          className="w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-opacity duration-300"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent"></div>
                       </div>
                       
-                      <p className="text-slate-600 dark:text-gray-300 mb-4 leading-relaxed">
-                        {service.description}
-                      </p>
-                      
-                      <div className="flex items-center text-blue-600 dark:text-blue-400 font-semibold group-hover:gap-2 transition-all duration-300">
-                        <span>Learn More</span>
-                        <ArrowRight className="w-5 h-5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                      <div className="p-6">
+                        <div className="flex items-center gap-3 mb-3">
+                          <span className="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 font-bold text-sm">
+                            {service.icon}
+                          </span>
+                          <h3 className="text-xl font-bold text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                            {service.title}
+                          </h3>
+                        </div>
+                        
+                        <p className="text-slate-600 dark:text-gray-300 mb-4 leading-relaxed">
+                          {service.description}
+                        </p>
+                        
+                        <div className="flex items-center text-blue-600 dark:text-blue-400 font-semibold group-hover:gap-2 transition-all duration-300">
+                          <span>Learn More</span>
+                          <ArrowRight className="w-5 h-5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </Link>
-              </motion.div>
-            ))}
+                  </Link>
+                </motion.div>
+              ))
+            )}
           </motion.div>
 
           <motion.section

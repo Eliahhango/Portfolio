@@ -1,5 +1,7 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
+import { db } from '../firebase.js';
+import { collection, getDocs, query, where, orderBy } from 'firebase/firestore';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import BlogHero from '../components/blog/BlogHero';
@@ -7,7 +9,6 @@ import BlogFilter from '../components/blog/BlogFilter';
 import BlogGrid from '../components/blog/BlogGrid';
 import PaginationControl from '../components/blog/PaginationControl';
 import NewsletterCTA from '../components/blog/NewsletterCTA';
-import { BLOG_POSTS } from '../constants/blogData';
 
 type ApiPost = { id: string; title: string; slug: string; description?: string; tags?: string[]; createdAt?: string; cover?: string };
 
@@ -22,22 +23,27 @@ const Blog: React.FC = () => {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const apiUrl = import.meta.env.VITE_API_URL || '';
-        if (apiUrl) {
-          const res = await fetch(`${apiUrl}/api/blog`);
-          if (res.ok) {
-            const data = await res.json();
-            setList(data);
-            setLoaded(true);
-            return;
-          }
-        }
-      } catch {
-        // Silently handle errors
+        const postsQuery = query(
+          collection(db, 'posts'),
+          where('published', '==', true),
+          orderBy('createdAt', 'desc')
+        );
+        const snapshot = await getDocs(postsQuery);
+        const posts: ApiPost[] = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          title: doc.data().title || 'Untitled',
+          slug: doc.data().slug || doc.id,
+          description: doc.data().description || '',
+          tags: doc.data().tags || [],
+          createdAt: doc.data().createdAt?.toDate?.().toISOString() || new Date().toISOString(),
+          cover: doc.data().cover || 'https://images.pexels.com/photos/3587620/pexels-photo-3587620.jpeg?auto=compress&cs=tinysrgb&w=800',
+        }));
+        setList(posts);
+        setLoaded(true);
+      } catch (error) {
+        console.error('Error fetching posts:', error);
+        setLoaded(true);
       }
-      // If API fails or not configured, use sample data
-      setList(BLOG_POSTS);
-      setLoaded(true);
     };
     fetchPosts();
   }, []);

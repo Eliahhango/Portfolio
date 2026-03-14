@@ -1,22 +1,53 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { PROJECTS_DATA } from '../constants';
+import { db } from '../firebase.js';
+import { collection, getDocs, query, where } from 'firebase/firestore';
 import ProjectModal from '../components/ProjectModal';
 import type { Project } from '../types';
 
 const ProjectsPage: React.FC = () => {
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [loading, setLoading] = useState(true);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [activeFilter, setActiveFilter] = useState<string | null>(null);
 
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const projectsQuery = query(
+          collection(db, 'projects'),
+          where('published', '==', true)
+        );
+        const snapshot = await getDocs(projectsQuery);
+        const projectsData: Project[] = snapshot.docs.map((doc) => ({
+          title: doc.data().title || 'Untitled',
+          description: doc.data().description || '',
+          longDescription: doc.data().longDescription || '',
+          imageUrl: doc.data().image || 'https://images.pexels.com/photos/3587620/pexels-photo-3587620.jpeg',
+          tags: doc.data().tags || [],
+          repoUrl: doc.data().githubUrl || undefined,
+          liveUrl: doc.data().liveUrl || undefined,
+          caseStudySlug: doc.data().caseStudySlug || undefined,
+        }));
+        setProjects(projectsData);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching projects:', error);
+        setLoading(false);
+      }
+    };
+    fetchProjects();
+  }, []);
+
   // Get unique tags from all projects
   const allTags = Array.from(
-    new Set(PROJECTS_DATA.flatMap(p => p.tags))
+    new Set(projects.flatMap(p => p.tags))
   );
 
   // Filter projects based on active tag
   const filteredProjects = activeFilter
-    ? PROJECTS_DATA.filter(p => p.tags.includes(activeFilter))
-    : PROJECTS_DATA;
+    ? projects.filter(p => p.tags.includes(activeFilter))
+    : projects;
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -87,56 +118,69 @@ const ProjectsPage: React.FC = () => {
           </motion.div>
 
           {/* Projects Grid */}
-          <motion.div 
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-            className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 lg:gap-8"
-          >
-            {filteredProjects.map((project, index) => (
-              <motion.div
-                key={index}
-                variants={itemVariants}
-                whileHover={{ translateY: -8 }}
-                onClick={() => setSelectedProject(project)}
-                className="group cursor-pointer"
-              >
-                <div className="rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-blue-400 dark:hover:border-blue-500 transition-all duration-300">
-                  {/* Image */}
-                  <div className="relative h-64 overflow-hidden bg-slate-200 dark:bg-slate-700">
-                    <img
-                      src={project.imageUrl}
-                      alt={project.title}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
-                      <p className="text-white text-sm font-semibold p-4">Click to learn more</p>
+          {loading ? (
+            <motion.div 
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
+              className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 lg:gap-8"
+            >
+              {[1, 2, 3, 4].map((index) => (
+                <motion.div key={index} variants={itemVariants} className="rounded-xl overflow-hidden bg-slate-200 dark:bg-slate-700 h-96 animate-pulse" />
+              ))}
+            </motion.div>
+          ) : (
+            <motion.div 
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
+              className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 lg:gap-8"
+            >
+              {filteredProjects.map((project, index) => (
+                <motion.div
+                  key={index}
+                  variants={itemVariants}
+                  whileHover={{ translateY: -8 }}
+                  onClick={() => setSelectedProject(project)}
+                  className="group cursor-pointer"
+                >
+                  <div className="rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-blue-400 dark:hover:border-blue-500 transition-all duration-300">
+                    {/* Image */}
+                    <div className="relative h-64 overflow-hidden bg-slate-200 dark:bg-slate-700">
+                      <img
+                        src={project.imageUrl}
+                        alt={project.title}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
+                        <p className="text-white text-sm font-semibold p-4">Click to learn more</p>
+                      </div>
                     </div>
-                  </div>
 
-                  {/* Content */}
-                  <div className="p-6">
-                    <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">
-                      {project.title}
-                    </h3>
-                    <p className="text-slate-600 dark:text-gray-300 mb-4">
-                      {project.description}
-                    </p>
-                    <div className="flex flex-wrap gap-2">
-                      {project.tags.map((tag, idx) => (
-                        <span
-                          key={idx}
-                          className="px-3 py-1 text-xs font-medium bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full"
-                        >
-                          {tag}
-                        </span>
-                      ))}
+                    {/* Content */}
+                    <div className="p-6">
+                      <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">
+                        {project.title}
+                      </h3>
+                      <p className="text-slate-600 dark:text-gray-300 mb-4">
+                        {project.description}
+                      </p>
+                      <div className="flex flex-wrap gap-2">
+                        {project.tags.map((tag, idx) => (
+                          <span
+                            key={idx}
+                            className="px-3 py-1 text-xs font-medium bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full"
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
                     </div>
                   </div>
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
+                </motion.div>
+              ))}
+            </motion.div>
+          )}
 
           {/* Empty State */}
           {filteredProjects.length === 0 && (
