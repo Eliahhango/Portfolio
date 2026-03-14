@@ -1,4 +1,6 @@
 node_modules
 firebase-admin-key.json
+.env
 .env.local
+.env.production
 .env.local.generated
