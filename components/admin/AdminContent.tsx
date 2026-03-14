@@ -364,31 +364,33 @@ const AdminContent: React.FC = () => {
       className="space-y-6"
     >
       <div>
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Content Management</h1>
-        <p className="text-gray-600 dark:text-gray-400">Manage blog posts, projects, and services</p>
+        <h1 className="font-rajdhani text-3xl font-bold text-slate-900 dark:text-white mb-2">Content Management</h1>
+        <p className="text-slate-600 dark:text-slate-400">Manage blog posts, projects, and services</p>
       </div>
 
       {error && (
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/30 rounded-lg p-4 flex items-center gap-3"
+          className="bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/30 rounded-xl p-4 flex items-center gap-3"
         >
           <AlertCircle className="w-5 h-5 text-red-600 dark:text-red-400 flex-shrink-0" />
           <p className="text-red-800 dark:text-red-300 text-sm">{error}</p>
         </motion.div>
       )}
 
-      {/* Tabs */}
-      <div className="flex gap-2 border-b border-gray-200 dark:border-slate-700">
+      {/* Tabs - Pill style matching Header nav */}
+      <div className="flex gap-2">
         {(['posts', 'projects', 'services'] as TabType[]).map(tab => (
           <motion.button
             key={tab}
             onClick={() => { setActiveTab(tab); setSearchQuery(''); }}
-            className={`px-4 py-3 font-medium border-b-2 transition-all ${
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            className={`px-4 py-2 rounded-lg font-semibold transition-all duration-200 ${
               activeTab === tab
-                ? 'border-blue-600 text-blue-600 dark:text-blue-400'
-                : 'border-transparent text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-300'
+                ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20'
+                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-300'
             }`}
           >
             {tab === 'posts' ? 'Blog Posts' : tab === 'projects' ? 'Projects' : 'Services'}
@@ -398,13 +400,13 @@ const AdminContent: React.FC = () => {
 
       <div className="flex items-center justify-between gap-4">
         <div className="flex-1 relative">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 dark:text-gray-500" />
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 dark:text-slate-500" />
           <input
             type="text"
             placeholder="Search..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-12 pr-4 py-2.5 bg-gray-50 dark:bg-slate-800/50 border border-gray-300 dark:border-slate-700 rounded-lg text-gray-900 dark:text-white placeholder-gray-500 outline-none focus:border-blue-500 transition-colors"
+            className="w-full pl-12 pr-4 py-2.5 bg-slate-100 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/50 rounded-xl text-slate-900 dark:text-white placeholder-slate-500 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all"
           />
         </div>
         <motion.button
@@ -416,66 +418,79 @@ const AdminContent: React.FC = () => {
           }}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          className="flex items-center gap-2 px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors"
+          className="flex items-center gap-2 px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-rajdhani font-bold shadow-lg transition-all duration-200"
         >
-          <Plus className="w-4 h-4" />
+          <Plus className="w-5 h-5" />
           New
         </motion.button>
       </div>
 
       {/* Items Grid */}
       {loading ? (
-        <div className="text-center py-12 text-gray-600 dark:text-gray-400">Loading...</div>
+        <div className="text-center py-12 text-slate-600 dark:text-slate-400">
+          <div className="animate-pulse">Loading...</div>
+        </div>
       ) : getFilteredItems().length === 0 ? (
-        <div className="text-center py-12 text-gray-600 dark:text-gray-400">No items found</div>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-center py-12"
+        >
+          <AlertCircle className="w-12 h-12 text-slate-400 dark:text-slate-600 mx-auto mb-4" />
+          <p className="text-slate-600 dark:text-slate-400">No items found</p>
+        </motion.div>
       ) : (
-        <div className="space-y-4">
-          {getFilteredItems().map((item: any) => (
+        <div className="space-y-3">
+          {getFilteredItems().map((item: any, index: number) => (
             <motion.div
               key={item.id}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="bg-white dark:bg-slate-800/50 border border-gray-200 dark:border-slate-700/50 rounded-lg p-4 hover:border-gray-300 dark:hover:border-slate-600 transition-all"
+              transition={{ delay: index * 0.05 }}
+              className="group bg-white dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/50 rounded-xl p-4 hover:shadow-lg hover:shadow-blue-500/10 dark:hover:border-blue-500/50 transition-all duration-200"
             >
               <div className="flex items-start justify-between gap-4">
-                <div className="flex-1">
+                <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-3 mb-2">
-                    <h3 className="font-bold text-gray-900 dark:text-white">{item.title}</h3>
-                    <span className={`inline-block px-3 py-1 rounded-full text-xs font-medium ${
+                    <h3 className="font-rajdhani font-bold text-slate-900 dark:text-white truncate">{item.title}</h3>
+                    <span className={`inline-block px-3 py-1 rounded-full text-xs font-bold shrink-0 ${
                       item.published
-                        ? 'bg-green-100 dark:bg-green-500/20 text-green-700 dark:text-green-300'
-                        : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
+                        ? 'bg-emerald-100 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-300'
+                        : 'bg-slate-100 dark:bg-slate-700/50 text-slate-700 dark:text-slate-300'
                     }`}>
                       {item.published ? 'Published' : 'Draft'}
                     </span>
                   </div>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">{item.description || item.excerpt || 'No description'}</p>
+                  <p className="text-sm text-slate-600 dark:text-slate-400 line-clamp-2">{item.description || item.excerpt || 'No description'}</p>
                   {item.createdAt && (
-                    <p className="text-xs text-gray-500 dark:text-gray-500 mt-2">
+                    <div className="flex items-center gap-2 mt-2 text-xs text-slate-500 dark:text-slate-500">
+                      <Calendar className="w-3 h-3" />
                       {item.createdAt?.toDate?.().toLocaleDateString?.() || 'N/A'}
-                    </p>
+                    </div>
                   )}
                 </div>
-                <div className="flex items-center gap-2 flex-shrink-0">
+                <div className="flex items-center gap-1 flex-shrink-0">
                   <motion.button
-                    whileHover={{ scale: 1.1 }}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
                     onClick={() => {
                       if (activeTab === 'posts') handleTogglePostPublish(item as BlogPost);
                       else if (activeTab === 'projects') handleToggleProjectPublish(item as Project);
                       else handleToggleServicePublish(item as Service);
                     }}
-                    className="p-2 hover:bg-blue-50 dark:hover:bg-blue-500/10 rounded transition-colors text-blue-600 dark:text-blue-400"
+                    className="p-2 hover:bg-blue-50 dark:hover:bg-blue-500/10 rounded-lg transition-colors text-blue-600 dark:text-blue-400"
                   >
                     {item.published ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
                   </motion.button>
                   <motion.button
-                    whileHover={{ scale: 1.1 }}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
                     onClick={() => {
                       if (activeTab === 'posts') handleDeletePost(item.id, item.title);
                       else if (activeTab === 'projects') handleDeleteProject(item.id, item.title);
                       else handleDeleteService(item.id, item.title);
                     }}
-                    className="p-2 hover:bg-red-50 dark:hover:bg-red-500/10 rounded transition-colors text-red-600 dark:text-red-400"
+                    className="p-2 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-lg transition-colors text-red-600 dark:text-red-400"
                   >
                     <Trash2 className="w-4 h-4" />
                   </motion.button>
@@ -493,7 +508,7 @@ const AdminContent: React.FC = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4"
             onClick={() => setShowModal(false)}
           >
             <motion.div
@@ -501,78 +516,154 @@ const AdminContent: React.FC = () => {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
-              className="bg-white dark:bg-slate-800 rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+              className="bg-white dark:bg-slate-900 rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl"
             >
-              <div className="sticky top-0 bg-white dark:bg-slate-800 border-b border-gray-200 dark:border-slate-700 px-6 py-4 flex items-center justify-between">
-                <h2 className="text-xl font-bold text-gray-900 dark:text-white">
+              <div className="sticky top-0 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-6 py-4 flex items-center justify-between">
+                <h2 className="font-rajdhani text-xl font-bold text-slate-900 dark:text-white">
                   {activeTab === 'posts' ? 'New Blog Post' : activeTab === 'projects' ? 'New Project' : 'New Service'}
                 </h2>
-                <button
+                <motion.button
+                  whileHover={{ rotate: 90 }}
                   onClick={() => setShowModal(false)}
-                  className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
+                  className="text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300 transition-colors"
                 >
-                  ✕
-                </button>
+                  <X className="w-5 h-5" />
+                </motion.button>
               </div>
 
               <form onSubmit={activeTab === 'posts' ? handleSavePost : activeTab === 'projects' ? handleSaveProject : handleSaveService} className="p-6 space-y-4">
                 {activeTab === 'posts' && (
                   <>
-                    <div><label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Title</label>
-                    <input type="text" value={postForm.title} onChange={(e) => setPostForm({...postForm, title: e.target.value})} className="w-full px-4 py-2 bg-gray-50 dark:bg-slate-900 border border-gray-300 dark:border-slate-600 rounded-lg text-gray-900 dark:text-white outline-none focus:border-blue-500" placeholder="Post title" /></div>
-                    <div><label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Slug</label>
-                    <input type="text" value={postForm.slug} onChange={(e) => setPostForm({...postForm, slug: e.target.value})} className="w-full px-4 py-2 bg-gray-50 dark:bg-slate-900 border border-gray-300 dark:border-slate-600 rounded-lg text-gray-900 dark:text-white outline-none focus:border-blue-500" placeholder="post-slug" /></div>
-                    <div className="grid grid-cols-2 gap-4"><div><label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Category</label>
-                    <select value={postForm.category} onChange={(e) => setPostForm({...postForm, category: e.target.value})} className="w-full px-4 py-2 bg-gray-50 dark:bg-slate-900 border border-gray-300 dark:border-slate-600 rounded-lg text-gray-900 dark:text-white outline-none focus:border-blue-500"><option>Select category</option>{BLOG_CATEGORIES.map(cat => <option key={cat} value={cat}>{cat}</option>)}</select></div>
-                    <div><label className="flex items-center gap-2 cursor-pointer"><input type="checkbox" checked={postForm.published} onChange={(e) => setPostForm({...postForm, published: e.target.checked})} className="w-4 h-4 accent-blue-600" /><span className="text-sm font-medium text-gray-700 dark:text-gray-300">Published</span></label></div></div>
-                    <div><label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Cover Image</label>
-                    <input type="text" value={postForm.cover} onChange={(e) => setPostForm({...postForm, cover: e.target.value})} className="w-full px-4 py-2 bg-gray-50 dark:bg-slate-900 border border-gray-300 dark:border-slate-600 rounded-lg text-gray-900 dark:text-white outline-none focus:border-blue-500" placeholder="https://..." /></div>
-                    <div><label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Excerpt</label>
-                    <textarea value={postForm.excerpt} onChange={(e) => setPostForm({...postForm, excerpt: e.target.value})} className="w-full px-4 py-2 bg-gray-50 dark:bg-slate-900 border border-gray-300 dark:border-slate-600 rounded-lg text-gray-900 dark:text-white outline-none focus:border-blue-500 h-24 resize-none" placeholder="Brief description" /></div>
-                    <div><label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Tags (comma-separated)</label>
-                    <input type="text" value={postForm.tags} onChange={(e) => setPostForm({...postForm, tags: e.target.value})} className="w-full px-4 py-2 bg-gray-50 dark:bg-slate-900 border border-gray-300 dark:border-slate-600 rounded-lg text-gray-900 dark:text-white outline-none focus:border-blue-500" placeholder="tag1, tag2" /></div>
+                    <div>
+                      <label className="block text-sm font-rajdhani font-bold text-slate-900 dark:text-white mb-2">Title</label>
+                      <input type="text" value={postForm.title} onChange={(e) => setPostForm({...postForm, title: e.target.value})} className="w-full px-4 py-2.5 bg-slate-100 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/50 rounded-xl text-slate-900 dark:text-white outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all" placeholder="Post title" />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-rajdhani font-bold text-slate-900 dark:text-white mb-2">Slug</label>
+                      <input type="text" value={postForm.slug} onChange={(e) => setPostForm({...postForm, slug: e.target.value})} className="w-full px-4 py-2.5 bg-slate-100 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/50 rounded-xl text-slate-900 dark:text-white outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all" placeholder="post-slug" />
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-rajdhani font-bold text-slate-900 dark:text-white mb-2">Category</label>
+                        <select value={postForm.category} onChange={(e) => setPostForm({...postForm, category: e.target.value})} className="w-full px-4 py-2.5 bg-slate-100 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/50 rounded-xl text-slate-900 dark:text-white outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all">
+                          <option>Select category</option>
+                          {BLOG_CATEGORIES.map(cat => <option key={cat} value={cat}>{cat}</option>)}
+                        </select>
+                      </div>
+                      <div>
+                        <label className="flex items-center gap-2 cursor-pointer pt-6">
+                          <input type="checkbox" checked={postForm.published} onChange={(e) => setPostForm({...postForm, published: e.target.checked})} className="w-4 h-4 accent-blue-600 rounded" />
+                          <span className="text-sm font-rajdhani font-bold text-slate-900 dark:text-white">Published</span>
+                        </label>
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-rajdhani font-bold text-slate-900 dark:text-white mb-2">Cover Image</label>
+                      <input type="text" value={postForm.cover} onChange={(e) => setPostForm({...postForm, cover: e.target.value})} className="w-full px-4 py-2.5 bg-slate-100 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/50 rounded-xl text-slate-900 dark:text-white outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all" placeholder="https://..." />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-rajdhani font-bold text-slate-900 dark:text-white mb-2">Excerpt</label>
+                      <textarea value={postForm.excerpt} onChange={(e) => setPostForm({...postForm, excerpt: e.target.value})} className="w-full px-4 py-2.5 bg-slate-100 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/50 rounded-xl text-slate-900 dark:text-white outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all h-24 resize-none" placeholder="Brief description" />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-rajdhani font-bold text-slate-900 dark:text-white mb-2">Tags (comma-separated)</label>
+                      <input type="text" value={postForm.tags} onChange={(e) => setPostForm({...postForm, tags: e.target.value})} className="w-full px-4 py-2.5 bg-slate-100 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/50 rounded-xl text-slate-900 dark:text-white outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all" placeholder="tag1, tag2" />
+                    </div>
                   </>
                 )}
 
                 {activeTab === 'projects' && (
                   <>
-                    <div><label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Title</label>
-                    <input type="text" value={projectForm.title} onChange={(e) => setProjectForm({...projectForm, title: e.target.value})} className="w-full px-4 py-2 bg-gray-50 dark:bg-slate-900 border border-gray-300 dark:border-slate-600 rounded-lg text-gray-900 dark:text-white outline-none focus:border-blue-500" placeholder="Project title" /></div>
-                    <div><label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Description</label>
-                    <textarea value={projectForm.description} onChange={(e) => setProjectForm({...projectForm, description: e.target.value})} className="w-full px-4 py-2 bg-gray-50 dark:bg-slate-900 border border-gray-300 dark:border-slate-600 rounded-lg text-gray-900 dark:text-white outline-none focus:border-blue-500 h-24 resize-none" placeholder="Project description" /></div>
-                    <div className="grid grid-cols-2 gap-4"><div><label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Image URL</label>
-                    <input type="text" value={projectForm.image} onChange={(e) => setProjectForm({...projectForm, image: e.target.value})} className="w-full px-4 py-2 bg-gray-50 dark:bg-slate-900 border border-gray-300 dark:border-slate-600 rounded-lg text-gray-900 dark:text-white outline-none focus:border-blue-500" placeholder="https://..." /></div>
-                    <div><label className="flex items-center gap-2 cursor-pointer"><input type="checkbox" checked={projectForm.published} onChange={(e) => setProjectForm({...projectForm, published: e.target.checked})} className="w-4 h-4 accent-blue-600" /><span className="text-sm font-medium text-gray-700 dark:text-gray-300">Published</span></label></div></div>
-                    <div><label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Live URL</label>
-                    <input type="text" value={projectForm.liveUrl} onChange={(e) => setProjectForm({...projectForm, liveUrl: e.target.value})} className="w-full px-4 py-2 bg-gray-50 dark:bg-slate-900 border border-gray-300 dark:border-slate-600 rounded-lg text-gray-900 dark:text-white outline-none focus:border-blue-500" placeholder="https://..." /></div>
-                    <div><label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">GitHub URL</label>
-                    <input type="text" value={projectForm.githubUrl} onChange={(e) => setProjectForm({...projectForm, githubUrl: e.target.value})} className="w-full px-4 py-2 bg-gray-50 dark:bg-slate-900 border border-gray-300 dark:border-slate-600 rounded-lg text-gray-900 dark:text-white outline-none focus:border-blue-500" placeholder="https://github.com/..." /></div>
-                    <div><label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Tags (comma-separated)</label>
-                    <input type="text" value={projectForm.tags} onChange={(e) => setProjectForm({...projectForm, tags: e.target.value})} className="w-full px-4 py-2 bg-gray-50 dark:bg-slate-900 border border-gray-300 dark:border-slate-600 rounded-lg text-gray-900 dark:text-white outline-none focus:border-blue-500" placeholder="React, Node.js" /></div>
+                    <div>
+                      <label className="block text-sm font-rajdhani font-bold text-slate-900 dark:text-white mb-2">Title</label>
+                      <input type="text" value={projectForm.title} onChange={(e) => setProjectForm({...projectForm, title: e.target.value})} className="w-full px-4 py-2.5 bg-slate-100 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/50 rounded-xl text-slate-900 dark:text-white outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all" placeholder="Project title" />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-rajdhani font-bold text-slate-900 dark:text-white mb-2">Description</label>
+                      <textarea value={projectForm.description} onChange={(e) => setProjectForm({...projectForm, description: e.target.value})} className="w-full px-4 py-2.5 bg-slate-100 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/50 rounded-xl text-slate-900 dark:text-white outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all h-24 resize-none" placeholder="Project description" />
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-rajdhani font-bold text-slate-900 dark:text-white mb-2">Image URL</label>
+                        <input type="text" value={projectForm.image} onChange={(e) => setProjectForm({...projectForm, image: e.target.value})} className="w-full px-4 py-2.5 bg-slate-100 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/50 rounded-xl text-slate-900 dark:text-white outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all" placeholder="https://..." />
+                      </div>
+                      <div>
+                        <label className="flex items-center gap-2 cursor-pointer pt-6">
+                          <input type="checkbox" checked={projectForm.published} onChange={(e) => setProjectForm({...projectForm, published: e.target.checked})} className="w-4 h-4 accent-blue-600 rounded" />
+                          <span className="text-sm font-rajdhani font-bold text-slate-900 dark:text-white">Published</span>
+                        </label>
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-rajdhani font-bold text-slate-900 dark:text-white mb-2">Live URL</label>
+                      <input type="text" value={projectForm.liveUrl} onChange={(e) => setProjectForm({...projectForm, liveUrl: e.target.value})} className="w-full px-4 py-2.5 bg-slate-100 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/50 rounded-xl text-slate-900 dark:text-white outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all" placeholder="https://..." />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-rajdhani font-bold text-slate-900 dark:text-white mb-2">GitHub URL</label>
+                      <input type="text" value={projectForm.githubUrl} onChange={(e) => setProjectForm({...projectForm, githubUrl: e.target.value})} className="w-full px-4 py-2.5 bg-slate-100 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/50 rounded-xl text-slate-900 dark:text-white outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all" placeholder="https://github.com/..." />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-rajdhani font-bold text-slate-900 dark:text-white mb-2">Tags (comma-separated)</label>
+                      <input type="text" value={projectForm.tags} onChange={(e) => setProjectForm({...projectForm, tags: e.target.value})} className="w-full px-4 py-2.5 bg-slate-100 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/50 rounded-xl text-slate-900 dark:text-white outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all" placeholder="React, Node.js" />
+                    </div>
                   </>
                 )}
 
                 {activeTab === 'services' && (
                   <>
-                    <div><label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Title</label>
-                    <input type="text" value={serviceForm.title} onChange={(e) => setServiceForm({...serviceForm, title: e.target.value})} className="w-full px-4 py-2 bg-gray-50 dark:bg-slate-900 border border-gray-300 dark:border-slate-600 rounded-lg text-gray-900 dark:text-white outline-none focus:border-blue-500" placeholder="Service title" /></div>
-                    <div><label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Description</label>
-                    <textarea value={serviceForm.description} onChange={(e) => setServiceForm({...serviceForm, description: e.target.value})} className="w-full px-4 py-2 bg-gray-50 dark:bg-slate-900 border border-gray-300 dark:border-slate-600 rounded-lg text-gray-900 dark:text-white outline-none focus:border-blue-500 h-24 resize-none" placeholder="Service description" /></div>
-                    <div className="grid grid-cols-2 gap-4"><div><label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Icon Code</label>
-                    <input type="text" value={serviceForm.icon} onChange={(e) => setServiceForm({...serviceForm, icon: e.target.value})} maxLength={4} className="w-full px-4 py-2 bg-gray-50 dark:bg-slate-900 border border-gray-300 dark:border-slate-600 rounded-lg text-gray-900 dark:text-white outline-none focus:border-blue-500" placeholder="WEB" /></div>
-                    <div><label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Order</label>
-                    <input type="number" value={serviceForm.order} onChange={(e) => setServiceForm({...serviceForm, order: parseInt(e.target.value)})} className="w-full px-4 py-2 bg-gray-50 dark:bg-slate-900 border border-gray-300 dark:border-slate-600 rounded-lg text-gray-900 dark:text-white outline-none focus:border-blue-500" /></div></div>
-                    <div><label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Path</label>
-                    <input type="text" value={serviceForm.path} onChange={(e) => setServiceForm({...serviceForm, path: e.target.value})} className="w-full px-4 py-2 bg-gray-50 dark:bg-slate-900 border border-gray-300 dark:border-slate-600 rounded-lg text-gray-900 dark:text-white outline-none focus:border-blue-500" placeholder="/services/web-dev" /></div>
-                    <div><label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Image URL</label>
-                    <input type="text" value={serviceForm.image} onChange={(e) => setServiceForm({...serviceForm, image: e.target.value})} className="w-full px-4 py-2 bg-gray-50 dark:bg-slate-900 border border-gray-300 dark:border-slate-600 rounded-lg text-gray-900 dark:text-white outline-none focus:border-blue-500" placeholder="https://..." /></div>
-                    <div><label className="flex items-center gap-2 cursor-pointer"><input type="checkbox" checked={serviceForm.published} onChange={(e) => setServiceForm({...serviceForm, published: e.target.checked})} className="w-4 h-4 accent-blue-600" /><span className="text-sm font-medium text-gray-700 dark:text-gray-300">Published</span></label></div>
+                    <div>
+                      <label className="block text-sm font-rajdhani font-bold text-slate-900 dark:text-white mb-2">Title</label>
+                      <input type="text" value={serviceForm.title} onChange={(e) => setServiceForm({...serviceForm, title: e.target.value})} className="w-full px-4 py-2.5 bg-slate-100 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/50 rounded-xl text-slate-900 dark:text-white outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all" placeholder="Service title" />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-rajdhani font-bold text-slate-900 dark:text-white mb-2">Description</label>
+                      <textarea value={serviceForm.description} onChange={(e) => setServiceForm({...serviceForm, description: e.target.value})} className="w-full px-4 py-2.5 bg-slate-100 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/50 rounded-xl text-slate-900 dark:text-white outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all h-24 resize-none" placeholder="Service description" />
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-rajdhani font-bold text-slate-900 dark:text-white mb-2">Icon Code</label>
+                        <input type="text" value={serviceForm.icon} onChange={(e) => setServiceForm({...serviceForm, icon: e.target.value})} maxLength={4} className="w-full px-4 py-2.5 bg-slate-100 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/50 rounded-xl text-slate-900 dark:text-white outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all" placeholder="WEB" />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-rajdhani font-bold text-slate-900 dark:text-white mb-2">Order</label>
+                        <input type="number" value={serviceForm.order} onChange={(e) => setServiceForm({...serviceForm, order: parseInt(e.target.value)})} className="w-full px-4 py-2.5 bg-slate-100 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/50 rounded-xl text-slate-900 dark:text-white outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all" />
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-rajdhani font-bold text-slate-900 dark:text-white mb-2">Path</label>
+                      <input type="text" value={serviceForm.path} onChange={(e) => setServiceForm({...serviceForm, path: e.target.value})} className="w-full px-4 py-2.5 bg-slate-100 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/50 rounded-xl text-slate-900 dark:text-white outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all" placeholder="/services/web-dev" />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-rajdhani font-bold text-slate-900 dark:text-white mb-2">Image URL</label>
+                      <input type="text" value={serviceForm.image} onChange={(e) => setServiceForm({...serviceForm, image: e.target.value})} className="w-full px-4 py-2.5 bg-slate-100 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/50 rounded-xl text-slate-900 dark:text-white outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all" placeholder="https://..." />
+                    </div>
+                    <div>
+                      <label className="flex items-center gap-2 cursor-pointer">
+                        <input type="checkbox" checked={serviceForm.published} onChange={(e) => setServiceForm({...serviceForm, published: e.target.checked})} className="w-4 h-4 accent-blue-600 rounded" />
+                        <span className="text-sm font-rajdhani font-bold text-slate-900 dark:text-white">Published</span>
+                      </label>
+                    </div>
                   </>
                 )}
 
                 <div className="flex gap-3 pt-4">
-                  <button type="submit" className="flex-1 px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors">Save</button>
-                  <button type="button" onClick={() => setShowModal(false)} className="flex-1 px-4 py-2.5 bg-gray-200 dark:bg-slate-700 text-gray-900 dark:text-white rounded-lg font-medium hover:bg-gray-300 dark:hover:bg-slate-600 transition-colors">Cancel</button>
+                  <motion.button
+                    type="submit"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="flex-1 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-rajdhani font-bold shadow-lg transition-all"
+                  >
+                    Save
+                  </motion.button>
+                  <motion.button
+                    type="button"
+                    onClick={() => setShowModal(false)}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="flex-1 px-6 py-3 bg-slate-200 dark:bg-slate-800/50 text-slate-900 dark:text-white rounded-xl font-rajdhani font-bold hover:bg-slate-300 dark:hover:bg-slate-700/50 transition-all"
+                  >
+                    Cancel
+                  </motion.button>
                 </div>
               </form>
             </motion.div>

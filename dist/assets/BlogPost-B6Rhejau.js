@@ -1,4 +1,4 @@
-import{j as v,R as tn,g as ju,a as An}from"./framer-motion-DSneEraj.js";import{d as Wa,L as Cn,e as Or}from"./main-CCzVT1JV.js";import"./react-vendor-BsjYWaTE.js";import"./google-genai-ClllEDOj.js";function Dr(e){const t={hr:"hr",li:"li",p:"p",ul:"ul",...e.components};return v.jsxs(v.Fragment,{children:[v.jsx(t.hr,{}),`
+import{j as v,R as tn,g as ju,a as An}from"./framer-motion-DSneEraj.js";import{d as Wa,L as Cn,e as Or}from"./main-Jc_xaQzG.js";import"./react-vendor-BsjYWaTE.js";import"./google-genai-ClllEDOj.js";function Dr(e){const t={hr:"hr",li:"li",p:"p",ul:"ul",...e.components};return v.jsxs(v.Fragment,{children:[v.jsx(t.hr,{}),`
 `,v.jsx(t.p,{children:`title: "Hello, world — Launching the blog"
 description: "Kicking off security, software, and design articles."
 date: "2025-11-10"
