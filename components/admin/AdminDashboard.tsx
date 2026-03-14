@@ -91,7 +91,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigate }) => {
         className="space-y-3"
       >
         <h2 className="text-xs font-medium tracking-wider uppercase text-gray-500 dark:text-gray-400 mb-3">Quick Actions</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
           {[
             { 
               title: 'New blog post', 
@@ -138,7 +138,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigate }) => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 + i * 0.05 }}
                 onClick={item.action}
-                className={`group relative overflow-hidden rounded-lg border border-gray-200 dark:border-slate-700/50 ${item.bgColor} hover:border-blue-300 dark:hover:border-blue-700 p-5 hover:shadow-md transition-all duration-300`}
+                className={`group relative overflow-hidden rounded-lg border border-gray-200 dark:border-slate-700/50 ${item.bgColor} hover:border-blue-300 dark:hover:border-blue-700 p-5 hover:shadow-md transition-all duration-300 h-full min-h-[72px] w-full flex items-center`}
               >
                 <div className="flex flex-row items-center gap-4">
                   <div className={`p-2.5 rounded-lg flex-shrink-0 ${item.iconBg}`}>
@@ -166,8 +166,9 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigate }) => {
         {[
           { 
             label: 'Total blog posts', 
-            value: stats.totalPosts, 
-            change: '+5 this month', 
+            value: stats.totalPosts,
+            changeText: stats.totalPosts === 0 ? 'No data yet' : '+5 this month',
+            changeColor: stats.totalPosts === 0 ? 'text-gray-400' : 'text-green-600 dark:text-green-400',
             icon: FileText,
             wrapperBg: 'bg-blue-50 dark:bg-blue-900/20',
             iconColor: 'text-blue-600 dark:text-blue-400',
@@ -175,8 +176,9 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigate }) => {
           },
           { 
             label: 'Published projects', 
-            value: stats.publishedProjects, 
-            change: '+1 this week', 
+            value: stats.publishedProjects,
+            changeText: stats.publishedProjects === 0 ? 'No data yet' : '+1 this week',
+            changeColor: stats.publishedProjects === 0 ? 'text-gray-400' : 'text-green-600 dark:text-green-400',
             icon: Folder,
             wrapperBg: 'bg-green-50 dark:bg-green-900/20',
             iconColor: 'text-green-600 dark:text-green-400',
@@ -184,8 +186,9 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigate }) => {
           },
           { 
             label: 'Active services', 
-            value: stats.activeServices, 
-            change: 'No change', 
+            value: stats.activeServices,
+            changeText: stats.activeServices === 0 ? 'No data yet' : 'All active',
+            changeColor: stats.activeServices === 0 ? 'text-gray-400' : 'text-green-600 dark:text-green-400',
             icon: Settings,
             wrapperBg: 'bg-amber-50 dark:bg-amber-900/20',
             iconColor: 'text-amber-600 dark:text-amber-400',
@@ -210,7 +213,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigate }) => {
                   <Icon className={`w-5 h-5 ${stat.iconColor}`} />
                 </div>
               </div>
-              <p className="text-xs text-gray-500 dark:text-gray-500">{stat.change}</p>
+              <p className={`text-xs ${stat.changeColor}`}>{stat.changeText}</p>
             </motion.div>
           );
         })}
@@ -238,7 +241,16 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigate }) => {
             {loading ? (
               <p className="text-gray-500 dark:text-gray-400 text-sm py-3">Loading...</p>
             ) : recentPosts.length === 0 ? (
-              <p className="text-gray-500 dark:text-gray-400 text-sm py-3">No posts yet</p>
+              <div className="flex flex-col items-center justify-center py-8 text-center">
+                <div className="w-10 h-10 rounded-full bg-gray-100 dark:bg-slate-700 flex items-center justify-center mb-3">
+                  <FileText className="w-5 h-5 text-gray-400" />
+                </div>
+                <p className="text-sm font-medium text-gray-500 dark:text-gray-400">No posts yet</p>
+                <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">Create your first blog post</p>
+                <button onClick={() => onNavigate('content')} className="mt-3 text-xs text-blue-600 dark:text-blue-400 font-medium hover:underline">
+                  + Create now
+                </button>
+              </div>
             ) : (
               recentPosts.map(post => (
                 <motion.div
@@ -289,7 +301,16 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigate }) => {
             {loading ? (
               <p className="text-gray-500 dark:text-gray-400 text-sm py-3">Loading...</p>
             ) : recentProjects.length === 0 ? (
-              <p className="text-gray-500 dark:text-gray-400 text-sm py-3">No projects yet</p>
+              <div className="flex flex-col items-center justify-center py-8 text-center">
+                <div className="w-10 h-10 rounded-full bg-gray-100 dark:bg-slate-700 flex items-center justify-center mb-3">
+                  <Folder className="w-5 h-5 text-gray-400" />
+                </div>
+                <p className="text-sm font-medium text-gray-500 dark:text-gray-400">No projects yet</p>
+                <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">Add your first project</p>
+                <button onClick={() => onNavigate('content')} className="mt-3 text-xs text-blue-600 dark:text-blue-400 font-medium hover:underline">
+                  + Create now
+                </button>
+              </div>
             ) : (
               recentProjects.map(project => (
                 <motion.div
@@ -341,7 +362,16 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigate }) => {
           {loading ? (
             <p className="text-gray-500 dark:text-gray-400 text-sm">Loading...</p>
           ) : recentServices.length === 0 ? (
-            <p className="text-gray-500 dark:text-gray-400 text-sm">No services yet</p>
+            <div className="col-span-1 md:col-span-2 lg:col-span-3 flex flex-col items-center justify-center py-12 text-center">
+              <div className="w-10 h-10 rounded-full bg-gray-100 dark:bg-slate-700 flex items-center justify-center mb-3">
+                <Settings className="w-5 h-5 text-gray-400" />
+              </div>
+              <p className="text-sm font-medium text-gray-500 dark:text-gray-400">No services yet</p>
+              <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">Set up your service offerings</p>
+              <button onClick={() => onNavigate('content')} className="mt-3 text-xs text-blue-600 dark:text-blue-400 font-medium hover:underline">
+                + Create now
+              </button>
+            </div>
           ) : (
             recentServices.map(service => (
               <motion.div

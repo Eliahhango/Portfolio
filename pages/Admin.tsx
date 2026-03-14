@@ -165,7 +165,7 @@ const Admin: React.FC = () => {
             })}
           </nav>
 
-          <div className="mt-8 pt-8 border-t border-gray-200 dark:border-slate-700/50 space-y-2">
+          <div className="mt-4 pt-4 border-t border-gray-200 dark:border-slate-700/50 space-y-2">
             <button
               onClick={() => {
                 handleLogout();
@@ -192,7 +192,7 @@ const Admin: React.FC = () => {
       )}
 
       {/* Main Content */}
-      <div className={`flex flex-col flex-1 transition-all duration-300 ${isMobile ? (sidebarOpen ? 'ml-64 sm:ml-72' : 'ml-0') : 'md:ml-72'}`}>
+      <div className={`flex flex-col flex-1 transition-all duration-300 ${isMobile ? (sidebarOpen ? 'ml-64 sm:ml-72' : 'ml-0') : ''}`}>
         {/* Top Navigation Bar */}
         <motion.header
           initial={{ opacity: 0, y: -20 }}
@@ -205,7 +205,7 @@ const Admin: React.FC = () => {
                 onClick={() => setSidebarOpen(!sidebarOpen)}
                 className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-700/50 transition-colors text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white flex-shrink-0"
               >
-                {sidebarOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+                <Menu className="w-6 h-6" />
               </button>
               <div className="hidden lg:flex items-center bg-gray-100 dark:bg-slate-700/30 rounded-lg px-4 py-2 border border-gray-300 dark:border-slate-600/50 min-w-0">
                 <Search className="w-5 h-5 text-gray-500 dark:text-gray-400 flex-shrink-0" />
