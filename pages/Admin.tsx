@@ -109,7 +109,7 @@ const Admin: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gradient-to-br dark:from-slate-900 dark:via-blue-900/20 dark:to-slate-900 overflow-hidden">
+    <div className="h-screen bg-gray-50 dark:bg-gradient-to-br dark:from-slate-900 dark:via-blue-900/20 dark:to-slate-900 overflow-hidden flex">
       {/* Sidebar */}
       <motion.aside
         initial={false}
@@ -192,7 +192,7 @@ const Admin: React.FC = () => {
       )}
 
       {/* Main Content */}
-      <div className={`transition-all duration-300 ${isMobile ? (sidebarOpen ? 'ml-64 sm:ml-72' : 'ml-0') : 'md:ml-72'}`}>
+      <div className={`flex flex-col flex-1 transition-all duration-300 ${isMobile ? (sidebarOpen ? 'ml-64 sm:ml-72' : 'ml-0') : 'md:ml-72'}`}>
         {/* Top Navigation Bar */}
         <motion.header
           initial={{ opacity: 0, y: -20 }}
@@ -236,7 +236,7 @@ const Admin: React.FC = () => {
         </motion.header>
 
         {/* Page Content */}
-        <main className="p-4 sm:p-6 lg:p-8">
+        <main className="flex-1 overflow-auto p-4 sm:p-6 lg:p-8">
           <AnimatePresence mode="wait">
             {activeTab === 'dashboard' && <AdminDashboard key="dashboard" onNavigate={setActiveTab} />}
             {activeTab === 'users' && <AdminUsers key="users" />}
