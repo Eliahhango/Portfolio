@@ -16,18 +16,28 @@ const Admin: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      if (currentUser) {
-        setUser(currentUser);
-      } else {
-        window.location.href = '/';
-      }
-      setLoading(false);
-    });
+    try {
+      const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+        if (currentUser) {
+          setUser(currentUser);
+        } else {
+          // Check if we're in production and redirect to home
+          if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+            window.location.href = '/';
+          }
+        }
+        setLoading(false);
+      });
 
-    return unsubscribe;
+      return unsubscribe;
+    } catch (error: any) {
+      console.error('Firebase initialization error:', error);
+      setError(error?.message || 'Failed to initialize Firebase. Please check your environment variables.');
+      setLoading(false);
+    }
   }, []);
 
   const handleLogout = async () => {
@@ -47,6 +57,19 @@ const Admin: React.FC = () => {
           transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
           className="w-12 h-12 border-4 border-blue-500 border-t-blue-300 rounded-full"
         />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 flex items-center justify-center p-4">
+        <div className="bg-red-500/10 border border-red-500/50 rounded-lg p-6 max-w-md">
+          <h2 className="text-red-400 text-xl font-bold mb-2">Error</h2>
+          <p className="text-red-300 mb-4">{error}</p>
+          <p className="text-red-300 text-sm">Check that all Firebase environment variables are set on Vercel.</p>
+          <a href="/" className="text-blue-400 hover:text-blue-300 mt-4 inline-block">← Go Home</a>
+        </div>
       </div>
     );
   }
