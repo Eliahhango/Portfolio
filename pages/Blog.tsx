@@ -2,7 +2,7 @@ import React, { useEffect, useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { db } from '../firebase.js';
 import { collection, getDocs, query, where, orderBy } from 'firebase/firestore';
-import { BLOG_POSTS } from '../constants/blogData.js';
+import { logError } from '../utils/errorHandler.js';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import BlogHero from '../components/blog/BlogHero';
@@ -30,45 +30,21 @@ const Blog: React.FC = () => {
           orderBy('createdAt', 'desc')
         );
         const snapshot = await getDocs(postsQuery);
-        let posts: ApiPost[];
-        
-        if (snapshot.empty) {
-          // Fallback to constants if no posts in Firestore
-          posts = BLOG_POSTS.map((post) => ({
-            id: post.id,
-            title: post.title,
-            slug: post.slug,
-            description: post.excerpt,
-            tags: post.tags,
-            createdAt: post.date,
-            cover: post.image,
-          }));
-        } else {
-          posts = snapshot.docs.map((doc) => ({
-            id: doc.id,
-            title: doc.data().title || 'Untitled',
-            slug: doc.data().slug || doc.id,
-            description: doc.data().description || '',
-            tags: doc.data().tags || [],
-            createdAt: doc.data().createdAt?.toDate?.().toISOString() || new Date().toISOString(),
-            cover: doc.data().cover || 'https://images.pexels.com/photos/3587620/pexels-photo-3587620.jpeg?auto=compress&cs=tinysrgb&w=800',
-          }));
-        }
+        const posts: ApiPost[] = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          title: doc.data().title || 'Untitled',
+          slug: doc.data().slug || doc.id,
+          description: doc.data().description || '',
+          tags: doc.data().tags || [],
+          createdAt: doc.data().createdAt?.toDate?.().toISOString() || new Date().toISOString(),
+          cover: doc.data().cover || 'https://images.pexels.com/photos/3587620/pexels-photo-3587620.jpeg?auto=compress&cs=tinysrgb&w=800',
+        }));
         setList(posts);
         setLoaded(true);
       } catch (error) {
-        console.error('Error fetching posts:', error);
-        // Fallback to constants on error
-        const posts = BLOG_POSTS.map((post) => ({
-          id: post.id,
-          title: post.title,
-          slug: post.slug,
-          description: post.excerpt,
-          tags: post.tags,
-          createdAt: post.date,
-          cover: post.image,
-        }));
-        setList(posts);
+        logError('Blog.fetchPosts', error);
+        // Show empty state gracefully on error
+        setList([]);
         setLoaded(true);
       }
     };

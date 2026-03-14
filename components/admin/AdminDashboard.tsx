@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Plus, Folder, FileText, Settings, ExternalLink, Edit2, TrendingUp } from 'lucide-react';
 import { db } from '../../firebase.js';
 import { collection, getDocs, query, orderBy, limit, where } from 'firebase/firestore';
+import { logError } from '../../utils/errorHandler.js';
 
 interface AdminDashboardProps {
   onNavigate: (tab: string) => void;
@@ -52,7 +53,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigate }) => {
       setRecentServices(servicesData.docs.map(doc => ({ id: doc.id, ...doc.data() })));
       setLoading(false);
     } catch (error) {
-      console.error('Error fetching dashboard data:', error);
+      logError('AdminDashboard.fetchData', error);
       setLoading(false);
     }
   };

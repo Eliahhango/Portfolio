@@ -3,8 +3,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Trash2, Edit2, Search, Plus, Eye, EyeOff, Calendar, X, AlertCircle } from 'lucide-react';
 import { db, auth } from '../../firebase.js';
 import { collection, getDocs, deleteDoc, doc, setDoc, updateDoc, Timestamp, query, where } from 'firebase/firestore';
-import { logPostCreated, logPostPublished, logContentDeleted } from '../../utils/activityLogger';
-import { BLOG_CATEGORIES } from '../../constants/blogData';
+import { logPostCreated, logPostPublished, logContentDeleted } from '../../utils/activityLogger.js';
+import { logError, getUserFriendlyError } from '../../utils/errorHandler.js';
+import { BLOG_CATEGORIES } from '../../constants/blogData.js';
 
 interface BlogPost {
   id: string;
@@ -112,7 +113,7 @@ const AdminContent: React.FC = () => {
       })) as BlogPost[];
       setPosts(data);
     } catch (err) {
-      console.error('Error fetching posts:', err);
+      logError('AdminContent.fetchPosts', err);
     }
   };
 
@@ -125,7 +126,7 @@ const AdminContent: React.FC = () => {
       })) as Project[];
       setProjects(data);
     } catch (err) {
-      console.error('Error fetching projects:', err);
+      logError('AdminContent.fetchProjects', err);
     }
   };
 
@@ -138,7 +139,7 @@ const AdminContent: React.FC = () => {
       })) as Service[];
       setServices(data);
     } catch (err) {
-      console.error('Error fetching services:', err);
+      logError('AdminContent.fetchServices', err);
     }
   };
 
@@ -176,7 +177,8 @@ const AdminContent: React.FC = () => {
       setShowModal(false);
       setError(null);
     } catch (err: any) {
-      setError(err.message);
+      logError('AdminContent.handleSavePost', err);
+      setError(getUserFriendlyError(err));
     }
   };
 
@@ -187,7 +189,8 @@ const AdminContent: React.FC = () => {
         setPosts(posts.filter(p => p.id !== id));
         await logContentDeleted(title);
       } catch (err) {
-        setError('Failed to delete post');
+        logError('AdminContent.handleDeletePost', err);
+        setError('Failed to delete post. Please try again.');
       }
     }
   };
@@ -200,7 +203,8 @@ const AdminContent: React.FC = () => {
         await logPostPublished(post.title);
       }
     } catch (err) {
-      setError('Failed to update post');
+      logError('AdminContent.handleTogglePostPublish', err);
+      setError('Failed to update post. Please try again.');
     }
   };
 
@@ -242,7 +246,8 @@ const AdminContent: React.FC = () => {
       setShowModal(false);
       setError(null);
     } catch (err: any) {
-      setError(err.message);
+      logError('AdminContent.handleSaveProject', err);
+      setError(getUserFriendlyError(err));
     }
   };
 
@@ -253,7 +258,8 @@ const AdminContent: React.FC = () => {
         setProjects(projects.filter(p => p.id !== id));
        await logContentDeleted(title);
       } catch (err) {
-        setError('Failed to delete project');
+        logError('AdminContent.handleDeleteProject', err);
+        setError('Failed to delete project. Please try again.');
       }
     }
   };
@@ -263,7 +269,8 @@ const AdminContent: React.FC = () => {
       await updateDoc(doc(db, 'projects', project.id), { published: !project.published, updatedAt: Timestamp.now() });
       setProjects(projects.map(p => p.id === project.id ? { ...p, published: !p.published } : p));
     } catch (err) {
-      setError('Failed to update project');
+      logError('AdminContent.handleToggleProjectPublish', err);
+      setError('Failed to update project. Please try again.');
     }
   };
 
@@ -305,7 +312,8 @@ const AdminContent: React.FC = () => {
       setShowModal(false);
       setError(null);
     } catch (err: any) {
-      setError(err.message);
+      logError('AdminContent.handleSaveService', err);
+      setError(getUserFriendlyError(err));
     }
   };
 
@@ -316,7 +324,8 @@ const AdminContent: React.FC = () => {
         setServices(services.filter(s => s.id !== id));
         await logContentDeleted(title);
       } catch (err) {
-        setError('Failed to delete service');
+        logError('AdminContent.handleDeleteService', err);
+        setError('Failed to delete service. Please try again.');
       }
     }
   };
@@ -326,7 +335,8 @@ const AdminContent: React.FC = () => {
       await updateDoc(doc(db, 'services', service.id), { published: !service.published, updatedAt: Timestamp.now() });
       setServices(services.map(s => s.id === service.id ? { ...s, published: !s.published } : s));
     } catch (err) {
-      setError('Failed to update service');
+      logError('AdminContent.handleToggleServicePublish', err);
+      setError('Failed to update service. Please try again.');
     }
   };
 

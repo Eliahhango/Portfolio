@@ -3,7 +3,8 @@ import { motion } from 'framer-motion';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase.js';
 import { Lock, Mail, AlertCircle } from 'lucide-react';
-import { logUserLogin } from '../utils/activityLogger';
+import { logUserLogin } from '../utils/activityLogger.js';
+import { getUserFriendlyError, logError } from '../utils/errorHandler.js';
 
 const AdminLogin: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -24,20 +25,9 @@ const AdminLogin: React.FC = () => {
       
       // User will be automatically logged in and component will re-render
     } catch (err: any) {
-      console.error('Login error:', err);
-      
-      // User-friendly error messages
-      if (err.code === 'auth/user-not-found') {
-        setError('User not found. Please check your email.');
-      } else if (err.code === 'auth/wrong-password') {
-        setError('Incorrect password. Please try again.');
-      } else if (err.code === 'auth/invalid-email') {
-        setError('Invalid email address.');
-      } else if (err.code === 'auth/user-disabled') {
-        setError('This user account has been disabled.');
-      } else {
-        setError(err.message || 'Failed to login. Please try again.');
-      }
+      logError('AdminLogin', err);
+      // Use secure, user-friendly error messages
+      setError(getUserFriendlyError(err));
     } finally {
       setLoading(false);
     }
