@@ -76,8 +76,8 @@ const AdminDashboard: React.FC = () => {
       className="space-y-6"
     >
       <div>
-        <h1 className="text-3xl font-bold text-white mb-2">Dashboard</h1>
-        <p className="text-gray-400">Welcome back! Here's your performance overview.</p>
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Dashboard</h1>
+        <p className="text-gray-600 dark:text-gray-400">Welcome back! Here's your performance overview.</p>
       </div>
 
       {/* Stat Cards */}
@@ -90,24 +90,24 @@ const AdminDashboard: React.FC = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
-              className="group bg-gradient-to-br from-slate-800/50 to-slate-900/50 border border-slate-700/50 rounded-xl p-6 hover:border-slate-600 transition-all duration-300 overflow-hidden relative"
+              className="group bg-white dark:bg-slate-800/50 border border-gray-200 dark:border-slate-700/50 rounded-xl p-6 hover:border-gray-300 dark:hover:border-slate-600 transition-all duration-300 overflow-hidden relative shadow-sm dark:shadow-none"
             >
-              <div className={`absolute -right-12 -top-12 w-32 h-32 bg-gradient-to-br ${card.color} opacity-10 rounded-full blur-3xl group-hover:opacity-20 transition-opacity`} />
+              <div className={`absolute -right-12 -top-12 w-32 h-32 bg-gradient-to-br ${card.color} opacity-5 dark:opacity-10 rounded-full blur-3xl group-hover:opacity-10 dark:group-hover:opacity-20 transition-opacity`} />
 
               <div className="relative">
                 <div className="flex items-center justify-between mb-4">
-                  <p className="text-gray-400 text-sm font-medium">{card.title}</p>
-                  <div className={`p-3 rounded-lg bg-gradient-to-br ${card.color} bg-opacity-20`}>
-                    <Icon className={`w-5 h-5 text-${card.color.split('-')[1]}-400`} />
+                  <p className="text-gray-600 dark:text-gray-400 text-sm font-medium">{card.title}</p>
+                  <div className={`p-3 rounded-lg bg-gradient-to-br ${card.color} bg-opacity-10 dark:bg-opacity-20`}>
+                    <Icon className={`w-5 h-5 text-${card.color.split('-')[1]}-600 dark:text-${card.color.split('-')[1]}-400`} />
                   </div>
                 </div>
 
                 <div className="mb-4">
-                  <h3 className="text-3xl font-bold text-white">{loading ? '-' : card.value}</h3>
+                  <h3 className="text-3xl font-bold text-gray-900 dark:text-white">{loading ? '-' : card.value}</h3>
                   <div className="flex items-center gap-2 mt-2">
-                    <ArrowUp className="w-4 h-4 text-green-400" />
-                    <span className="text-green-400 text-sm font-medium">{card.change}</span>
-                    <span className="text-gray-500 text-sm">from last period</span>
+                    <ArrowUp className="w-4 h-4 text-green-600 dark:text-green-400" />
+                    <span className="text-green-600 dark:text-green-400 text-sm font-medium">{card.change}</span>
+                    <span className="text-gray-500 dark:text-gray-500 text-sm">from last period</span>
                   </div>
                 </div>
               </div>
@@ -123,13 +123,13 @@ const AdminDashboard: React.FC = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
-          className="lg:col-span-2 bg-gradient-to-br from-slate-800/50 to-slate-900/50 border border-slate-700/50 rounded-xl p-6"
+          className="lg:col-span-2 bg-white dark:bg-slate-800/50 border border-gray-200 dark:border-slate-700/50 rounded-xl p-6 shadow-sm dark:shadow-none"
         >
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-lg font-bold text-white">Traffic Over Time</h2>
+            <h2 className="text-lg font-bold text-gray-900 dark:text-white">Traffic Over Time</h2>
             <div className="flex items-center gap-2">
-              <Calendar className="w-4 h-4 text-gray-400" />
-              <select className="bg-slate-800/50 border border-slate-700 rounded px-3 py-1 text-gray-300 text-sm outline-none">
+              <Calendar className="w-4 h-4 text-gray-600 dark:text-gray-400" />
+              <select className="bg-gray-50 dark:bg-slate-700/50 border border-gray-300 dark:border-slate-600 rounded px-3 py-1 text-gray-900 dark:text-gray-300 text-sm outline-none">
                 <option>Last 7 days</option>
                 <option>Last 30 days</option>
                 <option>Last 90 days</option>
@@ -159,9 +159,9 @@ const AdminDashboard: React.FC = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
-          className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 border border-slate-700/50 rounded-xl p-6"
+          className="bg-white dark:bg-slate-800/50 border border-gray-200 dark:border-slate-700/50 rounded-xl p-6 shadow-sm dark:shadow-none"
         >
-          <h2 className="text-lg font-bold text-white mb-4">Quick Stats</h2>
+          <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-4">Quick Stats</h2>
           <div className="space-y-4">
             {[
               { label: 'Active Users', value: '234', change: '+18%' },
@@ -173,13 +173,13 @@ const AdminDashboard: React.FC = () => {
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.5 + i * 0.1 }}
-                className="flex items-center justify-between p-3 bg-slate-900/50 rounded-lg border border-slate-800/50"
+                className="flex items-center justify-between p-3 bg-gray-50 dark:bg-slate-900/50 rounded-lg border border-gray-200 dark:border-slate-800/50"
               >
                 <div>
-                  <p className="text-gray-400 text-sm">{item.label}</p>
-                  <p className="text-white font-bold text-lg">{item.value}</p>
+                  <p className="text-gray-600 dark:text-gray-400 text-sm">{item.label}</p>
+                  <p className="text-gray-900 dark:text-white font-bold text-lg">{item.value}</p>
                 </div>
-                <span className="text-green-400 text-sm font-medium">{item.change}</span>
+                <span className="text-green-600 dark:text-green-400 text-sm font-medium">{item.change}</span>
               </motion.div>
             ))}
           </div>
@@ -191,24 +191,24 @@ const AdminDashboard: React.FC = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.6 }}
-        className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 border border-slate-700/50 rounded-xl p-6"
+        className="bg-white dark:bg-slate-800/50 border border-gray-200 dark:border-slate-700/50 rounded-xl p-6 shadow-sm dark:shadow-none"
       >
-        <h2 className="text-lg font-bold text-white mb-4">Recent Activities</h2>
+        <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-4">Recent Activities</h2>
         <div className="space-y-3">
           {[
             { action: 'New user registration', user: 'john_doe@example.com', time: '5 minutes ago' },
             { action: 'Blog post published', user: 'admin', time: '1 hour ago' },
             { action: 'System backup completed', user: 'system', time: '3 hours ago' },
           ].map((item, i) => (
-            <div key={i} className="flex items-center justify-between p-3 hover:bg-slate-800/50 rounded-lg transition-colors">
+            <div key={i} className="flex items-center justify-between p-3 hover:bg-gray-100 dark:hover:bg-slate-700/50 rounded-lg transition-colors">
               <div className="flex items-center gap-3">
                 <div className="w-2 h-2 bg-blue-500 rounded-full" />
                 <div>
-                  <p className="text-white text-sm font-medium">{item.action}</p>
-                  <p className="text-gray-500 text-xs">{item.user}</p>
+                  <p className="text-gray-900 dark:text-white text-sm font-medium">{item.action}</p>
+                  <p className="text-gray-600 dark:text-gray-500 text-xs">{item.user}</p>
                 </div>
               </div>
-              <span className="text-gray-500 text-xs">{item.time}</span>
+              <span className="text-gray-600 dark:text-gray-500 text-xs">{item.time}</span>
             </div>
           ))}
         </div>

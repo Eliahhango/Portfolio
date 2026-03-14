@@ -10,7 +10,7 @@ const ThemeToggle: React.FC = () => {
         if (storedTheme) {
             return storedTheme as 'light' | 'dark';
         }
-        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        return 'light'; // Default to light theme
     });
 
     useEffect(() => {
