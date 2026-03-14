@@ -68,24 +68,24 @@ const Footer: React.FC<FooterProps> = (props) => {
             <h4 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Quick Links</h4>
             <ul className="space-y-2">
               <li>
-                <a href="#about" className="text-sm text-slate-600 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 transition-colors">
+                <Link to="/about" className="text-sm text-slate-600 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 transition-colors">
                   About Me
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#expertise" className="text-sm text-slate-600 dark:text-gray-400 hover:text-blue-500 transition-colors">
-                  Expertise
-                </a>
+                <Link to="/services" className="text-sm text-slate-600 dark:text-gray-400 hover:text-blue-500 dark:hover:text-blue-400 transition-colors">
+                  Services
+                </Link>
               </li>
               <li>
-                <a href="#projects" className="text-sm text-slate-600 dark:text-gray-400 hover:text-blue-500 transition-colors">
+                <Link to="/projects" className="text-sm text-slate-600 dark:text-gray-400 hover:text-blue-500 dark:hover:text-blue-400 transition-colors">
                   Projects
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#contact" className="text-sm text-slate-600 dark:text-gray-400 hover:text-blue-500 transition-colors">
+                <Link to="/contact" className="text-sm text-slate-600 dark:text-gray-400 hover:text-blue-500 dark:hover:text-blue-400 transition-colors">
                   Contact
-                </a>
+                </Link>
               </li>
             </ul>
           </div>

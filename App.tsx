@@ -1,14 +1,7 @@
-import React, { useState, useEffect, useMemo, useCallback, lazy, Suspense } from 'react';
+import React, { useState, useEffect, useCallback, lazy, Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { initVisitorTracking } from './utils/visitorTracking';
 import Header from './components/Header';
-import Hero from './components/Hero';
-import About from './components/About';
-import Expertise from './components/Skills';
-import Projects from './components/Projects';
-import Testimonials from './components/Testimonials';
-import Journey from './components/Journey';
-import Contact from './components/Contact';
 import Footer from './components/Footer';
 import ScrollToTopButton from './components/ScrollToTopButton';
 import ScrollProgress from './components/ScrollProgress';
@@ -16,14 +9,20 @@ import SkipToContent from './components/SkipToContent';
 import AnimatedParticles from './components/AnimatedParticles';
 import Newsletter from './components/Newsletter';
 import { ModalSkeleton } from './components/LoadingSkeleton';
-import CTA from './components/CTA';
-import ProjectModal from './components/ProjectModal';
 import ChatbotIcon from './components/ChatbotIcon';
 import Chatbot from './components/Chatbot';
-import type { Project } from './types';
 import SEO from './components/SEO';
 import NotFound from './pages/NotFound';
 import ErrorBoundary from './pages/ErrorBoundary';
+
+// Lazy load pages
+const HomePage = lazy(() => import('./pages/HomePage'));
+const AboutPage = lazy(() => import('./pages/AboutPage'));
+const ServicesPage = lazy(() => import('./pages/ServicesPage'));
+const ProjectsPage = lazy(() => import('./pages/ProjectsPage'));
+const Blog = lazy(() => import('./pages/Blog'));
+const BlogPost = lazy(() => import('./pages/BlogPost'));
+const ContactPage = lazy(() => import('./pages/ContactPage'));
 
 // Lazy load modals for better performance
 const PrivacyModal = lazy(() => import('./components/PrivacyModal'));
@@ -36,8 +35,7 @@ const CommunityModal = lazy(() => import('./components/CommunityModal'));
 const StatusModal = lazy(() => import('./components/StatusModal'));
 
 const App: React.FC = () => {
-  const [activeSection, setActiveSection] = useState('home');
-  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [isChatbotOpen, setIsChatbotOpen] = useState(false);
   const [isPrivacyModalOpen, setIsPrivacyModalOpen] = useState(false);
   const [isDocsModalOpen, setIsDocsModalOpen] = useState(false);
   const [isTermsModalOpen, setIsTermsModalOpen] = useState(false);
@@ -46,25 +44,10 @@ const App: React.FC = () => {
   const [isDnsmpiModalOpen, setIsDnsmpiModalOpen] = useState(false);
   const [isCommunityModalOpen, setIsCommunityModalOpen] = useState(false);
   const [isStatusModalOpen, setIsStatusModalOpen] = useState(false);
-  const [isChatbotOpen, setIsChatbotOpen] = useState(false);
 
   useEffect(() => {
     // Initialize visitor tracking
     initVisitorTracking();
-
-    const sections = document.querySelectorAll('section');
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          setActiveSection(entry.target.id);
-        }
-      });
-    }, { rootMargin: '-30% 0px -70% 0px' });
-
-    const validSections = Array.from(sections).filter((section): section is HTMLElement => section !== null);
-    validSections.forEach(section => observer.observe(section));
-
-    return () => validSections.forEach(section => observer.unobserve(section));
   }, []);
 
   // Memoize modal handlers to prevent unnecessary re-renders
@@ -97,25 +80,20 @@ const App: React.FC = () => {
           <SkipToContent />
           <ScrollProgress />
           <AnimatedParticles />
-          <Header 
-            activeSection={activeSection} 
-          />
+          <Header />
           <main className="relative z-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-            <Routes>
-              <Route path="/" element={
-                <>
-                  <Hero />
-                  <About />
-                  <Expertise />
-                  <Journey />
-                  <Projects onProjectClick={setSelectedProject} />
-                  <Testimonials />
-                  <CTA />
-                  <Contact />
-                </>
-              } />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
+            <Suspense fallback={<ModalSkeleton />}>
+              <Routes>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/about" element={<AboutPage />} />
+                <Route path="/services" element={<ServicesPage />} />
+                <Route path="/projects" element={<ProjectsPage />} />
+                <Route path="/blog" element={<Blog />} />
+                <Route path="/blog/:slug" element={<BlogPost />} />
+                <Route path="/contact" element={<ContactPage />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </Suspense>
           </main>
           <Newsletter />
           <Footer />
@@ -130,7 +108,6 @@ const App: React.FC = () => {
           
           {isChatbotOpen && <Chatbot onClose={() => setIsChatbotOpen(false)} />}
           
-          {selectedProject && <ProjectModal project={selectedProject} onClose={() => setSelectedProject(null)} />}
           <Suspense fallback={<ModalSkeleton />}>
             {isPrivacyModalOpen && <PrivacyModal onClose={modalCloseHandlers.privacy} />}
             {isDocsModalOpen && <DocumentationModal onClose={modalCloseHandlers.docs} />}

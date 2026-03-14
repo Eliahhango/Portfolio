@@ -1,64 +1,174 @@
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState, useMemo } from 'react';
+import { motion } from 'framer-motion';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
+import BlogHero from '../components/blog/BlogHero';
+import BlogFilter from '../components/blog/BlogFilter';
+import BlogGrid from '../components/blog/BlogGrid';
+import PaginationControl from '../components/blog/PaginationControl';
+import NewsletterCTA from '../components/blog/NewsletterCTA';
+import { BLOG_POSTS } from '../constants/blogData';
 
 type ApiPost = { _id: string; title: string; slug: string; description?: string; tags?: string[]; createdAt?: string; cover?: string };
+
+const POSTS_PER_PAGE = 6;
 
 const Blog: React.FC = () => {
   const [list, setList] = useState<ApiPost[]>([]);
   const [loaded, setLoaded] = useState(false);
+  const [activeCategory, setActiveCategory] = useState<string | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     const fetchPosts = async () => {
       try {
         const apiUrl = import.meta.env.VITE_API_URL || '';
-        const res = await fetch(`${apiUrl}/api/blog`);
-        if (res.ok) {
-          const data = await res.json();
-          setList(data);
-          setLoaded(true);
-        } else {
-          setLoaded(true);
+        if (apiUrl) {
+          const res = await fetch(`${apiUrl}/api/blog`);
+          if (res.ok) {
+            const data = await res.json();
+            setList(data);
+            setLoaded(true);
+            return;
+          }
         }
       } catch {
-        setLoaded(true);
+        // Silently handle errors
       }
+      // If API fails or not configured, use sample data
+      setList(BLOG_POSTS);
+      setLoaded(true);
     };
     fetchPosts();
   }, []);
 
+  // Get unique categories from posts
+  const allCategories = useMemo(() => {
+    const categories = new Set<string>();
+    list.forEach((post) => {
+      if (post.tags?.length) {
+        post.tags.forEach((tag) => {
+          categories.add(tag);
+        });
+      }
+    });
+    return Array.from(categories).slice(0, 6); // Limit to 6 categories
+  }, [list]);
+
+  // Filter posts based on active category
+  const filteredPosts = useMemo(() => {
+    if (!activeCategory) return list;
+    return list.filter((post) => post.tags?.includes(activeCategory));
+  }, [activeCategory, list]);
+
+  // Paginate filtered posts
+  const totalPages = Math.ceil(filteredPosts.length / POSTS_PER_PAGE);
+  const startIndex = (currentPage - 1) * POSTS_PER_PAGE;
+  const rawPaginatedPosts = filteredPosts.slice(startIndex, startIndex + POSTS_PER_PAGE);
+
+  // Transform ApiPost to BlogPost format
+  const paginatedPosts = rawPaginatedPosts.map((post) => ({
+    id: post._id || Math.random().toString(),
+    slug: post.slug || post._id || '',
+    title: post.title || 'Untitled',
+    excerpt: post.description || 'No description available',
+    image: post.cover || 'https://images.pexels.com/photos/3587620/pexels-photo-3587620.jpeg?auto=compress&cs=tinysrgb&w=800',
+    category: post.tags?.[0] || 'Technology',
+    date: post.createdAt || new Date().toISOString(),
+    readTime: '5 min read',
+  }));
+
+  // Reset to page 1 when category changes
+  const handleCategoryChange = (category: string | null) => {
+    setActiveCategory(category);
+    setCurrentPage(1);
+  };
+
   return (
-    <section id="blog" className="pt-24 pb-16">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6">
-        <h1 className="text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white">Blog</h1>
-        <p className="mt-2 text-slate-600 dark:text-gray-400">Articles on security, software, and design.</p>
-        <div className="mt-8 grid gap-6 sm:grid-cols-2">
-          {list.map((p) => (
-            <Link
-              key={p.slug}
-              to={`/blog/${p.slug}`}
-              className="group rounded-xl border border-slate-200 dark:border-white/10 p-5 hover:border-blue-400 dark:hover:border-blue-400 transition-colors"
+    <div className="min-h-screen bg-white text-slate-900">
+      {/* Header */}
+      <Header activeSection="blog" />
+
+      {/* Main Content */}
+      <main className="pt-24">
+        {/* Hero Section */}
+        <BlogHero />
+
+        {/* Main Content Container */}
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 py-20">
+          {/* Filter Section */}
+          {allCategories.length > 0 && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.5 }}
+              transition={{ duration: 0.6 }}
+              className="mb-16"
             >
-              <h2 className="text-xl font-bold text-slate-900 dark:text-white group-hover:text-blue-600">{p.title}</h2>
-              {p.createdAt && <div className="mt-1 text-xs text-slate-500">{new Date(p.createdAt).toLocaleDateString()}</div>}
-              {p.description && <p className="mt-2 text-sm text-slate-600 dark:text-gray-400">{p.description}</p>}
-              {!!p.tags?.length && (
-                <div className="mt-3 flex gap-2 flex-wrap">
-                  {p.tags.map((t) => (
-                    <span key={t} className="text-xs px-2 py-1 rounded bg-slate-100 dark:bg-white/10">
-                      {t}
-                    </span>
-                  ))}
-                </div>
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true, amount: 0.5 }}
+                transition={{ duration: 0.5 }}
+                className="mb-8"
+              >
+                <p className="text-sm font-semibold text-blue-600 uppercase tracking-wider mb-4">Filter by Category</p>
+              </motion.div>
+              <BlogFilter
+                categories={allCategories}
+                activeCategory={activeCategory}
+                onCategoryChange={handleCategoryChange}
+              />
+            </motion.div>
+          )}
+
+          {/* Blog Grid */}
+          {paginatedPosts.length > 0 ? (
+            <>
+              <BlogGrid posts={paginatedPosts} loading={!loaded} />
+
+              {/* Pagination */}
+              {totalPages > 1 && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.5 }}
+                  transition={{ duration: 0.6 }}
+                  className="mt-20"
+                >
+                  <PaginationControl
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onPageChange={setCurrentPage}
+                  />
+                </motion.div>
               )}
-            </Link>
-          ))}
-          {!loaded && <div>Loading...</div>}
-          {loaded && list.length === 0 && (
-            <div className="text-slate-600 dark:text-gray-400">No posts yet.</div>
+            </>
+          ) : (
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              className="text-center py-20"
+            >
+              <motion.p
+                animate={{ y: [0, -8, 0] }}
+                transition={{ duration: 3, repeat: Infinity }}
+                className="text-lg text-slate-600 font-medium"
+              >
+                {loaded ? 'No articles found in this category.' : 'Loading articles...'}
+              </motion.p>
+            </motion.div>
           )}
         </div>
-      </div>
-    </section>
+
+        {/* Newsletter CTA Section */}
+        <NewsletterCTA />
+      </main>
+
+      {/* Footer */}
+      <Footer />
+    </div>
   );
 };
 

@@ -2,17 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ThemeToggle from './ThemeToggle';
 import { NAV_LINKS } from '../constants';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { handleSectionClick, scrollToSection } from '../utils/scrollUtils';
+import { Link, useLocation } from 'react-router-dom';
 
-interface HeaderProps {
-    activeSection: string;
-}
-
-const Header: React.FC<HeaderProps> = ({ activeSection }) => {
+const Header: React.FC = () => {
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const navigate = useNavigate();
     const location = useLocation();
     
     useEffect(() => {
@@ -25,8 +19,12 @@ const Header: React.FC<HeaderProps> = ({ activeSection }) => {
 
     const closeMenu = () => setIsMenuOpen(false);
 
-    const onSectionClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-        handleSectionClick(e, href, navigate, location.pathname, closeMenu);
+    // Determine if a nav link is active
+    const isLinkActive = (href: string): boolean => {
+        if (href === '/') {
+            return location.pathname === '/';
+        }
+        return location.pathname.startsWith(href);
     };
 
     useEffect(() => {
@@ -43,32 +41,27 @@ const Header: React.FC<HeaderProps> = ({ activeSection }) => {
 
     return (
         <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled || isMenuOpen ? 'bg-slate-50/80 dark:bg-slate-950/90 dark:border-b dark:border-slate-800/50 backdrop-blur-sm shadow-md dark:shadow-slate-900/50' : 'bg-transparent'}`} style={{ willChange: 'background-color, box-shadow' }}>
-            <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="flex items-center justify-between h-20">
-                    <a 
-                        href="#home" 
-                        className="text-2xl sm:text-3xl font-bold tracking-tighter text-slate-900 dark:text-white cursor-pointer" 
-                        onClick={(e) => onSectionClick(e, '#home')}
+            <nav className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8">
+                <div className="flex items-center justify-between h-16 sm:h-20">
+                    <Link 
+                        to="/"
+                        className="text-xl sm:text-2xl md:text-3xl font-bold tracking-tighter text-slate-900 dark:text-white hover:text-blue-500 transition-colors" 
                     >
                         <span className="text-blue-500">Eli</span>TechWiz
-                    </a>
-                    <div className="hidden md:flex items-center space-x-8">
+                    </Link>
+                    <div className="hidden md:flex items-center space-x-0.5 xl:space-x-1">
                         {NAV_LINKS.map(link => {
-                            const isSection = link.href.startsWith('#');
-                            const sectionId = link.href.substring(1);
-                            const mappedSectionId = sectionId === 'skills' ? 'expertise' : sectionId;
-                            const className = `text-sm font-semibold uppercase tracking-wider transition-colors cursor-pointer ${activeSection === mappedSectionId ? 'text-blue-500 dark:text-blue-400' : 'text-slate-500 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400'}`;
-                            return isSection ? (
-                                <a 
-                                    key={link.name} 
-                                    href={link.href} 
-                                    className={className}
-                                    onClick={(e) => onSectionClick(e, link.href)}
+                            const isActive = isLinkActive(link.href);
+                            return (
+                                <Link
+                                    key={link.name}
+                                    to={link.href}
+                                    className={`px-2 sm:px-3 py-2 text-xs sm:text-sm font-semibold uppercase tracking-wider transition-colors rounded-lg ${
+                                        isActive
+                                            ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20'
+                                            : 'text-slate-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-slate-100 dark:hover:bg-slate-800/50'
+                                    }`}
                                 >
-                                    {link.name}
-                                </a>
-                            ) : (
-                                <Link key={link.name} to={link.href} className={className}>
                                     {link.name}
                                 </Link>
                             );
@@ -102,21 +95,18 @@ const Header: React.FC<HeaderProps> = ({ activeSection }) => {
                     >
                         <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 flex flex-col items-center">
                             {NAV_LINKS.map(link => {
-                                const isSection = link.href.startsWith('#');
-                                const sectionId = link.href.substring(1);
-                                const mappedSectionId = sectionId === 'skills' ? 'expertise' : sectionId;
-                                const className = `block px-3 py-3 rounded-lg text-base font-semibold tracking-wide transition-colors w-full text-center cursor-pointer ${activeSection === mappedSectionId ? 'text-white bg-blue-500 dark:bg-blue-600 dark:shadow-lg dark:shadow-blue-500/30' : 'text-slate-600 dark:text-gray-200 hover:text-blue-500 hover:bg-slate-100 dark:hover:bg-slate-800/50 dark:hover:text-blue-400'}`;
-                                return isSection ? (
-                                    <a 
-                                        key={link.name} 
-                                        href={link.href} 
-                                        onClick={(e) => onSectionClick(e, link.href)} 
-                                        className={className}
+                                const isActive = isLinkActive(link.href);
+                                return (
+                                    <Link
+                                        key={link.name}
+                                        to={link.href}
+                                        onClick={closeMenu}
+                                        className={`block px-3 py-3 rounded-lg text-base font-semibold tracking-wide transition-colors w-full text-center ${
+                                            isActive
+                                                ? 'text-white bg-blue-600 dark:bg-blue-600 dark:shadow-lg dark:shadow-blue-500/30'
+                                                : 'text-slate-600 dark:text-gray-200 hover:text-blue-600 hover:bg-slate-100 dark:hover:bg-slate-800/50 dark:hover:text-blue-400'
+                                        }`}
                                     >
-                                        {link.name}
-                                    </a>
-                                ) : (
-                                    <Link key={link.name} to={link.href} onClick={closeMenu} className={className}>
                                         {link.name}
                                     </Link>
                                 );

@@ -80,14 +80,12 @@ const PaletteIcon: React.FC<IconProps> = (props) => (
 
 // --- NAVIGATION ---
 export const NAV_LINKS = [
-    { name: 'Home', href: '#home' },
-    { name: 'About', href: '#about' },
-    { name: 'Skills', href: '#skills' },
-    { name: 'Journey', href: '#journey' },
-    { name: 'Projects', href: '#projects' },
+    { name: 'Home', href: '/' },
+    { name: 'About', href: '/about' },
+    { name: 'Services', href: '/services' },
+    { name: 'Projects', href: '/projects' },
     { name: 'Blog', href: '/blog' },
-    { name: 'Testimonials', href: '#testimonials' },
-    { name: 'Contact', href: '#contact' },
+    { name: 'Contact', href: '/contact' },
 ];
 
 // --- STATS ---
