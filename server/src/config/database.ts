@@ -4,7 +4,7 @@ import mongoose from 'mongoose';
 // Initialize Prisma only when needed (lazy loading)
 let _PrismaClient: any = null;
 
-export type DatabaseType = 'mongodb' | 'postgresql';
+export type DatabaseType = 'mongodb' | 'postgresql' | 'none';
 
 let prismaClient: any = null;
 let databaseType: DatabaseType | null = null;
@@ -42,7 +42,8 @@ export const connectDatabase = async (): Promise<void> => {
     databaseType = 'mongodb';
     await connectMongoDB('mongodb://localhost:27017/portfolio');
   } else {
-    throw new Error('No database connection string found. Set MONGODB_URI (MongoDB) or DATABASE_URL (PostgreSQL).');
+    databaseType = 'none';
+    console.warn('⚠️  No database URL configured. Running in Firebase-first mode without backend DB persistence.');
   }
 };
 
@@ -113,4 +114,3 @@ export const disconnectDatabase = async (): Promise<void> => {
     await prismaClient.$disconnect();
   }
 };
-

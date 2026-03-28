@@ -1,9 +1,21 @@
 import express, { Request, Response } from 'express';
 import { body, validationResult } from 'express-validator';
+import mongoose from 'mongoose';
 import ContactMessage from '../models/ContactMessage.model.js';
 import { authenticate, AuthRequest } from '../middleware/auth.middleware.js';
 
 const router = express.Router();
+
+const getClientIp = (req: Request): string => {
+  const forwarded = req.headers['x-forwarded-for'];
+  if (typeof forwarded === 'string' && forwarded.length > 0) {
+    return forwarded.split(',')[0].trim();
+  }
+  if (Array.isArray(forwarded) && forwarded.length > 0) {
+    return forwarded[0].trim();
+  }
+  return req.ip || req.socket.remoteAddress || 'unknown';
+};
 
 // Submit contact form (public)
 router.post('/submit', [
@@ -25,13 +37,16 @@ router.post('/submit', [
     }
 
     const { name, email, phone, subject, message, turnstileToken } = req.body;
-    const ip = req.ip || req.headers['x-forwarded-for'] || req.socket.remoteAddress || 'unknown';
-    const userAgent = req.headers['user-agent'] || 'unknown';
+    const ip = getClientIp(req);
+    const userAgent = typeof req.headers['user-agent'] === 'string' ? req.headers['user-agent'] : 'unknown';
 
     // Verify Cloudflare Turnstile
     const secret = process.env.TURNSTILE_SECRET;
     if (!secret) {
-      console.warn('TURNSTILE_SECRET not set — skipping verification');
+      if (process.env.NODE_ENV === 'production') {
+        return res.status(503).json({ success: false, message: 'Contact form is temporarily unavailable.' });
+      }
+      console.warn('TURNSTILE_SECRET not set — skipping verification in development');
     } else {
       const verifyRes = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
         method: 'POST',
@@ -42,6 +57,9 @@ router.post('/submit', [
           remoteip: typeof ip === 'string' ? ip : ''
         }).toString()
       });
+      if (!verifyRes.ok) {
+        return res.status(502).json({ success: false, message: 'Captcha verification failed.' });
+      }
       const outcome = await verifyRes.json() as any;
       if (!outcome.success) {
         return res.status(400).json({ success: false, message: 'Captcha verification failed' });
@@ -52,7 +70,7 @@ router.post('/submit', [
     const recentSubmission = await ContactMessage.findOne({
       $or: [
         { email, createdAt: { $gte: new Date(Date.now() - 60 * 60 * 1000) } }, // Last hour
-        { ip: ip.toString(), createdAt: { $gte: new Date(Date.now() - 15 * 60 * 1000) } } // Last 15 minutes
+        { ip, createdAt: { $gte: new Date(Date.now() - 15 * 60 * 1000) } } // Last 15 minutes
       ]
     });
 
@@ -69,7 +87,7 @@ router.post('/submit', [
       phone: phone?.trim() || undefined,
       subject: subject.trim(),
       message: message.trim(),
-      ip: ip.toString(),
+      ip,
       userAgent,
       status: 'new',
     });
@@ -100,12 +118,14 @@ router.get('/', authenticate, async (req: AuthRequest, res: Response) => {
       query.status = status;
     }
 
-    const skip = (Number(page) - 1) * Number(limit);
+    const limitNumber = Math.min(Math.max(Number(limit) || 50, 1), 100);
+    const pageNumber = Math.max(Number(page) || 1, 1);
+    const skip = (pageNumber - 1) * limitNumber;
     
     const messages = await ContactMessage.find(query)
       .populate('repliedBy', 'name email')
       .sort({ createdAt: -1 })
-      .limit(Number(limit))
+      .limit(limitNumber)
       .skip(skip);
 
     const total = await ContactMessage.countDocuments(query);
@@ -114,10 +134,10 @@ router.get('/', authenticate, async (req: AuthRequest, res: Response) => {
     res.json({
       messages,
       pagination: {
-        page: Number(page),
-        limit: Number(limit),
+        page: pageNumber,
+        limit: limitNumber,
         total,
-        pages: Math.ceil(total / Number(limit)),
+        pages: Math.ceil(total / limitNumber),
       },
       unreadCount,
     });
@@ -129,6 +149,9 @@ router.get('/', authenticate, async (req: AuthRequest, res: Response) => {
 // Get single message (admin only)
 router.get('/:id', authenticate, async (req: AuthRequest, res: Response) => {
   try {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({ message: 'Invalid message id' });
+    }
     const message = await ContactMessage.findById(req.params.id)
       .populate('repliedBy', 'name email');
 
@@ -154,6 +177,9 @@ router.patch('/:id/status', authenticate, [
   body('notes').optional().trim().isLength({ max: 1000 }).withMessage('Notes must be less than 1000 characters'),
 ], async (req: AuthRequest, res: Response) => {
   try {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({ message: 'Invalid message id' });
+    }
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
@@ -186,6 +212,9 @@ router.patch('/:id/status', authenticate, [
 // Delete message (admin only)
 router.delete('/:id', authenticate, async (req: AuthRequest, res: Response) => {
   try {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({ message: 'Invalid message id' });
+    }
     const message = await ContactMessage.findByIdAndDelete(req.params.id);
 
     if (!message) {
@@ -199,4 +228,3 @@ router.delete('/:id', authenticate, async (req: AuthRequest, res: Response) => {
 });
 
 export default router;
-

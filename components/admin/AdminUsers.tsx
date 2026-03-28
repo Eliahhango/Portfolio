@@ -26,7 +26,7 @@ const AdminUsers: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [showAddModal, setShowAddModal] = useState(false);
-  const [formData, setFormData] = useState<AddUserForm>({ email: '', name: '', role: 'User' });
+  const [formData, setFormData] = useState<AddUserForm>({ email: '', name: '', role: 'user' });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -41,7 +41,7 @@ const AdminUsers: React.FC = () => {
         id: doc.id,
         email: doc.data().email || 'N/A',
         name: doc.data().name || 'Unknown',
-        role: doc.data().role || 'User',
+        role: String(doc.data().role || 'user').toLowerCase(),
         status: doc.data().status || 'Active',
         joinDate: doc.data().joinDate || new Date().toLocaleDateString(),
       }));
@@ -70,7 +70,7 @@ const AdminUsers: React.FC = () => {
       await setDoc(doc(db, 'users', userId), {
         email: formData.email,
         name: formData.name,
-        role: formData.role,
+        role: formData.role.toLowerCase(),
         status: 'Active',
         joinDate: new Date().toLocaleDateString(),
       });
@@ -85,14 +85,14 @@ const AdminUsers: React.FC = () => {
           id: userId,
           email: formData.email,
           name: formData.name,
-          role: formData.role,
+          role: formData.role.toLowerCase(),
           status: 'Active',
           joinDate: new Date().toLocaleDateString(),
         },
       ]);
 
       // Reset form
-      setFormData({ email: '', name: '', role: 'User' });
+      setFormData({ email: '', name: '', role: 'user' });
       setShowAddModal(false);
     } catch (error: any) {
       console.error('Error adding user:', error);
@@ -316,9 +316,9 @@ const AdminUsers: React.FC = () => {
                     onChange={(e) => setFormData({ ...formData, role: e.target.value })}
                     className="w-full bg-gray-50 dark:bg-slate-700/50 border border-gray-300 dark:border-slate-600 rounded-lg px-4 py-2.5 text-gray-900 dark:text-white outline-none focus:border-blue-500 transition-colors"
                   >
-                    <option value="User">User</option>
-                    <option value="Admin">Admin</option>
-                    <option value="Moderator">Moderator</option>
+                    <option value="user">User</option>
+                    <option value="admin">Admin</option>
+                    <option value="main">Main Admin</option>
                   </select>
                 </div>
 

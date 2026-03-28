@@ -20,6 +20,24 @@
   </url>
 
   <url>
+    <loc>https://www.elitechwiz.site/case-studies</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://www.elitechwiz.site/case-studies/secureauth-platform</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://www.elitechwiz.site/case-studies/dataviz-dashboard</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
     <loc>https://www.elitechwiz.site/contact</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -27,12 +45,6 @@
 
   <url>
     <loc>https://www.elitechwiz.site/blog</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <url>
-    <loc>https://www.elitechwiz.site/case-studies</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>

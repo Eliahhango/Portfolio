@@ -193,7 +193,7 @@ const Chatbot: React.FC<ChatbotProps> = ({ onClose }) => {
                         {messages.map((msg, index) => (
                             <div key={index} className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
                                 <div className={`max-w-[80%] p-3 rounded-xl ${msg.sender === 'user' ? 'bg-blue-500 text-white' : 'bg-slate-200 dark:bg-gray-800 text-slate-800 dark:text-gray-200'}`}>
-                                    <p className="text-sm whitespace-pre-wrap" dangerouslySetInnerHTML={{__html: msg.text.replace(/\n/g, '<br />')}} />
+                                    <p className="text-sm whitespace-pre-wrap">{msg.text}</p>
                                 </div>
                             </div>
                         ))}

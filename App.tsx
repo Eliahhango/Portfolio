@@ -20,9 +20,13 @@ const HomePage = lazy(() => import('./pages/HomePage'));
 const AboutPage = lazy(() => import('./pages/AboutPage'));
 const Services = lazy(() => import('./pages/Services'));
 const ProjectsPage = lazy(() => import('./pages/ProjectsPage'));
+const CaseStudies = lazy(() => import('./pages/CaseStudies'));
+const CaseStudyPost = lazy(() => import('./pages/CaseStudyPost'));
 const Blog = lazy(() => import('./pages/Blog'));
 const BlogPost = lazy(() => import('./pages/BlogPost'));
 const ContactPage = lazy(() => import('./pages/ContactPage'));
+const Booking = lazy(() => import('./pages/Booking'));
+const Downloads = lazy(() => import('./pages/Downloads'));
 const Admin = lazy(() => import('./pages/Admin'));
 
 // Lazy load service detail pages
@@ -122,9 +126,13 @@ const AppContent: React.FC = () => {
             <Route path="/services/system-architecture" element={<SystemArchitecture />} />
             <Route path="/services/code-auditing" element={<CodeAuditing />} />
             <Route path="/projects" element={<ProjectsPage />} />
+            <Route path="/case-studies" element={<CaseStudies />} />
+            <Route path="/case-studies/:slug" element={<CaseStudyPost />} />
             <Route path="/blog" element={<Blog />} />
             <Route path="/blog/:slug" element={<BlogPost />} />
             <Route path="/contact" element={<ContactPage />} />
+            <Route path="/booking" element={<Booking />} />
+            <Route path="/downloads" element={<Downloads />} />
             <Route path="/admin" element={<Admin />} />
             <Route path="/terms" element={<Terms />} />
             <Route path="/privacy" element={<Privacy />} />

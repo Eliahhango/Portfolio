@@ -2,11 +2,16 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
     
-    // Helper function to check if user is admin
-    // This assumes users have a 'role' field set to 'admin'
+    // Helper: signed-in check
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    // Helper: admin role check from users/{uid}
     function isAdmin() {
-      return request.auth != null && 
-        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+      return isSignedIn()
+        && exists(/databases/$(database)/documents/users/$(request.auth.uid))
+        && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role in ['admin', 'main', 'Admin', 'Main'];
     }
     
     // Users collection - admin only
@@ -14,9 +19,21 @@ service cloud.firestore {
       allow read, write: if isAdmin();
     }
     
-    // Posts collection - read if published, write if admin
+    // Posts collection - public read for published, full access for admin
     match /posts/{document=**} {
-      allow read: if resource.data.published == true;
+      allow read: if resource.data.published == true || isAdmin();
+      allow write: if isAdmin();
+    }
+
+    // Projects collection - public read for published, full access for admin
+    match /projects/{document=**} {
+      allow read: if resource.data.published == true || isAdmin();
+      allow write: if isAdmin();
+    }
+
+    // Services collection - public read for published, full access for admin
+    match /services/{document=**} {
+      allow read: if resource.data.published == true || isAdmin();
       allow write: if isAdmin();
     }
     
@@ -25,10 +42,14 @@ service cloud.firestore {
       allow read, write: if isAdmin();
     }
     
-    // Settings collection - read by authenticated users, write by admin
+    // Activity log collection - admin only
+    match /activities/{document=**} {
+      allow read, write: if isAdmin();
+    }
+
+    // Settings collection - admin only
     match /settings/{document=**} {
-      allow read: if request.auth != null;
-      allow write: if isAdmin();
+      allow read, write: if isAdmin();
     }
     
     // Default deny all other access

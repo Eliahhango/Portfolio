@@ -1,0 +1,33 @@
+---
+title: "DataViz Dashboard - Business Intelligence Visualization Platform"
+summary: "Building a high-performance analytics dashboard for cross-team decision-making."
+date: "2025-08-18"
+tags:
+  - analytics
+  - dashboards
+  - react
+  - performance
+cover: "https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+slug: dataviz-dashboard
+---
+
+## Problem
+The product team needed a single analytics workspace that combined data from sales, product usage, and incident logs.
+
+## Solution
+I designed and implemented a modular dashboard architecture with role-based views, reusable chart blocks, and query presets for each department.
+
+Key implementation areas:
+- Built a component-driven chart system with lazy-loaded sections for faster first render.
+- Added filter persistence and saved views so teams could keep their workflows.
+- Introduced strict typing and data validation before visualization.
+
+## Security and Reliability
+- Enforced authenticated access for internal reporting views.
+- Added defensive input handling on dynamic query filters.
+- Implemented observability hooks for latency and failed-query monitoring.
+
+## Impact
+- Reduced monthly manual reporting effort by 60%.
+- Cut median dashboard load time by 42%.
+- Increased weekly active usage from 38% to 76% across target teams.

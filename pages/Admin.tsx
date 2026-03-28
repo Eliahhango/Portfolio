@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { LogOut, BarChart3, Users, Settings, FileText, Bell, Search, Menu, Activity } from 'lucide-react';
-import { auth } from '../firebase.js';
-import { signOut, onAuthStateChanged } from 'firebase/auth';
+import { auth, db } from '../firebase.js';
+import { signOut, onAuthStateChanged, type User } from 'firebase/auth';
+import { doc, getDoc } from 'firebase/firestore';
 import { logError, getUserFriendlyError } from '../utils/errorHandler.js';
 import AdminDashboard from '../components/admin/AdminDashboard.js';
 import AdminUsers from '../components/admin/AdminUsers.js';
@@ -25,10 +26,38 @@ const Admin: React.FC = () => {
   useEffect(() => {
     try {
       const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-        if (currentUser) {
-          setUser(currentUser);
-        }
-        setLoading(false);
+        const verifyAccess = async (candidate: User | null) => {
+          if (!candidate) {
+            setUser(null);
+            setError(null);
+            setLoading(false);
+            return;
+          }
+
+          try {
+            const userRef = doc(db, 'users', candidate.uid);
+            const userSnap = await getDoc(userRef);
+            const role = String(userSnap.data()?.role || '').toLowerCase();
+
+            if (role === 'admin' || role === 'main') {
+              setUser(candidate);
+              setError(null);
+            } else {
+              await signOut(auth).catch(() => {});
+              setUser(null);
+              setError('Your account does not have admin access.');
+            }
+          } catch (error: any) {
+            logError('Admin.verifyAccess', error);
+            await signOut(auth).catch(() => {});
+            setUser(null);
+            setError('Unable to verify admin permissions.');
+          } finally {
+            setLoading(false);
+          }
+        };
+
+        void verifyAccess(currentUser);
       });
 
       return unsubscribe;

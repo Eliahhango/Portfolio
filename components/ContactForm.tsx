@@ -50,10 +50,12 @@ const ContactForm: React.FC = () => {
 
       setSubmitted(true);
       setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
-      // Reset the token by reloading the widget container
-      const container = document.getElementById('cf-turnstile-container');
-      if (container) {
-        container.innerHTML = `<div class="cf-turnstile" data-sitekey="${siteKey}" data-theme="auto"></div>`;
+      if (tokenInput) {
+        tokenInput.value = '';
+      }
+      const turnstile = (window as Window & { turnstile?: { reset: () => void } }).turnstile;
+      if (typeof turnstile?.reset === 'function') {
+        turnstile.reset();
       }
       
       setTimeout(() => {
@@ -183,4 +185,3 @@ const ContactForm: React.FC = () => {
 };
 
 export default ContactForm;
-

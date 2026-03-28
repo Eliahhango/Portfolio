@@ -14,9 +14,12 @@ Backend server for the EliTechWiz Portfolio admin dashboard.
    ```env
    PORT=5000
    MONGODB_URI=mongodb://localhost:27017/portfolio
-   JWT_SECRET=your-super-secret-jwt-key-change-this-in-production
+   ADMIN_API_TOKEN=replace_with_a_long_random_token
+   TURNSTILE_SECRET=replace_with_turnstile_secret
+   FRONTEND_URL=https://www.elitechwiz.site
    NODE_ENV=development
    ```
+   If you are using Firebase-only data flows, you can leave `MONGODB_URI`/`DATABASE_URL` unset and the API will run in Firebase-first mode (DB-backed routes return `503` instead of crashing).
 
 3. **Start MongoDB:**
    - Make sure MongoDB is running on your system
@@ -27,41 +30,26 @@ Backend server for the EliTechWiz Portfolio admin dashboard.
    npm run dev
    ```
 
-## First Time Setup
-
-1. **Create Main Admin:**
-   - The first admin registered will automatically be the main admin
-   - Use the registration endpoint: `POST /api/auth/register`
-   - After the first admin is created, registration is closed
-
 ## API Endpoints
 
-### Authentication
-- `POST /api/auth/register` - Register first admin (main admin)
-- `POST /api/auth/login` - Login admin
+### Public
+- `POST /api/contact/submit` - Contact form submission (Turnstile-protected)
+- `POST /api/visitors/track` - Visitor analytics event
+- `POST /api/newsletter/subscribe` - Newsletter signup
+- `POST /api/newsletter/confirm` - Newsletter confirmation
+- `GET /api/blog` - Blog listing
+- `GET /api/blog/:slug` - Blog post
+- `GET /api/services` - Active services
+- `GET /api/content` - Content listing
 
-### Admin Management (Main Admin Only)
-- `GET /api/admin` - Get all admins
-- `POST /api/admin` - Create new admin
-- `PUT /api/admin/:id` - Update admin
-- `DELETE /api/admin/:id` - Delete admin
-- `GET /api/admin/me` - Get current admin info
-
-### Services
-- `GET /api/services` - Get all active services (public)
-- `GET /api/services/admin` - Get all services (admin)
-- `GET /api/services/:id` - Get single service
-- `POST /api/services` - Create service (admin)
-- `PUT /api/services/:id` - Update service (admin)
-- `DELETE /api/services/:id` - Delete service (admin)
-
-### Content
-- `GET /api/content` - Get all content
-- `GET /api/content/section/:section` - Get content by section
-- `GET /api/content/:key` - Get single content item
-- `POST /api/content` - Create/update content (admin)
-- `PUT /api/content/:key` - Update content (admin)
-- `DELETE /api/content/:key` - Delete content (admin)
+### Protected Admin (Bearer token required)
+- `GET /api/contact` - List contact messages
+- `GET /api/contact/:id` - Get contact message details
+- `PATCH /api/contact/:id/status` - Update contact message status
+- `DELETE /api/contact/:id` - Delete contact message
+- `GET /api/visitors/analytics` - Analytics summary
+- `GET /api/visitors/recent` - Recent visits
+- `GET /api/audit` - Audit activity list (main admin only)
 
 ## Admin Roles
 
@@ -70,7 +58,7 @@ Backend server for the EliTechWiz Portfolio admin dashboard.
 
 ## Security
 
-- All admin routes require JWT authentication
-- Passwords are hashed using bcrypt
-- Main admin cannot be deleted or modified by other admins
-
+- Protected routes require `Authorization: Bearer <ADMIN_API_TOKEN>`
+- Main-admin-only routes support separate `MAIN_ADMIN_API_TOKEN(S)`
+- Contact submissions enforce Turnstile in production
+- Rate limits are enabled on API, contact, newsletter, and visitor tracking endpoints

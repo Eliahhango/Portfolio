@@ -11,9 +11,11 @@ const routes = [
   '/',
   '/projects',
   '/services',
+  '/case-studies',
+  '/case-studies/secureauth-platform',
+  '/case-studies/dataviz-dashboard',
   '/contact',
   '/blog',
-  '/case-studies',
   '/booking',
   '/downloads'
 ];
@@ -42,5 +44,4 @@ ${urls}
 }
 
 buildSitemap();
-
 

@@ -1,15 +1,46 @@
 import express, { Request, Response } from 'express';
+import crypto from 'crypto';
+import { body, query, validationResult } from 'express-validator';
 import Visitor from '../models/Visitor.model.js';
 import { authenticate, AuthRequest } from '../middleware/auth.middleware.js';
 
 const router = express.Router();
 
+const getClientIp = (req: Request): string => {
+  const forwarded = req.headers['x-forwarded-for'];
+  if (typeof forwarded === 'string' && forwarded.length > 0) {
+    return forwarded.split(',')[0].trim();
+  }
+  if (Array.isArray(forwarded) && forwarded.length > 0) {
+    return forwarded[0].trim();
+  }
+  return req.ip || req.socket.remoteAddress || 'unknown';
+};
+
 // Track visitor (public endpoint)
-router.post('/track', async (req: Request, res: Response) => {
+router.post('/track', [
+  body('path').optional().isString().isLength({ min: 1, max: 2048 }),
+  body('referer').optional().isString().isLength({ max: 2048 }),
+  body('sessionId').optional().isString().isLength({ min: 8, max: 128 }).matches(/^[a-zA-Z0-9._:-]+$/),
+  body('duration').optional().isInt({ min: 0, max: 86400 }),
+], async (req: Request, res: Response) => {
   try {
-    const { path, referer, sessionId, duration } = req.body;
-    const ip = req.ip || req.headers['x-forwarded-for'] || req.socket.remoteAddress || 'unknown';
-    const userAgent = req.headers['user-agent'] || 'unknown';
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ success: false, errors: errors.array() });
+    }
+
+    const { path: requestPath, referer, sessionId, duration } = req.body as {
+      path?: string;
+      referer?: string;
+      sessionId?: string;
+      duration?: number;
+    };
+    const ip = getClientIp(req);
+    const userAgent = typeof req.headers['user-agent'] === 'string' ? req.headers['user-agent'] : 'unknown';
+    const resolvedPath = requestPath && requestPath.startsWith('/') ? requestPath : '/';
+    const resolvedSessionId = sessionId || crypto.randomUUID();
+    const resolvedDuration = Number.isFinite(Number(duration)) ? Number(duration) : undefined;
 
     // Parse user agent (simple parsing)
     const device = /Mobile|Android|iPhone|iPad/.test(userAgent) ? 'Mobile' : 'Desktop';
@@ -19,29 +50,29 @@ router.post('/track', async (req: Request, res: Response) => {
                    userAgent.includes('Edge') ? 'Edge' : 'Other';
     const os = userAgent.includes('Windows') ? 'Windows' :
               userAgent.includes('Mac') ? 'macOS' :
-              userAgent.includes('Linux') ? 'Linux' :
               userAgent.includes('Android') ? 'Android' :
+              userAgent.includes('Linux') ? 'Linux' :
               userAgent.includes('iOS') ? 'iOS' : 'Other';
 
     // Check if this is a new visitor (by IP and session)
     const existingVisitor = await Visitor.findOne({
-      ip: ip.toString(),
-      sessionId,
+      ip,
+      sessionId: resolvedSessionId,
       visitedAt: { $gte: new Date(Date.now() - 24 * 60 * 60 * 1000) } // Last 24 hours
     });
 
     const visitor = new Visitor({
-      ip: ip.toString(),
+      ip,
       userAgent,
       referer: referer || req.headers.referer || undefined,
-      path: path || '/',
+      path: resolvedPath,
       device,
       browser,
       os,
       isNewVisitor: !existingVisitor,
-      sessionId: sessionId || `session_${Date.now()}_${Math.random()}`,
+      sessionId: resolvedSessionId,
       visitedAt: new Date(),
-      duration,
+      duration: resolvedDuration,
     });
 
     await visitor.save();
@@ -58,8 +89,14 @@ router.post('/track', async (req: Request, res: Response) => {
 });
 
 // Get visitor analytics (admin only)
-router.get('/analytics', authenticate, async (req: AuthRequest, res: Response) => {
+router.get('/analytics', authenticate, [
+  query('period').optional().isIn(['24h', '7d', '30d', '90d']),
+], async (req: AuthRequest, res: Response) => {
   try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ message: 'Validation failed', errors: errors.array() });
+    }
     const { period = '7d' } = req.query;
     
     let startDate = new Date();
@@ -149,12 +186,19 @@ router.get('/analytics', authenticate, async (req: AuthRequest, res: Response) =
 });
 
 // Get recent visitors (admin only)
-router.get('/recent', authenticate, async (req: AuthRequest, res: Response) => {
+router.get('/recent', authenticate, [
+  query('limit').optional().isInt({ min: 1, max: 100 }),
+], async (req: AuthRequest, res: Response) => {
   try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ message: 'Validation failed', errors: errors.array() });
+    }
     const { limit = 50 } = req.query;
+    const limitNumber = Math.min(Math.max(Number(limit) || 50, 1), 100);
     const visitors = await Visitor.find()
       .sort({ visitedAt: -1 })
-      .limit(Number(limit))
+      .limit(limitNumber)
       .select('-__v');
 
     res.json(visitors);
@@ -164,4 +208,3 @@ router.get('/recent', authenticate, async (req: AuthRequest, res: Response) => {
 });
 
 export default router;
-

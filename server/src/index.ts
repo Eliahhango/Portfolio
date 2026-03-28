@@ -14,6 +14,7 @@ import visitorRoutes from './routes/visitor.routes.js';
 import contactRoutes from './routes/contact.routes.js';
 import newsletterRoutes from './routes/newsletter.routes.js';
 import blogRoutes from './routes/blog.routes.js';
+import auditRoutes from './routes/audit.routes.js';
 import BlogPost from './models/BlogPost.model.js';
 
 dotenv.config();
@@ -23,6 +24,16 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+app.disable('x-powered-by');
+
+const requireDatabase: express.RequestHandler = (req, res, next) => {
+  if (getDatabaseType() === 'none') {
+    return res.status(503).json({
+      message: 'Backend database is not configured. This endpoint is disabled in Firebase-first mode.',
+    });
+  }
+  next();
+};
 
 // Security Middleware
 app.use(helmet({
@@ -126,9 +137,23 @@ const contactLimiter = rateLimit({
   message: 'Too many contact form submissions, please try again later.',
 });
 
+const visitorTrackLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 120, // Per-IP cap for telemetry events
+  message: 'Too many tracking requests, please slow down.',
+});
+
+const newsletterLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000, // 1 hour
+  max: 20,
+  message: 'Too many newsletter requests, please try again later.',
+});
+
 // Apply rate limiting
 app.use('/api/', limiter);
 app.use('/api/contact', contactLimiter);
+app.use('/api/visitors/track', visitorTrackLimiter);
+app.use('/api/newsletter', newsletterLimiter);
 
 // Body parsing middleware
 app.use(express.json({ limit: '10mb' }));
@@ -202,16 +227,21 @@ connectDatabase()
   });
 
 // API Routes (must come before static files)
-app.use('/api/services', serviceRoutes);
-app.use('/api/content', contentRoutes);
-app.use('/api/visitors', visitorRoutes);
-app.use('/api/contact', contactRoutes);
-app.use('/api/newsletter', newsletterRoutes);
-app.use('/api/blog', blogRoutes);
+app.use('/api/services', requireDatabase, serviceRoutes);
+app.use('/api/content', requireDatabase, contentRoutes);
+app.use('/api/visitors', requireDatabase, visitorRoutes);
+app.use('/api/contact', requireDatabase, contactRoutes);
+app.use('/api/newsletter', requireDatabase, newsletterRoutes);
+app.use('/api/blog', requireDatabase, blogRoutes);
+app.use('/api/audit', requireDatabase, auditRoutes);
 
 // Health check
 app.get('/api/health', (req: express.Request, res: express.Response) => {
-  res.json({ status: 'ok', message: 'Server is running' });
+  res.json({
+    status: 'ok',
+    message: 'Server is running',
+    database: getDatabaseType() || 'none',
+  });
 });
 
 // Serve static files from React build (in production)

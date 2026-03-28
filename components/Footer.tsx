@@ -83,6 +83,21 @@ const Footer: React.FC<FooterProps> = (props) => {
                 </Link>
               </li>
               <li>
+                <Link to="/case-studies" className="text-sm text-slate-600 dark:text-gray-400 hover:text-blue-500 dark:hover:text-blue-400 transition-colors">
+                  Case Studies
+                </Link>
+              </li>
+              <li>
+                <Link to="/booking" className="text-sm text-slate-600 dark:text-gray-400 hover:text-blue-500 dark:hover:text-blue-400 transition-colors">
+                  Booking
+                </Link>
+              </li>
+              <li>
+                <Link to="/downloads" className="text-sm text-slate-600 dark:text-gray-400 hover:text-blue-500 dark:hover:text-blue-400 transition-colors">
+                  Downloads
+                </Link>
+              </li>
+              <li>
                 <Link to="/contact" className="text-sm text-slate-600 dark:text-gray-400 hover:text-blue-500 dark:hover:text-blue-400 transition-colors">
                   Contact
                 </Link>
