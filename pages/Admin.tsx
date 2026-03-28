@@ -15,10 +15,15 @@ import AdminLogin from './AdminLogin.js';
 
 type AdminTab = 'dashboard' | 'users' | 'analytics' | 'content' | 'activities' | 'settings';
 
-const ADMIN_EMAIL_ALLOWLIST = String(import.meta.env.VITE_ADMIN_EMAIL_ALLOWLIST || '')
-  .split(',')
-  .map((entry) => entry.trim().toLowerCase())
-  .filter(Boolean);
+const BOOTSTRAP_ADMIN_EMAILS = ['hangoeliah@gmail.com', 'contact@elitechwiz.com'];
+
+const ADMIN_EMAIL_ALLOWLIST = Array.from(new Set([
+  ...BOOTSTRAP_ADMIN_EMAILS,
+  ...String(import.meta.env.VITE_ADMIN_EMAIL_ALLOWLIST || '')
+    .split(',')
+    .map((entry) => entry.trim().toLowerCase())
+    .filter(Boolean),
+]));
 
 const normalizeRole = (value: unknown): string => String(value || '').toLowerCase();
 
@@ -41,9 +46,18 @@ const Admin: React.FC = () => {
             return;
           }
 
+          const email = String(candidate.email || '').toLowerCase();
+
           try {
-            const email = String(candidate.email || '').toLowerCase();
             if (email && ADMIN_EMAIL_ALLOWLIST.includes(email)) {
+              setUser(candidate);
+              setError(null);
+              return;
+            }
+
+            const tokenResult = await candidate.getIdTokenResult().catch(() => null);
+            const tokenRole = normalizeRole(tokenResult?.claims?.role);
+            if (tokenRole === 'admin' || tokenRole === 'main') {
               setUser(candidate);
               setError(null);
               return;
@@ -79,6 +93,11 @@ const Admin: React.FC = () => {
             setError('Your account does not have admin access.');
           } catch (error: any) {
             logError('Admin.verifyAccess', error);
+            if (email && ADMIN_EMAIL_ALLOWLIST.includes(email)) {
+              setUser(candidate);
+              setError(null);
+              return;
+            }
             await signOut(auth).catch(() => {});
             setUser(null);
             setError('Unable to verify admin permissions. Check Firestore rules and your users role record.');
