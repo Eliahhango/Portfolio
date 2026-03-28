@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import { db } from '../../firebase.js';
+import { doc, serverTimestamp, setDoc } from 'firebase/firestore';
 
 const NewsletterCTA: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -10,22 +12,31 @@ const NewsletterCTA: React.FC = () => {
     setStatus('loading');
 
     try {
-      // Replace with your actual newsletter API endpoint
-      const apiUrl = import.meta.env.VITE_API_URL || '';
-      const response = await fetch(`${apiUrl}/api/newsletter`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email }),
-      });
-
-      if (response.ok) {
-        setStatus('success');
-        setEmail('');
-        setTimeout(() => setStatus('idle'), 4000);
-      } else {
-        setStatus('error');
-        setTimeout(() => setStatus('idle'), 3000);
+      const normalizedEmail = email.trim().toLowerCase();
+      if (!normalizedEmail) {
+        throw new Error('Email is required');
       }
+      const apiUrl = String(import.meta.env.VITE_API_URL || '').trim().replace(/\/+$/, '');
+      if (apiUrl) {
+        const response = await fetch(`${apiUrl}/api/newsletter/subscribe`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: normalizedEmail }),
+        });
+        if (!response.ok) {
+          throw new Error('Subscription failed');
+        }
+      } else {
+        await setDoc(doc(db, 'newsletter_subscribers', normalizedEmail), {
+          email: normalizedEmail,
+          source: 'website',
+          createdAt: serverTimestamp(),
+        }, { merge: true });
+      }
+
+      setStatus('success');
+      setEmail('');
+      setTimeout(() => setStatus('idle'), 4000);
     } catch {
       setStatus('error');
       setTimeout(() => setStatus('idle'), 3000);

@@ -7,16 +7,89 @@ service cloud.firestore {
       return request.auth != null;
     }
 
-    // Helper: admin role check from users/{uid}
-    function isAdmin() {
+    // Helper: bootstrap admin emails (for initial setup / migrations)
+    function isBootstrapAdminEmail() {
       return isSignedIn()
-        && exists(/databases/$(database)/documents/users/$(request.auth.uid))
-        && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role in ['admin', 'main', 'Admin', 'Main'];
+        && request.auth.token.email != null
+        && request.auth.token.email in ['hangoeliah@gmail.com', 'contact@elitechwiz.com'];
+    }
+
+    // Helper: admin role check from users/{uid} or custom claims/bootstrap email
+    function isAdmin() {
+      return isBootstrapAdminEmail()
+        || (
+          isSignedIn()
+          && request.auth.token.role in ['admin', 'main']
+        )
+        || (
+          isSignedIn()
+          && exists(/databases/$(database)/documents/users/$(request.auth.uid))
+          && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role in ['admin', 'main', 'Admin', 'Main']
+        );
+    }
+
+    function isOwnProfile(userId) {
+      return isSignedIn()
+        && (
+          request.auth.uid == userId
+          || (
+            request.auth.token.email != null
+            && resource.data.email is string
+            && resource.data.email == request.auth.token.email
+          )
+        );
+    }
+
+    function isValidEmail(value) {
+      return value is string
+        && value.size() >= 5
+        && value.size() <= 254
+        && value.matches('^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$');
+    }
+
+    function isValidContactSubmission() {
+      return request.resource.data.keys().hasOnly([
+        'name', 'email', 'phone', 'subject', 'message',
+        'turnstileToken', 'status', 'source', 'createdAt'
+      ])
+      && request.resource.data.keys().hasAll([
+        'name', 'email', 'subject', 'message', 'turnstileToken',
+        'status', 'source', 'createdAt'
+      ])
+      && request.resource.data.name is string
+      && request.resource.data.name.size() >= 2
+      && request.resource.data.name.size() <= 100
+      && isValidEmail(request.resource.data.email)
+      && (
+        !request.resource.data.keys().hasAny(['phone'])
+        || request.resource.data.phone is string
+        || request.resource.data.phone == null
+      )
+      && request.resource.data.subject is string
+      && request.resource.data.subject.size() >= 3
+      && request.resource.data.subject.size() <= 200
+      && request.resource.data.message is string
+      && request.resource.data.message.size() >= 10
+      && request.resource.data.message.size() <= 5000
+      && request.resource.data.turnstileToken is string
+      && request.resource.data.turnstileToken.size() >= 20
+      && request.resource.data.status == 'new'
+      && request.resource.data.source == 'website'
+      && request.resource.data.createdAt is timestamp;
+    }
+
+    function isValidNewsletterSubmission() {
+      return request.resource.data.keys().hasOnly(['email', 'source', 'createdAt'])
+      && request.resource.data.keys().hasAll(['email', 'source', 'createdAt'])
+      && isValidEmail(request.resource.data.email)
+      && request.resource.data.source == 'website'
+      && request.resource.data.createdAt is timestamp;
     }
     
-    // Users collection - admin only
-    match /users/{document=**} {
-      allow read, write: if isAdmin();
+    // Users collection
+    match /users/{userId} {
+      allow read: if isAdmin() || isOwnProfile(userId);
+      allow write: if isAdmin();
     }
     
     // Posts collection - public read for published, full access for admin
@@ -50,6 +123,19 @@ service cloud.firestore {
     // Settings collection - admin only
     match /settings/{document=**} {
       allow read, write: if isAdmin();
+    }
+
+    // Contact messages (public create; admin read/manage)
+    match /contact_messages/{messageId} {
+      allow create: if isValidContactSubmission();
+      allow read, update, delete: if isAdmin();
+    }
+
+    // Newsletter subscriptions (public create; admin read/manage)
+    match /newsletter_subscribers/{subscriberId} {
+      allow create, update: if isValidNewsletterSubmission()
+        && subscriberId == request.resource.data.email;
+      allow read, delete: if isAdmin();
     }
     
     // Default deny all other access

@@ -60,16 +60,17 @@ const AdminUsers: React.FC = () => {
     setIsSubmitting(true);
 
     try {
-      if (!formData.email || !formData.name) {
+      if (!formData.email.trim() || !formData.name.trim()) {
         setError('Email and name are required');
         setIsSubmitting(false);
         return;
       }
 
-      const userId = `user_${Date.now()}`;
+      const normalizedEmail = formData.email.trim().toLowerCase();
+      const userId = normalizedEmail;
       await setDoc(doc(db, 'users', userId), {
-        email: formData.email,
-        name: formData.name,
+        email: normalizedEmail,
+        name: formData.name.trim(),
         role: formData.role.toLowerCase(),
         status: 'Active',
         joinDate: new Date().toLocaleDateString(),
@@ -83,8 +84,8 @@ const AdminUsers: React.FC = () => {
         ...users,
         {
           id: userId,
-          email: formData.email,
-          name: formData.name,
+          email: normalizedEmail,
+          name: formData.name.trim(),
           role: formData.role.toLowerCase(),
           status: 'Active',
           joinDate: new Date().toLocaleDateString(),

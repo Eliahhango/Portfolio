@@ -1,0 +1,7 @@
+Contact: mailto:contact@elitechwiz.com
+Contact: mailto:hangoeliah@gmail.com
+Expires: 2027-03-29T00:00:00.000Z
+Preferred-Languages: en
+Canonical: https://www.elitechwiz.site/.well-known/security.txt
+Policy: https://www.elitechwiz.site/security
+Hiring: https://www.elitechwiz.site/contact

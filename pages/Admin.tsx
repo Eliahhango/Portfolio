@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { LogOut, BarChart3, Users, Settings, FileText, Bell, Search, Menu, Activity } from 'lucide-react';
 import { auth, db } from '../firebase.js';
 import { signOut, onAuthStateChanged, type User } from 'firebase/auth';
-import { doc, getDoc } from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs, limit, query, where } from 'firebase/firestore';
 import { logError, getUserFriendlyError } from '../utils/errorHandler.js';
 import AdminDashboard from '../components/admin/AdminDashboard.js';
 import AdminUsers from '../components/admin/AdminUsers.js';
@@ -14,6 +14,13 @@ import AdminActivity from '../components/admin/AdminActivity.js';
 import AdminLogin from './AdminLogin.js';
 
 type AdminTab = 'dashboard' | 'users' | 'analytics' | 'content' | 'activities' | 'settings';
+
+const ADMIN_EMAIL_ALLOWLIST = String(import.meta.env.VITE_ADMIN_EMAIL_ALLOWLIST || '')
+  .split(',')
+  .map((entry) => entry.trim().toLowerCase())
+  .filter(Boolean);
+
+const normalizeRole = (value: unknown): string => String(value || '').toLowerCase();
 
 const Admin: React.FC = () => {
   const [activeTab, setActiveTab] = useState<AdminTab>('dashboard');
@@ -35,23 +42,46 @@ const Admin: React.FC = () => {
           }
 
           try {
-            const userRef = doc(db, 'users', candidate.uid);
-            const userSnap = await getDoc(userRef);
-            const role = String(userSnap.data()?.role || '').toLowerCase();
-
-            if (role === 'admin' || role === 'main') {
+            const email = String(candidate.email || '').toLowerCase();
+            if (email && ADMIN_EMAIL_ALLOWLIST.includes(email)) {
               setUser(candidate);
               setError(null);
-            } else {
-              await signOut(auth).catch(() => {});
-              setUser(null);
-              setError('Your account does not have admin access.');
+              return;
             }
+
+            const userRef = doc(db, 'users', candidate.uid);
+            const userSnap = await getDoc(userRef);
+            const primaryRole = normalizeRole(userSnap.data()?.role);
+
+            if (primaryRole === 'admin' || primaryRole === 'main') {
+              setUser(candidate);
+              setError(null);
+              return;
+            }
+
+            if (email) {
+              const fallbackQuery = query(
+                collection(db, 'users'),
+                where('email', '==', email),
+                limit(1),
+              );
+              const fallbackSnap = await getDocs(fallbackQuery);
+              const fallbackRole = normalizeRole(fallbackSnap.docs[0]?.data()?.role);
+              if (fallbackRole === 'admin' || fallbackRole === 'main') {
+                setUser(candidate);
+                setError(null);
+                return;
+              }
+            }
+
+            await signOut(auth).catch(() => {});
+            setUser(null);
+            setError('Your account does not have admin access.');
           } catch (error: any) {
             logError('Admin.verifyAccess', error);
             await signOut(auth).catch(() => {});
             setUser(null);
-            setError('Unable to verify admin permissions.');
+            setError('Unable to verify admin permissions. Check Firestore rules and your users role record.');
           } finally {
             setLoading(false);
           }

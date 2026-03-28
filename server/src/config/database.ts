@@ -71,8 +71,8 @@ const connectPostgreSQL = async (url: string): Promise<void> => {
     // Dynamically import Prisma to avoid errors if not using PostgreSQL
     if (!_PrismaClient) {
       try {
-        const prismaModule = await import('@prisma/client');
-        _PrismaClient = prismaModule.PrismaClient;
+        const prismaModule: any = await import('@prisma/client');
+        _PrismaClient = prismaModule.PrismaClient || prismaModule.default?.PrismaClient;
       } catch (importError: any) {
         console.error('❌ Failed to import Prisma client:', importError.message);
         console.error('💡 Run: npx prisma generate');

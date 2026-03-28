@@ -21,19 +21,40 @@ const BlogPost: React.FC = () => {
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
+    let cancelled = false;
+    const controller = new AbortController();
+
     const fetchPost = async () => {
       try {
-        const apiUrl = import.meta.env.VITE_API_URL || '';
-        const res = await fetch(`${apiUrl}/api/blog/${slug}`);
+        const apiUrl = String(import.meta.env.VITE_API_URL || '').trim().replace(/\/+$/, '');
+        if (!apiUrl) {
+          return;
+        }
+
+        const res = await fetch(`${apiUrl}/api/blog/${encodeURIComponent(slug)}`, { signal: controller.signal });
         if (res.ok) {
           const data = await res.json();
-          setApiPost(data);
+          if (!cancelled) {
+            setApiPost(data);
+          }
+        }
+      } catch (error: any) {
+        if (error?.name !== 'AbortError') {
+          console.debug('Blog API lookup failed, falling back to local content.');
         }
       } finally {
-        setLoaded(true);
+        if (!cancelled) {
+          setLoaded(true);
+        }
       }
     };
-    fetchPost();
+
+    void fetchPost();
+
+    return () => {
+      cancelled = true;
+      controller.abort();
+    };
   }, [slug]);
 
   const entry = Object.entries(modules).find(([path, mod]) => {
@@ -112,5 +133,4 @@ const BlogPost: React.FC = () => {
 };
 
 export default BlogPost;
-
 

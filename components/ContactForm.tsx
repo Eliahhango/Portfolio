@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { MailIcon, PhoneIcon } from '../constants';
+import { db } from '../firebase.js';
+import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 
 const ContactForm: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -33,19 +35,37 @@ const ContactForm: React.FC = () => {
       if (!turnstileToken) {
         throw new Error('Please complete the CAPTCHA verification.');
       }
-      const apiUrl = import.meta.env.VITE_API_URL || '';
-      const response = await fetch(`${apiUrl}/api/contact/submit`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ ...formData, turnstileToken }),
-      });
+      const apiUrl = String(import.meta.env.VITE_API_URL || '').trim().replace(/\/+$/, '');
+      if (apiUrl) {
+        const response = await fetch(`${apiUrl}/api/contact/submit`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ ...formData, turnstileToken }),
+        });
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || 'Failed to send message');
+        let data: any = null;
+        try {
+          data = await response.json();
+        } catch {
+          data = null;
+        }
+        if (!response.ok) {
+          throw new Error(data?.message || 'Failed to send message');
+        }
+      } else {
+        await addDoc(collection(db, 'contact_messages'), {
+          name: formData.name.trim(),
+          email: formData.email.trim().toLowerCase(),
+          phone: formData.phone?.trim() || null,
+          subject: formData.subject.trim(),
+          message: formData.message.trim(),
+          turnstileToken,
+          status: 'new',
+          source: 'website',
+          createdAt: serverTimestamp(),
+        });
       }
 
       setSubmitted(true);

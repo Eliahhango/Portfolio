@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { MailIcon } from '../constants';
+import { db } from '../firebase.js';
+import { doc, serverTimestamp, setDoc } from 'firebase/firestore';
 
 const Newsletter: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -16,17 +18,31 @@ const Newsletter: React.FC = () => {
     setConfirmUrl('');
     setLoading(true);
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || '';
-      const res = await fetch(`${apiUrl}/api/newsletter/subscribe`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email })
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || 'Subscription failed');
+      const normalizedEmail = email.trim().toLowerCase();
+      if (!normalizedEmail) {
+        throw new Error('Email is required');
+      }
+      const apiUrl = String(import.meta.env.VITE_API_URL || '').trim().replace(/\/+$/, '');
+      if (apiUrl) {
+        const res = await fetch(`${apiUrl}/api/newsletter/subscribe`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: normalizedEmail })
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.message || 'Subscription failed');
+        if (data.confirmUrl) {
+          setConfirmUrl(data.confirmUrl);
+        }
+      } else {
+        await setDoc(doc(db, 'newsletter_subscribers', normalizedEmail), {
+          email: normalizedEmail,
+          source: 'website',
+          createdAt: serverTimestamp(),
+        }, { merge: true });
+      }
       setSubmitted(true);
-      setMessage('Check your email to confirm subscription.');
-      if (data.confirmUrl) setConfirmUrl(data.confirmUrl); // handy for testing
+      setMessage(apiUrl ? 'Check your email to confirm subscription.' : 'Subscribed successfully. Thanks for joining!');
       setEmail('');
     } catch (err: any) {
       setSubmitted(true);
@@ -91,4 +107,3 @@ const Newsletter: React.FC = () => {
 };
 
 export default Newsletter;
-
