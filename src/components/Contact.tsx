@@ -3,10 +3,10 @@ import { Mail, Phone, MapPin, Globe, ArrowRight, MessageSquare, Clock, Send } fr
 
 export default function Contact() {
   const contactInfo = [
-    { icon: Mail, label: 'EMAIL', value: 'ARCHITECT@ENGINEERING.COM', text: 'Our team typically responds within 24 hours.' },
-    { icon: Phone, label: 'PHONE', value: '+1 (800) ARCHITECT', text: 'Available for urgent structural inquiries.' },
-    { icon: MapPin, label: 'LOCATION', value: 'GLOBAL HEADQUARTERS', text: '123 Architectural Way, San Francisco, CA' },
-    { icon: Clock, label: 'HOURS', value: '08:00 - 18:00 PST', text: 'Monday through Friday, excluding holidays.' },
+    { icon: Mail, label: 'EMAIL', value: 'hangoeliah@outlook.com', text: 'Our team typically responds within 24 hours.' },
+    { icon: Phone, label: 'PHONE', value: '+255 688 164 510', text: 'Available for urgent structural inquiries.' },
+    { icon: MapPin, label: 'LOCATION', value: 'TANZANIA', text: 'Kibaha, Pwani, Tanzania' },
+    { icon: Clock, label: 'HOURS', value: '08:00 - 18:00 EAT', text: 'Monday through Friday, excluding holidays.' },
   ];
 
   return (
@@ -47,11 +47,13 @@ export default function Contact() {
 
             {/* Socials */}
             <div className="pt-12 border-t border-gray-100">
-              <h3 className="text-[10px] font-bold text-muted uppercase tracking-[0.3em] mb-8">Connect With Us</h3>
+              <h3 className="text-[10px] font-bold text-muted uppercase tracking-[0.3em] mb-8">Connect With EliTechWiz</h3>
               <div className="flex flex-wrap gap-6 md:gap-8 opacity-40 grayscale hover:grayscale-0 transition-all">
-                {['LINKEDIN', 'TWITTER', 'GITHUB', 'INSTAGRAM'].map((social) => (
-                  <a key={social} href="#" className="text-xs font-bold tracking-widest hover:text-accent transition-colors">{social}</a>
-                ))}
+                <a href="https://www.linkedin.com/in/eliahhango/" target="_blank" rel="noopener noreferrer" className="text-xs font-bold tracking-widest hover:text-accent transition-colors">LINKEDIN</a>
+                <a href="https://web.facebook.com/profile.php?id=100086957732931" target="_blank" rel="noopener noreferrer" className="text-xs font-bold tracking-widest hover:text-accent transition-colors">FACEBOOK</a>
+                <a href="https://github.com/Eliahhango" target="_blank" rel="noopener noreferrer" className="text-xs font-bold tracking-widest hover:text-accent transition-colors">GITHUB</a>
+                <a href="https://www.instagram.com/elitechwiz/" target="_blank" rel="noopener noreferrer" className="text-xs font-bold tracking-widest hover:text-accent transition-colors">INSTAGRAM</a>
+                <a href="https://dribbble.com/eliah-hango" target="_blank" rel="noopener noreferrer" className="text-xs font-bold tracking-widest hover:text-accent transition-colors">DRIBBBLE</a>
               </div>
             </div>
           </div>

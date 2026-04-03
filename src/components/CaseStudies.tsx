@@ -1,7 +1,7 @@
 import { motion } from 'motion/react';
 import { ArrowRight, ExternalLink, Activity, Shield, Globe } from 'lucide-react';
 
-export default function CaseStudies() {
+export default function CaseStudies({ onConsultation }: { onConsultation?: () => void }) {
   const cases = [
     {
       id: 1,
@@ -9,7 +9,7 @@ export default function CaseStudies() {
       category: 'CYBER SECURITY',
       impact: '99.9% Threat Mitigation',
       description: 'Transitioning a legacy banking infrastructure to a modern zero-trust protocol without a single second of downtime.',
-      image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=800&h=500',
+      image: 'https://picsum.photos/seed/finance/800/500',
       icon: Shield,
     },
     {
@@ -18,7 +18,7 @@ export default function CaseStudies() {
       category: 'CIVIL ENGINEERING',
       impact: '40% Energy Reduction',
       description: 'Integrating green infrastructure and IoT-enabled load monitoring into a new urban development project.',
-      image: 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?auto=format&fit=crop&q=80&w=800&h=500',
+      image: 'https://picsum.photos/seed/smartcity/800/500',
       icon: Activity,
     },
     {
@@ -27,7 +27,7 @@ export default function CaseStudies() {
       category: 'WEB ARCHITECTURE',
       impact: '200ms Latency Reduction',
       description: 'Architecting a globally distributed edge computing network to handle peak traffic of 1M+ requests per second.',
-      image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&q=80&w=800&h=500',
+      image: 'https://picsum.photos/seed/ecommerce/800/500',
       icon: Globe,
     },
   ];
@@ -93,7 +93,10 @@ export default function CaseStudies() {
           <div className="relative z-10 max-w-2xl mx-auto">
             <h3 className="text-3xl md:text-4xl font-heading font-bold tracking-tighter uppercase mb-6 md:mb-8">Ready to Architect Your Success?</h3>
             <p className="text-gray-400 mb-8 md:mb-12 text-sm md:text-base">Let's discuss how our cross-disciplinary expertise can solve your most complex structural challenges.</p>
-            <button className="w-full md:w-auto bg-accent text-white px-12 py-6 text-xs font-bold tracking-[0.2em] hover:bg-white hover:text-black transition-all">
+            <button 
+              onClick={onConsultation}
+              className="w-full md:w-auto bg-accent text-white px-12 py-6 text-xs font-bold tracking-[0.2em] hover:bg-white hover:text-black transition-all"
+            >
               START A CONSULTATION
             </button>
           </div>

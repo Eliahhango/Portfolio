@@ -33,8 +33,8 @@ export default function Logo({ className = "" }: { className?: string }) {
         </motion.svg>
       </div>
       <div className="flex flex-col leading-none">
-        <span className="text-lg font-heading font-black tracking-tighter uppercase">AXON</span>
-        <span className="text-[8px] font-mono text-accent font-bold tracking-[0.4em] uppercase">TRIAD</span>
+        <span className="text-lg font-heading font-black tracking-tighter uppercase">EliTech</span>
+        <span className="text-[8px] font-mono text-accent font-bold tracking-[0.4em] uppercase">Wiz</span>
       </div>
     </div>
   );

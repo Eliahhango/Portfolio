@@ -1,21 +1,36 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# EliTechWiz | Engineering Authority
 
-# Run and deploy your AI Studio app
+EliTechWiz is a premier, multi-disciplinary engineering firm dedicated to bridging the gap between physical infrastructure and digital architecture. We operate at the intersection of structural integrity, scalable systems, and cybersecurity.
 
-This contains everything you need to run your app locally.
+## Core Disciplines
 
-View your app in AI Studio: https://ai.studio/apps/9bfc5def-398f-4dd4-9c6e-08e24c715c94
+### 1. Civil Infrastructure
+We design and audit the foundations of the physical world. From structural load analysis to urban planning, our engineering precision ensures absolute stability and environmental sustainability.
 
-## Run Locally
+### 2. Web Architecture
+We architect high-performance, cloud-native digital systems. Our approach treats software as a structural discipline, focusing on scalability, low-latency performance, and atomic design principles.
 
-**Prerequisites:**  Node.js
+### 3. Cyber Security
+We implement rigid zero-trust security frameworks. Our methodology assumes no implicit trust, protecting critical data through continuous verification and threat mitigation.
 
+## The Architectural Method
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
-# Portfolio
+Our execution model follows a rigid, four-phase process:
+1. **Analysis:** Deep-dive into constraints and requirements.
+2. **Blueprint:** High-fidelity schematics and digital twins.
+3. **Execution:** Precision-driven build and deployment.
+4. **Optimization:** Continuous monitoring and lifecycle refinement.
+
+## Tech Stack
+
+- **Frontend:** React 18+, Vite, Tailwind CSS, Motion
+- **Icons:** Lucide React
+- **Typography:** Inter (Sans), Space Grotesk (Heading), JetBrains Mono (Mono)
+- **Deployment:** Vercel / Cloud Run
+
+## Contact
+
+For architectural inquiries or consultation requests, visit our [Consultation Matrix](https://elitechwiz.eng/consult).
+
+---
+© 2026 EliTechWiz / ALL RIGHTS RESERVED

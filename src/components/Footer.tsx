@@ -1,5 +1,5 @@
 import { motion } from 'motion/react';
-import { Mail, Phone, MapPin, Linkedin, Twitter, Github, ArrowUpRight } from 'lucide-react';
+import { Mail, Phone, MapPin, Linkedin, Facebook, Instagram, Github, Dribbble, ArrowUpRight } from 'lucide-react';
 import Logo from './Logo';
 
 interface FooterProps {
@@ -25,12 +25,14 @@ export default function Footer({ onNavigate }: FooterProps) {
               <Logo className="invert" />
             </button>
             <p className="text-gray-400 text-sm leading-relaxed max-w-xs mb-12">
-              Establishing absolute authority across physical infrastructure, digital architecture, and cybersecurity. Engineering the reality of tomorrow.
+              Establishing absolute authority across physical infrastructure, digital architecture, and cybersecurity. Engineering the reality of tomorrow with EliTechWiz.
             </p>
-            <div className="flex gap-6">
-              <a href="#" className="text-gray-400 hover:text-accent transition-colors"><Linkedin size={20} /></a>
-              <a href="#" className="text-gray-400 hover:text-accent transition-colors"><Twitter size={20} /></a>
-              <a href="#" className="text-gray-400 hover:text-accent transition-colors"><Github size={20} /></a>
+            <div className="flex flex-wrap gap-6">
+              <a href="https://www.linkedin.com/in/eliahhango/" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-accent transition-colors"><Linkedin size={20} /></a>
+              <a href="https://web.facebook.com/profile.php?id=100086957732931" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-accent transition-colors"><Facebook size={20} /></a>
+              <a href="https://www.instagram.com/elitechwiz/" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-accent transition-colors"><Instagram size={20} /></a>
+              <a href="https://github.com/Eliahhango" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-accent transition-colors"><Github size={20} /></a>
+              <a href="https://dribbble.com/eliah-hango" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-accent transition-colors"><Dribbble size={20} /></a>
             </div>
           </div>
 
@@ -63,15 +65,15 @@ export default function Footer({ onNavigate }: FooterProps) {
             <ul className="space-y-6 text-sm">
               <li className="flex items-start gap-4">
                 <MapPin size={18} className="text-accent shrink-0" />
-                <span className="text-gray-400">1200 Engineering Way,<br />Suite 400, London, UK</span>
+                <span className="text-gray-400">Kibaha, Pwani,<br />Tanzania</span>
               </li>
               <li className="flex items-center gap-4">
                 <Mail size={18} className="text-accent shrink-0" />
-                <span className="text-gray-400">contact@thearchitect.eng</span>
+                <span className="text-gray-400">hangoeliah@outlook.com</span>
               </li>
               <li className="flex items-center gap-4">
                 <Phone size={18} className="text-accent shrink-0" />
-                <span className="text-gray-400">+44 (0) 20 7946 0123</span>
+                <span className="text-gray-400">+255 688 164 510</span>
               </li>
             </ul>
           </div>
@@ -80,19 +82,19 @@ export default function Footer({ onNavigate }: FooterProps) {
         {/* Bottom Bar */}
         <div className="pt-12 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-8">
           <div className="text-[10px] font-mono text-gray-500 uppercase tracking-widest text-center md:text-left">
-            © {currentYear} AXON TRIAD / ALL RIGHTS RESERVED
+            © {currentYear} EliTechWiz / ALL RIGHTS RESERVED
           </div>
           <div className="flex flex-wrap justify-center gap-8 md:gap-12 text-[10px] font-mono text-gray-500 uppercase tracking-widest">
             <button onClick={() => onNavigate('PRIVACY')} className="hover:text-white transition-colors">Privacy Policy</button>
             <button onClick={() => onNavigate('TERMS')} className="hover:text-white transition-colors">Terms of Service</button>
-            <a href="#" className="hover:text-white transition-colors">Security Disclosure</a>
+            <button onClick={() => onNavigate('SECURITY')} className="hover:text-white transition-colors text-left">Security Disclosure</button>
           </div>
         </div>
       </div>
 
       {/* Large Background Text */}
-      <div className="absolute -bottom-24 -right-24 text-[20vw] font-heading font-black text-white/[0.02] leading-none select-none pointer-events-none">
-        AXON
+      <div className="absolute -bottom-24 -right-24 text-[15vw] font-heading font-black text-white/[0.02] leading-none select-none pointer-events-none uppercase">
+        EliTechWiz
       </div>
     </footer>
   );

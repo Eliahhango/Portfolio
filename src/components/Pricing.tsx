@@ -1,7 +1,11 @@
 import { motion } from 'motion/react';
 import { Check, ArrowRight, Zap, Shield, Building2, Globe } from 'lucide-react';
 
-export default function Pricing() {
+interface PricingProps {
+  onQuote?: () => void;
+}
+
+export default function Pricing({ onQuote }: PricingProps) {
   const plans = [
     {
       name: 'CIVIL INFRASTRUCTURE',
@@ -94,7 +98,10 @@ export default function Pricing() {
                   ))}
                 </div>
 
-                <button className={`w-full py-5 text-[10px] font-bold tracking-[0.2em] transition-all flex items-center justify-center gap-3 ${plan.featured ? 'bg-accent text-white hover:bg-black' : 'bg-black text-white hover:bg-accent'}`}>
+                <button 
+                  onClick={onQuote}
+                  className={`w-full py-5 text-[10px] font-bold tracking-[0.2em] transition-all flex items-center justify-center gap-3 ${plan.featured ? 'bg-accent text-white hover:bg-black' : 'bg-black text-white hover:bg-accent'}`}
+                >
                   REQUEST QUOTE <ArrowRight size={14} />
                 </button>
               </div>
@@ -112,7 +119,10 @@ export default function Pricing() {
                 For large-scale infrastructure projects or multi-discipline requirements, we offer custom-tailored enterprise agreements with dedicated architectural oversight.
               </p>
             </div>
-            <button className="w-full md:w-auto px-12 py-6 border border-white/20 hover:border-accent hover:text-accent transition-all text-xs font-bold tracking-[0.2em] uppercase">
+            <button 
+              onClick={onQuote}
+              className="w-full md:w-auto px-12 py-6 border border-white/20 hover:border-accent hover:text-accent transition-all text-xs font-bold tracking-[0.2em] uppercase"
+            >
               CONTACT ENTERPRISE TEAM
             </button>
           </div>

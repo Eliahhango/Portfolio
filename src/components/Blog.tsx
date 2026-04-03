@@ -10,7 +10,7 @@ export default function Blog() {
       category: 'STRATEGY',
       date: 'MAR 24, 2026',
       author: 'Sarah Chen',
-      image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=800&h=500',
+      image: 'https://picsum.photos/seed/strategy/800/500',
     },
     {
       id: 2,
@@ -19,7 +19,7 @@ export default function Blog() {
       category: 'CYBER',
       date: 'MAR 18, 2026',
       author: 'Marcus Thorne',
-      image: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=800&h=500',
+      image: 'https://picsum.photos/seed/cyber/800/500',
     },
     {
       id: 3,
@@ -28,7 +28,7 @@ export default function Blog() {
       category: 'CIVIL',
       date: 'MAR 12, 2026',
       author: 'Dr. Alistair Vance',
-      image: 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?auto=format&fit=crop&q=80&w=800&h=500',
+      image: 'https://picsum.photos/seed/civil/800/500',
     },
     {
       id: 4,
@@ -37,7 +37,7 @@ export default function Blog() {
       category: 'WEB',
       date: 'MAR 05, 2026',
       author: 'Sarah Chen',
-      image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&q=80&w=800&h=500',
+      image: 'https://picsum.photos/seed/web/800/500',
     },
   ];
 
@@ -60,6 +60,7 @@ export default function Blog() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 mb-24 md:mb-32 group cursor-pointer"
+          onClick={() => alert('Article system initializing... Full content coming soon.')}
         >
           <div className="aspect-[16/9] bg-surface overflow-hidden relative">
             <img 
@@ -97,6 +98,7 @@ export default function Blog() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.1 }}
               className="group cursor-pointer"
+              onClick={() => alert('Article system initializing... Full content coming soon.')}
             >
               <div className="aspect-[16/10] bg-surface overflow-hidden mb-6 md:mb-8 relative">
                 <img 
@@ -134,7 +136,10 @@ export default function Blog() {
                 placeholder="EMAIL ADDRESS" 
                 className="flex-grow bg-white border border-gray-200 px-6 py-4 text-xs font-bold tracking-widest outline-none focus:border-accent transition-colors"
               />
-              <button className="bg-black text-white px-8 py-4 text-xs font-bold tracking-widest hover:bg-accent transition-all">
+              <button 
+                onClick={() => alert('Subscription matrix updated. You are now on the list.')}
+                className="bg-black text-white px-8 py-4 text-xs font-bold tracking-widest hover:bg-accent transition-all"
+              >
                 SUBSCRIBE
               </button>
             </div>

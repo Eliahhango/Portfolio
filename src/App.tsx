@@ -16,6 +16,7 @@ import Team from './components/Team';
 import Pricing from './components/Pricing';
 import PrivacyPolicy from './components/PrivacyPolicy';
 import TermsOfService from './components/TermsOfService';
+import SecurityDisclosure from './components/SecurityDisclosure';
 import CaseStudies from './components/CaseStudies';
 import Portfolio from './components/Portfolio';
 import Error404 from './components/Error404';
@@ -26,7 +27,7 @@ import { ArrowLeft } from 'lucide-react';
 import Logo from './components/Logo';
 
 export default function App() {
-  const [view, setView] = useState<'HOME' | 'PORTAL' | 'CONSULT' | 'TECH_DETAIL' | 'PROCESS' | 'ABOUT' | 'SERVICES' | 'BLOG' | 'CONTACT' | 'TEAM' | 'PRICING' | 'PRIVACY' | 'TERMS' | 'CASES' | 'PORTFOLIO' | '404'>('HOME');
+  const [view, setView] = useState<'HOME' | 'PORTAL' | 'CONSULT' | 'TECH_DETAIL' | 'PROCESS' | 'ABOUT' | 'SERVICES' | 'BLOG' | 'CONTACT' | 'TEAM' | 'PRICING' | 'PRIVACY' | 'TERMS' | 'SECURITY' | 'CASES' | 'PORTFOLIO' | '404'>('HOME');
   const [activeDiscipline, setActiveDiscipline] = useState<Discipline | null>(null);
   const [selectedTech, setSelectedTech] = useState<TechDetail | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -61,6 +62,10 @@ export default function App() {
     setSelectedTech(null);
   };
 
+  const goToContact = () => {
+    setView('CONTACT');
+  };
+
   const backToPortal = () => {
     setView('PORTAL');
     setSelectedTech(null);
@@ -87,7 +92,7 @@ export default function App() {
 
       {/* Global Navigation Overlay */}
       <AnimatePresence>
-        {view !== 'HOME' && view !== 'TECH_DETAIL' && !['ABOUT', 'SERVICES', 'BLOG', 'CONTACT', 'TEAM', 'PRICING', 'PRIVACY', 'TERMS', 'CASES', 'PORTFOLIO', '404'].includes(view) && (
+        {view !== 'HOME' && view !== 'TECH_DETAIL' && !['ABOUT', 'SERVICES', 'BLOG', 'CONTACT', 'TEAM', 'PRICING', 'PRIVACY', 'TERMS', 'SECURITY', 'CASES', 'PORTFOLIO', '404'].includes(view) && (
           <motion.button
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -110,7 +115,12 @@ export default function App() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
             >
-              <Home onSelect={handleDisciplineSelect} onProcessSelect={handleProcessSelect} />
+              <Home 
+                onSelect={handleDisciplineSelect} 
+                onProcessSelect={handleProcessSelect}
+                onRequestQuote={handleConsultClick}
+                onConsultation={handleConsultClick}
+              />
             </motion.div>
           )}
 
@@ -121,7 +131,7 @@ export default function App() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 20 }}
             >
-              <About />
+              <About onJoin={goToContact} />
             </motion.div>
           )}
 
@@ -165,7 +175,7 @@ export default function App() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 20 }}
             >
-              <Team />
+              <Team onJoin={goToContact} />
             </motion.div>
           )}
 
@@ -176,7 +186,7 @@ export default function App() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 20 }}
             >
-              <Pricing />
+              <Pricing onQuote={handleConsultClick} />
             </motion.div>
           )}
 
@@ -202,6 +212,17 @@ export default function App() {
             </motion.div>
           )}
 
+          {view === 'SECURITY' && (
+            <motion.div
+              key="security"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 20 }}
+            >
+              <SecurityDisclosure />
+            </motion.div>
+          )}
+
           {view === 'CASES' && (
             <motion.div
               key="cases"
@@ -209,7 +230,7 @@ export default function App() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 20 }}
             >
-              <CaseStudies />
+              <CaseStudies onConsultation={handleConsultClick} />
             </motion.div>
           )}
 
@@ -220,7 +241,7 @@ export default function App() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 20 }}
             >
-              <Portfolio />
+              <Portfolio onConsultation={handleConsultClick} />
             </motion.div>
           )}
 

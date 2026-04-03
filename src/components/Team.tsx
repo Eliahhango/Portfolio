@@ -1,34 +1,34 @@
 import { motion } from 'motion/react';
 import { Linkedin, Twitter, Mail, ArrowRight } from 'lucide-react';
 
-export default function Team() {
+export default function Team({ onJoin }: { onJoin?: () => void }) {
   const members = [
     {
       name: 'EliTechWiz',
       role: 'Chief Architect & Founder',
       bio: 'Visionary engineer with over 15 years of experience in cross-disciplinary infrastructure. Leading the integration of physical and digital systems.',
-      image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=400&h=500',
-      socials: { linkedin: '#', twitter: '#', mail: 'eli@elitechwiz.eng' }
+      image: 'https://ais-dev-zttiyvyn745ymuoejdgpvb-100788071949.europe-west1.run.app/input_file_2.png',
+      socials: { linkedin: 'https://www.linkedin.com/in/eliahhango/', twitter: 'https://github.com/Eliahhango', mail: 'hangoeliah@outlook.com' }
     },
     {
       name: 'Sarah Chen',
       role: 'Head of Web Architecture',
       bio: 'Specialist in distributed systems and cloud-native scaling. Sarah ensures our digital foundations are as solid as steel.',
-      image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=400&h=500',
+      image: 'https://picsum.photos/seed/sarah-team/400/500',
       socials: { linkedin: '#', twitter: '#', mail: 'sarah@elitechwiz.eng' }
     },
     {
       name: 'Marcus Thorne',
       role: 'Director of Cyber Security',
       bio: 'Former intelligence officer turned defensive architect. Marcus designs the zero-trust protocols that protect our clients.',
-      image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=400&h=500',
+      image: 'https://picsum.photos/seed/marcus-team/400/500',
       socials: { linkedin: '#', twitter: '#', mail: 'marcus@elitechwiz.eng' }
     },
     {
       name: 'Dr. Alistair Vance',
       role: 'Lead Civil Engineer',
       bio: 'Expert in structural load dynamics and sustainable urban planning. Alistair bridges the gap between theory and reality.',
-      image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=400&h=500',
+      image: 'https://picsum.photos/seed/alistair-team/400/500',
       socials: { linkedin: '#', twitter: '#', mail: 'alistair@elitechwiz.eng' }
     }
   ];
@@ -91,7 +91,10 @@ export default function Team() {
               We are always looking for exceptional talent in civil engineering, web architecture, and cyber security. Think you have what it takes?
             </p>
           </div>
-          <button className="w-full md:w-auto relative z-10 bg-black text-white px-12 py-6 text-xs font-bold tracking-[0.2em] hover:bg-accent transition-all flex items-center justify-center gap-4 group">
+          <button 
+            onClick={onJoin}
+            className="w-full md:w-auto relative z-10 bg-black text-white px-12 py-6 text-xs font-bold tracking-[0.2em] hover:bg-accent transition-all flex items-center justify-center gap-4 group"
+          >
             VIEW OPEN POSITIONS
             <ArrowRight size={16} className="group-hover:translate-x-2 transition-transform" />
           </button>

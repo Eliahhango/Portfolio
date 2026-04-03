@@ -27,7 +27,7 @@ export default function Error404({ onHome }: { onHome: () => void }) {
               className="w-full sm:w-auto bg-black text-white px-12 py-6 text-xs font-bold tracking-[0.2em] hover:bg-accent transition-all flex items-center justify-center gap-4 group"
             >
               <Home size={16} className="group-hover:-translate-y-1 transition-transform" />
-              RETURN TO TRIAD
+              RETURN TO ELITECHWIZ
             </button>
             <button className="text-xs font-bold uppercase tracking-widest hover:text-accent transition-colors flex items-center justify-center gap-4 group">
               <Search size={16} className="text-accent" />

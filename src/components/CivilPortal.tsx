@@ -6,28 +6,28 @@ const PROJECTS: Project[] = [
     id: '1',
     title: 'THE MONOLITH BRIDGE',
     category: 'INFRASTRUCTURE',
-    image: 'https://images.unsplash.com/photo-1545558014-8692077e9b5c?auto=format&fit=crop&q=80&w=1000',
+    image: 'https://picsum.photos/seed/bridge-portal/1000/600',
     metrics: [{ label: 'LOAD', value: '4500T' }, { label: 'SPAN', value: '1.2KM' }]
   },
   {
     id: '2',
     title: 'VERTEX TOWER',
     category: 'COMMERCIAL',
-    image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=1000',
+    image: 'https://picsum.photos/seed/tower-portal/1000/600',
     metrics: [{ label: 'HEIGHT', value: '320M' }, { label: 'STEEL', value: '12KT' }]
   },
   {
     id: '3',
     title: 'GRID DATA CENTER',
     category: 'INDUSTRIAL',
-    image: 'https://images.unsplash.com/photo-1558441719-ffb4d4520a67?auto=format&fit=crop&q=80&w=1000',
+    image: 'https://picsum.photos/seed/datacenter-portal/1000/600',
     metrics: [{ label: 'POWER', value: '50MW' }, { label: 'COOLING', value: 'LIQUID' }]
   },
   {
     id: '4',
     title: 'URBAN CONDUIT',
     category: 'TRANSPORT',
-    image: 'https://images.unsplash.com/photo-1517581177682-a085bb7ffb15?auto=format&fit=crop&q=80&w=1000',
+    image: 'https://picsum.photos/seed/conduit-portal/1000/600',
     metrics: [{ label: 'DEPTH', value: '45M' }, { label: 'FLOW', value: 'HIGH' }]
   }
 ];
@@ -92,7 +92,7 @@ export default function CivilPortal({ onRequestConsult }: PortalProps) {
                 whileInView={{ scale: 1, opacity: 1 }}
                 transition={{ duration: 1.2 }}
                 viewport={{ once: true }}
-                src="https://images.unsplash.com/photo-1503387762-592dee58c460?auto=format&fit=crop&q=80&w=2000" 
+                src="https://picsum.photos/seed/modern-arch/2000/1250" 
                 alt="Modern Architecture" 
                 className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-1000"
                 referrerPolicy="no-referrer"
@@ -163,7 +163,7 @@ export default function CivilPortal({ onRequestConsult }: PortalProps) {
                   { title: 'Structural Schematics', desc: 'Detailed load-path analysis and material specification for maximum longevity.' },
                   { title: 'Permit Documentation', desc: 'Comprehensive technical packs designed for rapid regulatory approval.' }
                 ],
-                image: 'https://images.unsplash.com/photo-1503387762-592dee58c460?auto=format&fit=crop&q=80&w=1000'
+                image: 'https://picsum.photos/seed/blueprints/1000/1000'
               },
               {
                 title: 'Urban Planning & Feasibility',
@@ -174,7 +174,7 @@ export default function CivilPortal({ onRequestConsult }: PortalProps) {
                   { title: 'Traffic Impact Studies', desc: 'Computational modeling of vehicle and pedestrian flow for optimal accessibility.' },
                   { title: 'Sustainability Audits', desc: 'Ensuring LEED Platinum standards and minimal environmental footprint.' }
                 ],
-                image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=1000'
+                image: 'https://picsum.photos/seed/urban/1000/1000'
               }
             ].map((deepDive, idx) => (
               <div key={idx} className={`grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-24 items-center ${idx % 2 === 1 ? 'lg:flex-row-reverse' : ''}`}>

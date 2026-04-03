@@ -6,6 +6,8 @@ import { useEffect, useRef, useState } from 'react';
 interface HomeProps {
   onSelect: (discipline: Discipline) => void;
   onProcessSelect: (discipline: Discipline) => void;
+  onRequestQuote?: () => void;
+  onConsultation?: () => void;
 }
 
 const PILLARS: { id: Discipline; title: string; subtext: string; icon: any }[] = [
@@ -44,9 +46,9 @@ const METHOD_STEPS = [
 ];
 
 const TESTIMONIALS = [
-  { name: 'Sarah Chen', role: 'CTO, Global Infra', quote: 'The Architect redefined our digital foundation. Their structural approach to web architecture is unparalleled.' },
-  { name: 'Marcus Thorne', role: 'Urban Planner', quote: 'Uncompromising precision in civil engineering. They bridge the gap between vision and reality.' },
-  { name: 'Elena Rodriguez', role: 'Head of Security', quote: 'Zero-trust is not just a buzzword for them. It is the core of their engineering mindset.' }
+  { name: 'Sarah Chen', role: 'CTO, Global Infra', quote: 'EliTechWiz redefined our digital foundation. Their structural approach to web architecture is unparalleled.' },
+  { name: 'Marcus Thorne', role: 'Urban Planner', quote: 'Uncompromising precision in civil engineering. EliTechWiz bridges the gap between vision and reality.' },
+  { name: 'Elena Rodriguez', role: 'Head of Security', quote: 'Zero-trust is not just a buzzword for EliTechWiz. It is the core of their engineering mindset.' }
 ];
 
 const FAQS = [
@@ -95,7 +97,7 @@ const PARTNERS = [
   'AEROSPACE DYNAMICS', 'GLOBAL LOGISTICS', 'NEO-URBAN PLANNERS', 'QUANTUM SYSTEMS', 'TITAN ENERGY'
 ];
 
-export default function Home({ onSelect, onProcessSelect }: HomeProps) {
+export default function Home({ onSelect, onProcessSelect, onRequestQuote, onConsultation }: HomeProps) {
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
 
   return (
@@ -128,6 +130,26 @@ export default function Home({ onSelect, onProcessSelect }: HomeProps) {
           ARCHITECTING DIGITAL.<br />
           SECURING BOTH.
         </motion.h1>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+          className="relative z-10 mt-12 md:mt-16 flex flex-col md:flex-row gap-6"
+        >
+          <button 
+            onClick={onRequestQuote}
+            className="bg-black text-white px-12 py-6 text-xs font-bold tracking-[0.2em] hover:bg-accent transition-all flex items-center justify-center gap-3 group"
+          >
+            REQUEST QUOTE <ArrowRight size={14} className="group-hover:translate-x-2 transition-transform" />
+          </button>
+          <button 
+            onClick={onConsultation}
+            className="border border-black px-12 py-6 text-xs font-bold tracking-[0.2em] hover:bg-black hover:text-white transition-all flex items-center justify-center gap-3"
+          >
+            START CONSULTATION
+          </button>
+        </motion.div>
 
         {/* Scroll Indicator */}
         <motion.div 
@@ -266,7 +288,10 @@ export default function Home({ onSelect, onProcessSelect }: HomeProps) {
       <section className="border-t border-gray-200 bg-white">
         <div className="p-6 md:p-12 border-b border-gray-100 flex flex-col md:flex-row justify-between items-start md:items-end gap-4 md:gap-0">
           <h2 className="text-xs font-mono text-muted uppercase tracking-[0.3em]">Featured Case Studies / Tangible Results</h2>
-          <button className="text-[10px] font-bold uppercase tracking-widest hover:text-accent transition-colors flex items-center gap-2">
+          <button 
+            onClick={() => onSelect('PORTFOLIO' as any)}
+            className="text-[10px] font-bold uppercase tracking-widest hover:text-accent transition-colors flex items-center gap-2"
+          >
             View All Projects <ArrowRight size={14} />
           </button>
         </div>
@@ -277,21 +302,21 @@ export default function Home({ onSelect, onProcessSelect }: HomeProps) {
               title: 'THE MONOLITH BRIDGE',
               stat: '1.2KM SPAN',
               result: 'COMPLETED 4 MONTHS AHEAD OF SCHEDULE',
-              image: 'https://images.unsplash.com/photo-1545558014-8692077e9b5c?auto=format&fit=crop&q=80&w=1000'
+              image: 'https://picsum.photos/seed/bridge/1000/600'
             },
             {
               discipline: 'WEB' as Discipline,
               title: 'GLOBAL RETAIL ENGINE',
               stat: '150MS LATENCY',
               result: 'MAINTAINED DURING 10X TRAFFIC SPIKE',
-              image: 'https://images.unsplash.com/photo-1558441719-ffb4d4520a67?auto=format&fit=crop&q=80&w=1000'
+              image: 'https://picsum.photos/seed/retail/1000/600'
             },
             {
               discipline: 'CYBER' as Discipline,
               title: 'FINANCIAL CORE AUDIT',
               stat: 'ZERO BREACHES',
               result: 'POST-IMPLEMENTATION OF ZERO-TRUST',
-              image: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=1000'
+              image: 'https://picsum.photos/seed/security/1000/600'
             }
           ].map((study, idx) => (
             <div 
