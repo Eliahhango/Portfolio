@@ -19,6 +19,7 @@ import TermsOfService from './components/TermsOfService';
 import SecurityDisclosure from './components/SecurityDisclosure';
 import CaseStudies from './components/CaseStudies';
 import Portfolio from './components/Portfolio';
+import AdminDashboard from './components/AdminDashboard';
 import Error404 from './components/Error404';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
@@ -27,15 +28,26 @@ import { ArrowLeft } from 'lucide-react';
 import Logo from './components/Logo';
 
 export default function App() {
-  const [view, setView] = useState<'HOME' | 'PORTAL' | 'CONSULT' | 'TECH_DETAIL' | 'PROCESS' | 'ABOUT' | 'SERVICES' | 'BLOG' | 'CONTACT' | 'TEAM' | 'PRICING' | 'PRIVACY' | 'TERMS' | 'SECURITY' | 'CASES' | 'PORTFOLIO' | '404'>('HOME');
+  const [view, setView] = useState<'HOME' | 'PORTAL' | 'CONSULT' | 'TECH_DETAIL' | 'PROCESS' | 'ABOUT' | 'SERVICES' | 'BLOG' | 'CONTACT' | 'TEAM' | 'PRICING' | 'PRIVACY' | 'TERMS' | 'SECURITY' | 'CASES' | 'PORTFOLIO' | 'ADMIN' | '404'>('HOME');
   const [activeDiscipline, setActiveDiscipline] = useState<Discipline | null>(null);
   const [selectedTech, setSelectedTech] = useState<TechDetail | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isAppReady, setIsAppReady] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => setIsLoading(false), 800);
+    // Simulate loading and ensure animation has time to breathe
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+      // Small delay after loading state changes to allow for exit animations if needed
+      setTimeout(() => setIsAppReady(true), 100);
+    }, 2000);
     return () => clearTimeout(timer);
   }, []);
+
+  // Global scroll to top on view change
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }, [view]);
 
   const handleDisciplineSelect = (discipline: Discipline) => {
     setActiveDiscipline(discipline);
@@ -71,28 +83,46 @@ export default function App() {
     setSelectedTech(null);
   };
 
-  if (isLoading) {
-    return (
-      <div className="fixed inset-0 bg-white flex flex-col items-center justify-center z-50">
-        <div className="w-full h-full blueprint-grid absolute inset-0 opacity-20" />
-        <motion.div 
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="relative z-10"
-        >
-          <Logo />
-        </motion.div>
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen bg-white selection:bg-accent selection:text-white">
+      <AnimatePresence mode="wait">
+        {isLoading ? (
+          <motion.div 
+            key="loader"
+            initial={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.8, ease: "easeInOut" }}
+            className="fixed inset-0 bg-white flex flex-col items-center justify-center z-[100]"
+          >
+            <div className="w-full h-full blueprint-grid absolute inset-0 opacity-20" />
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.9, y: 10 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+              className="relative z-10 flex flex-col items-center"
+            >
+              <Logo />
+              <div className="w-48 h-[1px] bg-gray-100 mt-12 relative overflow-hidden">
+                <motion.div 
+                  initial={{ left: "-100%" }}
+                  animate={{ left: "100%" }}
+                  transition={{ duration: 1.5, ease: "easeInOut", repeat: Infinity }}
+                  className="absolute inset-0 bg-accent"
+                />
+              </div>
+              <div className="mt-6 text-[10px] font-mono text-muted uppercase tracking-[0.4em] text-center">
+                Architectural Framework Initializing
+              </div>
+            </motion.div>
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
+
       <Navbar onNavigate={(v) => setView(v)} currentView={view} />
 
       {/* Global Navigation Overlay */}
       <AnimatePresence>
-        {view !== 'HOME' && view !== 'TECH_DETAIL' && !['ABOUT', 'SERVICES', 'BLOG', 'CONTACT', 'TEAM', 'PRICING', 'PRIVACY', 'TERMS', 'SECURITY', 'CASES', 'PORTFOLIO', '404'].includes(view) && (
+        {view !== 'HOME' && view !== 'TECH_DETAIL' && !['ABOUT', 'SERVICES', 'BLOG', 'CONTACT', 'TEAM', 'PRICING', 'PRIVACY', 'TERMS', 'SECURITY', 'CASES', 'PORTFOLIO', 'ADMIN', '404'].includes(view) && (
           <motion.button
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -245,6 +275,18 @@ export default function App() {
             </motion.div>
           )}
 
+          {view === 'ADMIN' && (
+            <motion.div
+              key="admin"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="z-[200] relative"
+            >
+              <AdminDashboard onLogout={goHome} />
+            </motion.div>
+          )}
+
           {view === '404' && (
             <motion.div
               key="404"
@@ -330,7 +372,7 @@ export default function App() {
         </AnimatePresence>
       </main>
 
-      <Footer onNavigate={(v) => setView(v)} />
+      {view !== 'ADMIN' && <Footer onNavigate={(v) => setView(v)} />}
 
       {/* Structural Grid Overlay (Subtle) */}
       <div className="fixed inset-0 pointer-events-none blueprint-grid opacity-[0.03] z-[-1]" />

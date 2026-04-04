@@ -88,6 +88,7 @@ export default function Footer({ onNavigate }: FooterProps) {
             <button onClick={() => onNavigate('PRIVACY')} className="hover:text-white transition-colors">Privacy Policy</button>
             <button onClick={() => onNavigate('TERMS')} className="hover:text-white transition-colors">Terms of Service</button>
             <button onClick={() => onNavigate('SECURITY')} className="hover:text-white transition-colors text-left">Security Disclosure</button>
+            <button onClick={() => onNavigate('ADMIN')} className="text-accent/50 hover:text-accent transition-colors">Admin</button>
           </div>
         </div>
       </div>
