@@ -27,12 +27,66 @@ import { ArrowLeft } from 'lucide-react';
 
 import Logo from './components/Logo';
 
+type AppView = 'HOME' | 'PORTAL' | 'CONSULT' | 'TECH_DETAIL' | 'PROCESS' | 'ABOUT' | 'SERVICES' | 'BLOG' | 'CONTACT' | 'TEAM' | 'PRICING' | 'PRIVACY' | 'TERMS' | 'SECURITY' | 'CASES' | 'PORTFOLIO' | 'ADMIN' | '404';
+
+const PATH_TO_VIEW: Record<string, AppView> = {
+  '/': 'HOME',
+  '/about': 'ABOUT',
+  '/services': 'SERVICES',
+  '/blog': 'BLOG',
+  '/contact': 'CONTACT',
+  '/team': 'TEAM',
+  '/pricing': 'PRICING',
+  '/privacy': 'PRIVACY',
+  '/terms': 'TERMS',
+  '/security': 'SECURITY',
+  '/case-studies': 'CASES',
+  '/portfolio': 'PORTFOLIO',
+  '/consult': 'CONSULT',
+  '/admin': 'ADMIN',
+};
+
+const VIEW_TO_PATH: Partial<Record<AppView, string>> = {
+  HOME: '/',
+  ABOUT: '/about',
+  SERVICES: '/services',
+  BLOG: '/blog',
+  CONTACT: '/contact',
+  TEAM: '/team',
+  PRICING: '/pricing',
+  PRIVACY: '/privacy',
+  TERMS: '/terms',
+  SECURITY: '/security',
+  CASES: '/case-studies',
+  PORTFOLIO: '/portfolio',
+  CONSULT: '/consult',
+  ADMIN: '/admin',
+};
+
+const resolveViewFromPath = (pathname: string): AppView => PATH_TO_VIEW[pathname] ?? '404';
+
 export default function App() {
-  const [view, setView] = useState<'HOME' | 'PORTAL' | 'CONSULT' | 'TECH_DETAIL' | 'PROCESS' | 'ABOUT' | 'SERVICES' | 'BLOG' | 'CONTACT' | 'TEAM' | 'PRICING' | 'PRIVACY' | 'TERMS' | 'SECURITY' | 'CASES' | 'PORTFOLIO' | 'ADMIN' | '404'>('HOME');
+  const [view, setView] = useState<AppView>(() => resolveViewFromPath(window.location.pathname));
   const [activeDiscipline, setActiveDiscipline] = useState<Discipline | null>(null);
   const [selectedTech, setSelectedTech] = useState<TechDetail | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isAppReady, setIsAppReady] = useState(false);
+
+  const navigate = (nextView: AppView, options?: { replace?: boolean }) => {
+    const nextPath = VIEW_TO_PATH[nextView];
+
+    if (nextPath) {
+      const historyMethod = options?.replace ? 'replaceState' : 'pushState';
+      window.history[historyMethod](null, '', nextPath);
+    }
+
+    setView(nextView);
+
+    if (nextView !== 'PORTAL' && nextView !== 'TECH_DETAIL' && nextView !== 'PROCESS') {
+      setActiveDiscipline(null);
+      setSelectedTech(null);
+    }
+  };
 
   useEffect(() => {
     // Simulate loading and ensure animation has time to breathe
@@ -44,42 +98,60 @@ export default function App() {
     return () => clearTimeout(timer);
   }, []);
 
+  useEffect(() => {
+    const handlePopState = () => {
+      setView(resolveViewFromPath(window.location.pathname));
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
+  useEffect(() => {
+    if (!isAppReady) {
+      return;
+    }
+
+    const pathView = resolveViewFromPath(window.location.pathname);
+    if (pathView !== view) {
+      setView(pathView);
+    }
+  }, [isAppReady, view]);
+
   // Global scroll to top on view change
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'instant' });
+    window.scrollTo({ top: 0, behavior: 'auto' });
   }, [view]);
 
   const handleDisciplineSelect = (discipline: Discipline) => {
     setActiveDiscipline(discipline);
-    setView('PORTAL');
+    navigate('PORTAL');
   };
 
   const handleProcessSelect = (discipline: Discipline) => {
     setActiveDiscipline(discipline);
-    setView('PROCESS');
+    navigate('PROCESS');
   };
 
   const handleConsultClick = () => {
-    setView('CONSULT');
+    navigate('CONSULT');
   };
 
   const handleTechSelect = (detail: TechDetail) => {
     setSelectedTech(detail);
-    setView('TECH_DETAIL');
+    navigate('TECH_DETAIL');
   };
 
   const goHome = () => {
-    setView('HOME');
-    setActiveDiscipline(null);
-    setSelectedTech(null);
+    navigate('HOME');
   };
 
   const goToContact = () => {
-    setView('CONTACT');
+    navigate('CONTACT');
   };
 
   const backToPortal = () => {
-    setView('PORTAL');
+    navigate('PORTAL');
     setSelectedTech(null);
   };
 
@@ -118,7 +190,7 @@ export default function App() {
         ) : null}
       </AnimatePresence>
 
-      <Navbar onNavigate={(v) => setView(v)} currentView={view} />
+      <Navbar onNavigate={navigate} currentView={view} />
 
       {/* Global Navigation Overlay */}
       <AnimatePresence>
@@ -372,7 +444,7 @@ export default function App() {
         </AnimatePresence>
       </main>
 
-      {view !== 'ADMIN' && <Footer onNavigate={(v) => setView(v)} />}
+      {view !== 'ADMIN' && <Footer onNavigate={navigate} />}
 
       {/* Structural Grid Overlay (Subtle) */}
       <div className="fixed inset-0 pointer-events-none blueprint-grid opacity-[0.03] z-[-1]" />
