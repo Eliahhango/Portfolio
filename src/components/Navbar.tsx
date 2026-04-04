@@ -15,6 +15,7 @@ export default function Navbar({ onNavigate, currentView }: NavbarProps) {
     { label: 'HOME', view: 'HOME', href: '/' },
     { label: 'ABOUT', view: 'ABOUT', href: '/about' },
     { label: 'SERVICES', view: 'SERVICES', href: '/services' },
+    { label: 'CASE STUDIES', view: 'CASES', href: '/case-studies' },
     { label: 'PRICING', view: 'PRICING', href: '/pricing' },
     { label: 'TEAM', view: 'TEAM', href: '/team' },
     { label: 'PORTFOLIO', view: 'PORTFOLIO', href: '/portfolio' },
@@ -25,6 +26,10 @@ export default function Navbar({ onNavigate, currentView }: NavbarProps) {
   const isActive = (itemView: string) => {
     if (itemView === 'SERVICES') {
       return ['SERVICES', 'CIVIL', 'WEB', 'CYBER'].includes(currentView);
+    }
+
+    if (itemView === 'CASES') {
+      return currentView === 'CASES';
     }
 
     return currentView === itemView;

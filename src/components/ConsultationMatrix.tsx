@@ -5,9 +5,10 @@ import { Check, Loader2 } from 'lucide-react';
 
 interface ConsultationMatrixProps {
   initialDiscipline: Discipline | null;
+  onHome?: () => void;
 }
 
-export default function ConsultationMatrix({ initialDiscipline }: ConsultationMatrixProps) {
+export default function ConsultationMatrix({ initialDiscipline, onHome }: ConsultationMatrixProps) {
   const [discipline, setDiscipline] = useState<Discipline | null>(initialDiscipline);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
@@ -59,7 +60,7 @@ export default function ConsultationMatrix({ initialDiscipline }: ConsultationMa
             </div>
           </div>
           <button 
-            onClick={() => window.location.reload()}
+            onClick={onHome}
             className="mt-8 md:mt-12 text-[10px] font-bold uppercase tracking-[0.3em] hover:text-accent transition-colors"
           >
             Return to Terminal

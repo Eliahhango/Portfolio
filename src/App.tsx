@@ -445,7 +445,7 @@ export default function App() {
               exit={{ opacity: 0, y: 20 }}
               transition={{ duration: 0.4 }}
             >
-              <ConsultationMatrix initialDiscipline={activeDiscipline} />
+              <ConsultationMatrix initialDiscipline={activeDiscipline} onHome={goHome} />
             </motion.div>
           )}
         </AnimatePresence>

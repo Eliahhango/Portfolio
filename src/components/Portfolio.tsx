@@ -1,5 +1,5 @@
 import { motion } from 'motion/react';
-import { Linkedin, Twitter, Mail, ArrowRight, Award, Code, Shield, Building2, ExternalLink } from 'lucide-react';
+import { Linkedin, Instagram, Mail, ArrowRight, Award, Code, Shield, Building2, ExternalLink } from 'lucide-react';
 
 interface PortfolioProps {
   onConsultation?: () => void;
@@ -48,9 +48,9 @@ export default function Portfolio({ onConsultation }: PortfolioProps) {
               A cross-disciplinary engineer dedicated to bridging the gap between physical infrastructure and digital architecture. I design the foundations of the future.
             </p>
             <div className="flex gap-8">
-              <a href="#" className="text-gray-400 hover:text-accent transition-colors"><Linkedin size={24} /></a>
-              <a href="#" className="text-gray-400 hover:text-accent transition-colors"><Twitter size={24} /></a>
-              <a href="#" className="text-gray-400 hover:text-accent transition-colors"><Mail size={24} /></a>
+              <a href="https://www.linkedin.com/in/eliahhango/" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-accent transition-colors" aria-label="LinkedIn profile"><Linkedin size={24} /></a>
+              <a href="https://www.instagram.com/elitechwiz/" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-accent transition-colors" aria-label="Instagram profile"><Instagram size={24} /></a>
+              <a href="mailto:hangoeliah@outlook.com" className="text-gray-400 hover:text-accent transition-colors" aria-label="Email EliTechWiz"><Mail size={24} /></a>
             </div>
           </div>
           <div className="aspect-[4/5] bg-surface overflow-hidden relative group">
@@ -134,12 +134,12 @@ export default function Portfolio({ onConsultation }: PortfolioProps) {
                   {project.title}
                 </h4>
                 <p className="text-muted text-sm leading-relaxed mb-6 md:mb-8">{project.description}</p>
-                <div 
-                  onClick={onConsultation}
+                <a
+                  href="/case-studies"
                   className="flex items-center gap-3 text-[10px] font-bold uppercase tracking-widest group-hover:gap-5 transition-all"
                 >
                   EXPLORE CASE STUDY <ExternalLink size={14} className="text-accent" />
-                </div>
+                </a>
               </motion.div>
             ))}
           </div>

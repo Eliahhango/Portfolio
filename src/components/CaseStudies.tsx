@@ -79,7 +79,7 @@ export default function CaseStudies({ onConsultation }: { onConsultation?: () =>
                   {caseStudy.title}
                 </h3>
                 <p className="text-base md:text-lg text-muted leading-relaxed mb-8 md:mb-12">{caseStudy.description}</p>
-                <button className="flex items-center gap-4 text-xs font-bold uppercase tracking-widest hover:gap-6 transition-all group">
+                <button onClick={onConsultation} className="flex items-center gap-4 text-xs font-bold uppercase tracking-widest hover:gap-6 transition-all group">
                   EXPLORE METHODOLOGY <ArrowRight size={16} className="text-accent" />
                 </button>
               </div>

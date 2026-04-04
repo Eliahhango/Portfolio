@@ -24,12 +24,13 @@ export default function Footer({ onNavigate }: FooterProps) {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24 mb-24 lg:mb-32">
           {/* Brand Column */}
           <div className="lg:col-span-4">
-            <button 
-              onClick={() => onNavigate('HOME')}
-              className="mb-8 hover:opacity-80 transition-opacity"
+            <a 
+              href="/"
+              onClick={handleNavigate('HOME')}
+              className="mb-8 hover:opacity-80 transition-opacity inline-block"
             >
               <Logo className="invert" />
-            </button>
+            </a>
             <p className="text-gray-400 text-sm leading-relaxed max-w-xs mb-12">
               Establishing absolute authority across physical infrastructure, digital architecture, and cybersecurity. Engineering the reality of tomorrow with EliTechWiz.
             </p>
