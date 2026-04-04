@@ -302,21 +302,21 @@ export default function Home({ onSelect, onProcessSelect, onRequestQuote, onCons
               title: 'THE MONOLITH BRIDGE',
               stat: '1.2KM SPAN',
               result: 'COMPLETED 4 MONTHS AHEAD OF SCHEDULE',
-              image: 'https://picsum.photos/seed/bridge/1000/600'
+              image: 'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?auto=format&fit=crop&w=1200&q=80'
             },
             {
               discipline: 'WEB' as Discipline,
               title: 'GLOBAL RETAIL ENGINE',
               stat: '150MS LATENCY',
               result: 'MAINTAINED DURING 10X TRAFFIC SPIKE',
-              image: 'https://picsum.photos/seed/retail/1000/600'
+              image: 'https://images.unsplash.com/photo-1518773553398-650c184e0bb3?auto=format&fit=crop&w=1200&q=80'
             },
             {
               discipline: 'CYBER' as Discipline,
               title: 'FINANCIAL CORE AUDIT',
               stat: 'ZERO BREACHES',
               result: 'POST-IMPLEMENTATION OF ZERO-TRUST',
-              image: 'https://picsum.photos/seed/security/1000/600'
+              image: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=1200&q=80'
             }
           ].map((study, idx) => (
             <div 
