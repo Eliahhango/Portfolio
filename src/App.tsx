@@ -27,10 +27,13 @@ import { ArrowLeft } from 'lucide-react';
 
 import Logo from './components/Logo';
 
-type AppView = 'HOME' | 'PORTAL' | 'CONSULT' | 'TECH_DETAIL' | 'PROCESS' | 'ABOUT' | 'SERVICES' | 'BLOG' | 'CONTACT' | 'TEAM' | 'PRICING' | 'PRIVACY' | 'TERMS' | 'SECURITY' | 'CASES' | 'PORTFOLIO' | 'ADMIN' | '404';
+type AppView = 'HOME' | 'CIVIL' | 'WEB' | 'CYBER' | 'CONSULT' | 'TECH_DETAIL' | 'PROCESS' | 'ABOUT' | 'SERVICES' | 'BLOG' | 'CONTACT' | 'TEAM' | 'PRICING' | 'PRIVACY' | 'TERMS' | 'SECURITY' | 'CASES' | 'PORTFOLIO' | 'ADMIN' | '404';
 
 const PATH_TO_VIEW: Record<string, AppView> = {
   '/': 'HOME',
+  '/civil': 'CIVIL',
+  '/web': 'WEB',
+  '/cyber': 'CYBER',
   '/about': 'ABOUT',
   '/services': 'SERVICES',
   '/blog': 'BLOG',
@@ -48,6 +51,9 @@ const PATH_TO_VIEW: Record<string, AppView> = {
 
 const VIEW_TO_PATH: Partial<Record<AppView, string>> = {
   HOME: '/',
+  CIVIL: '/civil',
+  WEB: '/web',
+  CYBER: '/cyber',
   ABOUT: '/about',
   SERVICES: '/services',
   BLOG: '/blog',
@@ -82,7 +88,7 @@ export default function App() {
 
     setView(nextView);
 
-    if (nextView !== 'PORTAL' && nextView !== 'TECH_DETAIL' && nextView !== 'PROCESS') {
+    if (nextView !== 'TECH_DETAIL' && nextView !== 'PROCESS') {
       setActiveDiscipline(null);
       setSelectedTech(null);
     }
@@ -125,7 +131,7 @@ export default function App() {
 
   const handleDisciplineSelect = (discipline: Discipline) => {
     setActiveDiscipline(discipline);
-    navigate('PORTAL');
+    navigate(discipline);
   };
 
   const handleProcessSelect = (discipline: Discipline) => {
@@ -138,6 +144,7 @@ export default function App() {
   };
 
   const handleTechSelect = (detail: TechDetail) => {
+    setActiveDiscipline('WEB');
     setSelectedTech(detail);
     navigate('TECH_DETAIL');
   };
@@ -151,7 +158,7 @@ export default function App() {
   };
 
   const backToPortal = () => {
-    navigate('PORTAL');
+    navigate(activeDiscipline ?? 'WEB');
     setSelectedTech(null);
   };
 
@@ -382,7 +389,7 @@ export default function App() {
             </motion.div>
           )}
 
-          {view === 'PORTAL' && activeDiscipline === 'CIVIL' && (
+          {view === 'CIVIL' && (
             <motion.div
               key="civil"
               initial={{ x: '100%' }}
@@ -394,7 +401,7 @@ export default function App() {
             </motion.div>
           )}
 
-          {view === 'PORTAL' && activeDiscipline === 'WEB' && (
+          {view === 'WEB' && (
             <motion.div
               key="web"
               initial={{ x: '100%' }}
@@ -406,7 +413,7 @@ export default function App() {
             </motion.div>
           )}
 
-          {view === 'PORTAL' && activeDiscipline === 'CYBER' && (
+          {view === 'CYBER' && (
             <motion.div
               key="cyber"
               initial={{ x: '100%' }}

@@ -1,5 +1,6 @@
 import { motion } from 'motion/react';
 import { Mail, Phone, MapPin, Linkedin, Facebook, Instagram, Github, Dribbble, ArrowUpRight } from 'lucide-react';
+import type { MouseEvent } from 'react';
 import Logo from './Logo';
 
 interface FooterProps {
@@ -8,6 +9,11 @@ interface FooterProps {
 
 export default function Footer({ onNavigate }: FooterProps) {
   const currentYear = new Date().getFullYear();
+
+  const handleNavigate = (view: any) => (event: MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
+    onNavigate(view);
+  };
 
   return (
     <footer className="bg-black text-white pt-32 pb-12 px-6 md:px-12 overflow-hidden relative">
@@ -41,20 +47,20 @@ export default function Footer({ onNavigate }: FooterProps) {
             <div>
               <h3 className="text-[10px] font-mono text-accent uppercase tracking-[0.3em] mb-8">Disciplines</h3>
               <ul className="space-y-4 text-sm font-medium">
-                <li><button onClick={() => onNavigate('SERVICES')} className="hover:text-accent transition-colors flex items-center gap-2 group text-left">Civil Engineering <ArrowUpRight size={14} className="opacity-0 group-hover:opacity-100 transition-opacity" /></button></li>
-                <li><button onClick={() => onNavigate('SERVICES')} className="hover:text-accent transition-colors flex items-center gap-2 group text-left">Web Development <ArrowUpRight size={14} className="opacity-0 group-hover:opacity-100 transition-opacity" /></button></li>
-                <li><button onClick={() => onNavigate('SERVICES')} className="hover:text-accent transition-colors flex items-center gap-2 group text-left">Cyber Security <ArrowUpRight size={14} className="opacity-0 group-hover:opacity-100 transition-opacity" /></button></li>
-                <li><button onClick={() => onNavigate('CASES')} className="hover:text-accent transition-colors flex items-center gap-2 group text-left">Case Studies <ArrowUpRight size={14} className="opacity-0 group-hover:opacity-100 transition-opacity" /></button></li>
+                <li><a href="/civil" onClick={handleNavigate('CIVIL')} className="hover:text-accent transition-colors flex items-center gap-2 group text-left">Civil Engineering <ArrowUpRight size={14} className="opacity-0 group-hover:opacity-100 transition-opacity" /></a></li>
+                <li><a href="/web" onClick={handleNavigate('WEB')} className="hover:text-accent transition-colors flex items-center gap-2 group text-left">Web Development <ArrowUpRight size={14} className="opacity-0 group-hover:opacity-100 transition-opacity" /></a></li>
+                <li><a href="/cyber" onClick={handleNavigate('CYBER')} className="hover:text-accent transition-colors flex items-center gap-2 group text-left">Cyber Security <ArrowUpRight size={14} className="opacity-0 group-hover:opacity-100 transition-opacity" /></a></li>
+                <li><a href="/case-studies" onClick={handleNavigate('CASES')} className="hover:text-accent transition-colors flex items-center gap-2 group text-left">Case Studies <ArrowUpRight size={14} className="opacity-0 group-hover:opacity-100 transition-opacity" /></a></li>
               </ul>
             </div>
             <div>
               <h3 className="text-[10px] font-mono text-accent uppercase tracking-[0.3em] mb-8">Company</h3>
               <ul className="space-y-4 text-sm font-medium">
-                <li><button onClick={() => onNavigate('PORTFOLIO')} className="hover:text-accent transition-colors text-left">The Portfolio</button></li>
-                <li><button onClick={() => onNavigate('TEAM')} className="hover:text-accent transition-colors text-left">The Team</button></li>
-                <li><button onClick={() => onNavigate('PRICING')} className="hover:text-accent transition-colors text-left">Pricing</button></li>
-                <li><button onClick={() => onNavigate('BLOG')} className="hover:text-accent transition-colors text-left">Insights</button></li>
-                <li><button onClick={() => onNavigate('CONTACT')} className="hover:text-accent transition-colors text-left">Contact</button></li>
+                <li><a href="/portfolio" onClick={handleNavigate('PORTFOLIO')} className="hover:text-accent transition-colors text-left">The Portfolio</a></li>
+                <li><a href="/team" onClick={handleNavigate('TEAM')} className="hover:text-accent transition-colors text-left">The Team</a></li>
+                <li><a href="/pricing" onClick={handleNavigate('PRICING')} className="hover:text-accent transition-colors text-left">Pricing</a></li>
+                <li><a href="/blog" onClick={handleNavigate('BLOG')} className="hover:text-accent transition-colors text-left">Insights</a></li>
+                <li><a href="/contact" onClick={handleNavigate('CONTACT')} className="hover:text-accent transition-colors text-left">Contact</a></li>
               </ul>
             </div>
           </div>
@@ -85,10 +91,10 @@ export default function Footer({ onNavigate }: FooterProps) {
             © {currentYear} EliTechWiz / ALL RIGHTS RESERVED
           </div>
           <div className="flex flex-wrap justify-center gap-8 md:gap-12 text-[10px] font-mono text-gray-500 uppercase tracking-widest">
-            <button onClick={() => onNavigate('PRIVACY')} className="hover:text-white transition-colors">Privacy Policy</button>
-            <button onClick={() => onNavigate('TERMS')} className="hover:text-white transition-colors">Terms of Service</button>
-            <button onClick={() => onNavigate('SECURITY')} className="hover:text-white transition-colors text-left">Security Disclosure</button>
-            <button onClick={() => onNavigate('ADMIN')} className="text-accent/50 hover:text-accent transition-colors">Admin</button>
+            <a href="/privacy" onClick={handleNavigate('PRIVACY')} className="hover:text-white transition-colors">Privacy Policy</a>
+            <a href="/terms" onClick={handleNavigate('TERMS')} className="hover:text-white transition-colors">Terms of Service</a>
+            <a href="/security" onClick={handleNavigate('SECURITY')} className="hover:text-white transition-colors text-left">Security Disclosure</a>
+            <a href="/admin" onClick={handleNavigate('ADMIN')} className="text-accent/50 hover:text-accent transition-colors">Admin</a>
           </div>
         </div>
       </div>
