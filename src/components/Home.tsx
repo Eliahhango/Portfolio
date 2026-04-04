@@ -14,19 +14,19 @@ const PILLARS: { id: Discipline; title: string; subtext: string; icon: any }[] =
   {
     id: 'CIVIL',
     title: 'CIVIL',
-    subtext: 'PHYSICAL INFRASTRUCTURE & STRUCTURAL INTEGRITY',
+    subtext: 'Infrastructure Planning & Structural Design',
     icon: Building2,
   },
   {
     id: 'WEB',
     title: 'WEB',
-    subtext: 'SCALABLE SYSTEMS & DIGITAL ARCHITECTURE',
+    subtext: 'Website & App Development',
     icon: Globe,
   },
   {
     id: 'CYBER',
     title: 'CYBER',
-    subtext: 'ZERO-TRUST SECURITY & THREAT MITIGATION',
+    subtext: 'Security Audits & Risk Management',
     icon: Shield,
   },
 ];
@@ -39,22 +39,22 @@ const METRICS = [
 ];
 
 const METHOD_STEPS = [
-  { id: '01', title: 'Analysis', description: 'Deep-dive into existing constraints, performance bottlenecks, and structural requirements.' },
-  { id: '02', title: 'Blueprint', description: 'Architectural schematics and digital twins designed for absolute structural integrity.' },
-  { id: '03', title: 'Execution', description: 'Rigid adherence to engineering specifications during the build and deployment phase.' },
-  { id: '04', title: 'Optimization', description: 'Continuous monitoring and refinement to ensure long-term performance and scale.' }
+  { id: '01', title: 'Analysis', description: 'We examine your current situation, identify challenges, and understand your goals.' },
+  { id: '02', title: 'Design', description: 'We create a clear plan with detailed specifications for your project.' },
+  { id: '03', title: 'Implementation', description: 'We build and deploy your solution following industry best practices.' },
+  { id: '04', title: 'Support', description: 'We monitor performance and make improvements to keep everything running smoothly.' }
 ];
 
 const TESTIMONIALS = [
-  { name: 'Sarah Chen', role: 'CTO, Global Infra', quote: 'EliTechWiz redefined our digital foundation. Their structural approach to web architecture is unparalleled.' },
-  { name: 'Marcus Thorne', role: 'Urban Planner', quote: 'Uncompromising precision in civil engineering. EliTechWiz bridges the gap between vision and reality.' },
-  { name: 'Elena Rodriguez', role: 'Head of Security', quote: 'Zero-trust is not just a buzzword for EliTechWiz. It is the core of their engineering mindset.' }
+  { name: 'Sarah Chen', role: 'CTO, Global Infra', quote: 'They rebuilt our entire web infrastructure from the ground up. The results speak for themselves - 99.99% uptime.' },
+  { name: 'Marcus Thorne', role: 'Urban Planner', quote: 'We needed someone who understands both planning and execution. They delivered on time and on budget.' },
+  { name: 'Elena Rodriguez', role: 'Head of Security', quote: 'Their security audit was thorough and practical. They found real vulnerabilities and gave us actionable recommendations.' }
 ];
 
 const FAQS = [
-  { q: 'How do you bridge the gap between physical and digital engineering?', a: 'We apply the same rigid structural principles to both. Whether it is a bridge or a microservice, we focus on load paths, scalability, and integrity.' },
-  { q: 'What is your typical project timeline?', a: 'Timelines vary by discipline, but our focus is always on quality over speed. We provide detailed architectural schedules during the blueprint phase.' },
-  { q: 'Do you offer long-term maintenance?', a: 'Yes. Engineering excellence extends far beyond the initial build. We provide continuous monitoring and optimization for all our projects.' }
+  { q: 'How long does a typical project take?', a: 'It depends on the scope, but most projects take 3-6 months. We give you a detailed timeline during the planning phase.' },
+  { q: 'Do you work with companies of all sizes?', a: 'Yes. We work with startups, mid-size companies, and large enterprises. We tailor our approach to fit your needs and budget.' },
+  { q: 'What happens after the project is completed?', a: 'We provide ongoing support and maintenance. You can choose to have us monitor your systems or handle it yourself.' }
 ];
 
 function Counter({ value }: { value: string }) {
@@ -112,7 +112,7 @@ export default function Home({ onSelect, onProcessSelect, onRequestQuote, onCons
           transition={{ duration: 0.6 }}
           className="relative z-10 flex flex-col md:flex-row justify-between items-start gap-6 md:gap-0 mb-12"
         >
-          <span className="text-[9px] md:text-[10px] font-mono text-accent tracking-[0.3em] uppercase">Engineering Authority / Global Presence</span>
+          <span className="text-[9px] md:text-[10px] font-mono text-accent tracking-[0.3em] uppercase">Professional Engineering Services</span>
           <div className="flex flex-wrap gap-3 md:gap-8">
             {['ISO 27001', 'SOC2 TYPE II', 'LEED PLATINUM'].map((cert) => (
               <span key={cert} className="text-[8px] md:text-[9px] font-bold tracking-widest border border-gray-200 px-2 py-1">{cert}</span>
@@ -126,9 +126,9 @@ export default function Home({ onSelect, onProcessSelect, onRequestQuote, onCons
           transition={{ duration: 0.8, delay: 0.2 }}
           className="relative z-10 text-[clamp(2.5rem,10vw,6rem)] font-heading font-semibold leading-[0.85] tracking-tighter max-w-5xl uppercase"
         >
-          ENGINEERING REALITY.<br />
-          ARCHITECTING DIGITAL.<br />
-          SECURING BOTH.
+          PROFESSIONAL ENGINEERING<br />
+          FOR ALL YOUR PROJECTS.<br />
+          CIVIL, WEB & CYBER.
         </motion.h1>
 
         <motion.div
@@ -205,7 +205,7 @@ export default function Home({ onSelect, onProcessSelect, onRequestQuote, onCons
             className="group relative flex flex-col justify-between p-8 md:p-12 text-left border-b lg:border-b-0 lg:border-r border-gray-200 last:border-r-0 hover:bg-black hover:text-white transition-all duration-500 overflow-hidden min-h-[300px] md:min-h-[450px]"
           >
             <div className="relative z-10">
-              <span className="text-[10px] font-mono text-accent mb-4 block uppercase tracking-widest">PORTAL_0{idx + 1}</span>
+              <span className="text-[10px] font-mono text-accent mb-4 block uppercase tracking-widest">SERVICE_0{idx + 1}</span>
               <h2 className="text-4xl md:text-5xl font-heading font-semibold tracking-tighter leading-none transition-transform duration-500 group-hover:translate-x-2 uppercase">
                 {pillar.title}
               </h2>
@@ -233,33 +233,33 @@ export default function Home({ onSelect, onProcessSelect, onRequestQuote, onCons
         <div className="max-w-7xl mx-auto relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24 items-start">
             <div className="lg:col-span-5">
-              <h2 className="text-xs font-mono text-muted uppercase tracking-[0.3em] mb-8 md:mb-12">The Architectural Method</h2>
+              <h2 className="text-xs font-mono text-muted uppercase tracking-[0.3em] mb-8 md:mb-12">Our Process</h2>
               <h3 className="text-4xl md:text-6xl font-heading font-bold tracking-tighter leading-[0.9] uppercase mb-8 md:mb-12">
-                A Unified<br />Engineering<br /><span className="text-accent">Mindset.</span>
+                Four Simple<br />Steps to<br /><span className="text-accent">Success.</span>
               </h3>
               <p className="text-base md:text-lg text-muted leading-relaxed mb-8 md:mb-12">
-                We do not just build; we architect. Every project follows a rigid, four-phase execution model designed to ensure absolute integrity and performance.
+                Every project follows the same proven approach: analyze, design, build, and support. This ensures quality and predictability.
               </p>
               <div className="flex flex-col gap-4">
                 <button 
                   onClick={() => onProcessSelect('CIVIL')}
                   className="flex items-center justify-between p-6 border border-gray-200 bg-white hover:border-accent group transition-all"
                 >
-                  <span className="text-[10px] font-bold uppercase tracking-widest">Civil Design Process</span>
+                  <span className="text-[10px] font-bold uppercase tracking-widest">Civil Engineering</span>
                   <ArrowRight size={14} className="text-accent opacity-0 group-hover:opacity-100 transition-all" />
                 </button>
                 <button 
                   onClick={() => onProcessSelect('WEB')}
                   className="flex items-center justify-between p-6 border border-gray-200 bg-white hover:border-accent group transition-all"
                 >
-                  <span className="text-[10px] font-bold uppercase tracking-widest">Web Architecture Process</span>
+                  <span className="text-[10px] font-bold uppercase tracking-widest">Web Development</span>
                   <ArrowRight size={14} className="text-accent opacity-0 group-hover:opacity-100 transition-all" />
                 </button>
                 <button 
                   onClick={() => onProcessSelect('CYBER')}
                   className="flex items-center justify-between p-6 border border-gray-200 bg-white hover:border-accent group transition-all"
                 >
-                  <span className="text-[10px] font-bold uppercase tracking-widest">Cyber Security Protocol</span>
+                  <span className="text-[10px] font-bold uppercase tracking-widest">Cybersecurity</span>
                   <ArrowRight size={14} className="text-accent opacity-0 group-hover:opacity-100 transition-all" />
                 </button>
               </div>
@@ -287,7 +287,7 @@ export default function Home({ onSelect, onProcessSelect, onRequestQuote, onCons
       {/* Featured Case Studies */}
       <section className="border-t border-gray-200 bg-white">
         <div className="p-6 md:p-12 border-b border-gray-100 flex flex-col md:flex-row justify-between items-start md:items-end gap-4 md:gap-0">
-          <h2 className="text-xs font-mono text-muted uppercase tracking-[0.3em]">Featured Case Studies / Tangible Results</h2>
+          <h2 className="text-xs font-mono text-muted uppercase tracking-[0.3em]">Recent Projects / What We've Delivered</h2>
           <button 
             onClick={() => onSelect('PORTFOLIO' as any)}
             className="text-[10px] font-bold uppercase tracking-widest hover:text-accent transition-colors flex items-center gap-2"
@@ -299,23 +299,23 @@ export default function Home({ onSelect, onProcessSelect, onRequestQuote, onCons
           {[
             {
               discipline: 'CIVIL' as Discipline,
-              title: 'THE MONOLITH BRIDGE',
-              stat: '1.2KM SPAN',
-              result: 'COMPLETED 4 MONTHS AHEAD OF SCHEDULE',
+              title: 'Infrastructure Modernization',
+              stat: '2.5 YRS',
+              result: 'Project completion time from concept to delivery',
               image: 'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?auto=format&fit=crop&w=1200&q=80'
             },
             {
               discipline: 'WEB' as Discipline,
-              title: 'GLOBAL RETAIL ENGINE',
-              stat: '150MS LATENCY',
-              result: 'MAINTAINED DURING 10X TRAFFIC SPIKE',
+              title: 'E-Commerce Platform',
+              stat: '40% FASTER',
+              result: 'Performance improvement after technical overhaul',
               image: 'https://images.unsplash.com/photo-1518773553398-650c184e0bb3?auto=format&fit=crop&w=1200&q=80'
             },
             {
               discipline: 'CYBER' as Discipline,
-              title: 'FINANCIAL CORE AUDIT',
-              stat: 'ZERO BREACHES',
-              result: 'POST-IMPLEMENTATION OF ZERO-TRUST',
+              title: 'Security Audit',
+              stat: '150 ISSUES',
+              result: 'Vulnerabilities identified and resolved',
               image: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=1200&q=80'
             }
           ].map((study, idx) => (
@@ -352,7 +352,7 @@ export default function Home({ onSelect, onProcessSelect, onRequestQuote, onCons
       <section className="py-24 md:py-32 px-6 md:px-12 bg-black text-white relative overflow-hidden">
         <div className="absolute inset-0 blueprint-grid opacity-5 pointer-events-none" />
         <div className="max-w-7xl mx-auto relative z-10">
-          <h2 className="text-xs font-mono text-gray-500 uppercase tracking-[0.3em] mb-16 md:mb-24 text-center">Engineering Trust</h2>
+          <h2 className="text-xs font-mono text-gray-500 uppercase tracking-[0.3em] mb-16 md:mb-24 text-center">What Our Clients Say</h2>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-16 lg:gap-24">
             {TESTIMONIALS.map((t, i) => (
               <motion.div
