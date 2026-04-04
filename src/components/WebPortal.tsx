@@ -239,17 +239,17 @@ export default function WebPortal({ onRequestConsult, onSelectTech }: PortalProp
               {
                 title: 'Atomic Design',
                 desc: 'We break down complex interfaces into their smallest components, ensuring absolute consistency and reuse across the entire system.',
-                image: 'https://picsum.photos/seed/atomic/1000/750'
+                image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80'
               },
               {
                 title: 'State Management',
                 desc: 'Our applications utilize robust state containers to ensure predictable data flow and real-time synchronization across all client instances.',
-                image: 'https://picsum.photos/seed/state/1000/750'
+                image: 'https://images.unsplash.com/photo-1517430816045-df4b7de11d1d?auto=format&fit=crop&w=1200&q=80'
               },
               {
                 title: 'Performance First',
                 desc: 'We optimize for the critical rendering path, ensuring that our applications are interactive in under 1 second on any device.',
-                image: 'https://picsum.photos/seed/perf/1000/750'
+                image: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=1200&q=80'
               }
             ].map((process, i) => (
               <div key={i} className="group cursor-default">

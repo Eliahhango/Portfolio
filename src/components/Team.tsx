@@ -7,28 +7,28 @@ export default function Team({ onJoin }: { onJoin?: () => void }) {
       name: 'EliTechWiz',
       role: 'Chief Architect & Founder',
       bio: 'Visionary engineer with over 15 years of experience in cross-disciplinary infrastructure. Leading the integration of physical and digital systems.',
-      image: 'https://ais-dev-zttiyvyn745ymuoejdgpvb-100788071949.europe-west1.run.app/input_file_2.png',
+      image: 'https://images.unsplash.com/photo-1568602471122-7832951cc4c5?auto=format&fit=crop&w=600&q=80',
       socials: { linkedin: 'https://www.linkedin.com/in/eliahhango/', twitter: 'https://github.com/Eliahhango', mail: 'hangoeliah@outlook.com' }
     },
     {
       name: 'Sarah Chen',
       role: 'Head of Web Architecture',
       bio: 'Specialist in distributed systems and cloud-native scaling. Sarah ensures our digital foundations are as solid as steel.',
-      image: 'https://picsum.photos/seed/sarah-team/400/500',
+      image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=600&q=80',
       socials: { linkedin: '#', twitter: '#', mail: 'sarah@elitechwiz.eng' }
     },
     {
       name: 'Marcus Thorne',
       role: 'Director of Cyber Security',
       bio: 'Former intelligence officer turned defensive architect. Marcus designs the zero-trust protocols that protect our clients.',
-      image: 'https://picsum.photos/seed/marcus-team/400/500',
+      image: 'https://images.unsplash.com/photo-1556157382-97eda2d62296?auto=format&fit=crop&w=600&q=80',
       socials: { linkedin: '#', twitter: '#', mail: 'marcus@elitechwiz.eng' }
     },
     {
       name: 'Dr. Alistair Vance',
       role: 'Lead Civil Engineer',
       bio: 'Expert in structural load dynamics and sustainable urban planning. Alistair bridges the gap between theory and reality.',
-      image: 'https://picsum.photos/seed/alistair-team/400/500',
+      image: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=600&q=80',
       socials: { linkedin: '#', twitter: '#', mail: 'alistair@elitechwiz.eng' }
     }
   ];

@@ -9,7 +9,7 @@ export default function CaseStudies({ onConsultation }: { onConsultation?: () =>
       category: 'CYBER SECURITY',
       impact: '99.9% Threat Mitigation',
       description: 'Transitioning a legacy banking infrastructure to a modern zero-trust protocol without a single second of downtime.',
-      image: 'https://picsum.photos/seed/finance/800/500',
+      image: 'https://images.unsplash.com/photo-1556740749-887f6717d7e4?auto=format&fit=crop&w=900&q=80',
       icon: Shield,
     },
     {
@@ -18,7 +18,7 @@ export default function CaseStudies({ onConsultation }: { onConsultation?: () =>
       category: 'CIVIL ENGINEERING',
       impact: '40% Energy Reduction',
       description: 'Integrating green infrastructure and IoT-enabled load monitoring into a new urban development project.',
-      image: 'https://picsum.photos/seed/smartcity/800/500',
+      image: 'https://images.unsplash.com/photo-1465447142348-e9952c393450?auto=format&fit=crop&w=900&q=80',
       icon: Activity,
     },
     {
@@ -27,7 +27,7 @@ export default function CaseStudies({ onConsultation }: { onConsultation?: () =>
       category: 'WEB ARCHITECTURE',
       impact: '200ms Latency Reduction',
       description: 'Architecting a globally distributed edge computing network to handle peak traffic of 1M+ requests per second.',
-      image: 'https://picsum.photos/seed/ecommerce/800/500',
+      image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=900&q=80',
       icon: Globe,
     },
   ];

@@ -48,7 +48,7 @@ export default function Blog() {
       category: 'STRATEGY',
       date: 'MAR 24, 2026',
       author: 'Sarah Chen',
-      image: 'https://picsum.photos/seed/strategy/800/500',
+      image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=900&q=80',
       content: `
         <p>Digital transformation is no longer a choice but a necessity for survival in the modern industrial landscape. However, the path from legacy systems to cloud-native architectures is fraught with structural risks that can compromise data integrity and system availability.</p>
         
@@ -74,7 +74,7 @@ export default function Blog() {
       category: 'CYBER',
       date: 'MAR 18, 2026',
       author: 'Marcus Thorne',
-      image: 'https://picsum.photos/seed/cyber/800/500',
+      image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=900&q=80',
       content: `
         <p>The traditional "castle and moat" approach to cybersecurity is dead. In an era of remote work and cloud-integrated supply chains, the perimeter has dissolved. Zero-Trust is the only logical response to this new reality.</p>
         
@@ -100,7 +100,7 @@ export default function Blog() {
       category: 'CIVIL',
       date: 'MAR 12, 2026',
       author: 'Dr. Alistair Vance',
-      image: 'https://picsum.photos/seed/civil/800/500',
+      image: 'https://images.unsplash.com/photo-1472224371017-08207f84aaae?auto=format&fit=crop&w=900&q=80',
       content: `
         <p>As our cities grow, the pressure on our physical infrastructure reaches critical levels. Sustainable urban planning is no longer just about aesthetics; it's about the long-term structural viability of our living environments.</p>
         
@@ -126,7 +126,7 @@ export default function Blog() {
       category: 'WEB',
       date: 'MAR 05, 2026',
       author: 'Sarah Chen',
-      image: 'https://picsum.photos/seed/web/800/500',
+      image: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=900&q=80',
       content: `
         <p>The laws of physics are the ultimate bottleneck in web performance. No matter how fast our servers are, the speed of light limits how quickly data can travel across the globe. Edge computing is our way of fighting back.</p>
         
@@ -318,7 +318,7 @@ export default function Blog() {
                 <h4 className="text-xs font-bold text-muted uppercase tracking-[0.2em] mb-6">About the Author</h4>
                 <div className="flex items-center gap-4 mb-6">
                   <div className="w-12 h-12 rounded-full bg-gray-200 overflow-hidden">
-                    <img src={`https://picsum.photos/seed/${selectedPost.author}/100/100`} alt={selectedPost.author} className="w-full h-full object-cover" />
+                    <img src={`https://ui-avatars.com/api/?name=${encodeURIComponent(selectedPost.author)}&background=111216&color=ffffff`} alt={selectedPost.author} className="w-full h-full object-cover" />
                   </div>
                   <div>
                     <div className="text-sm font-bold uppercase tracking-tight">{selectedPost.author}</div>

@@ -17,25 +17,25 @@ export default function About({ onJoin }: AboutProps) {
     { 
       name: 'Dr. Alistair Vance', 
       role: 'Chief Structural Architect', 
-      image: 'https://picsum.photos/seed/alistair/400/500',
+      image: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=500&q=80',
       bio: 'Former lead engineer for global infrastructure projects, specializing in seismic resilience and high-load distribution.'
     },
     { 
       name: 'Sarah Chen', 
       role: 'Head of Digital Infrastructure', 
-      image: 'https://picsum.photos/seed/sarah/400/500',
+      image: 'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=500&q=80',
       bio: 'Pioneer in cloud-native architecture and distributed systems, focusing on sub-millisecond latency and absolute data integrity.'
     },
     { 
       name: 'Marcus Thorne', 
       role: 'Director of Cyber Security', 
-      image: 'https://picsum.photos/seed/marcus/400/500',
+      image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=500&q=80',
       bio: 'Expert in zero-trust frameworks and threat mitigation, with a background in defensive cyber operations for financial institutions.'
     },
     { 
       name: 'Elena Vance', 
       role: 'Principal Urban Planner', 
-      image: 'https://picsum.photos/seed/elena/400/500',
+      image: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=500&q=80',
       bio: 'Specializing in sustainable urban development and the integration of digital twins into physical city planning.'
     }
   ];
@@ -110,7 +110,7 @@ export default function About({ onJoin }: AboutProps) {
             <div className="absolute -inset-4 border border-gray-100 -z-10 group-hover:inset-0 transition-all duration-700" />
             <div className="absolute inset-0 bg-black/5 group-hover:bg-transparent transition-colors duration-700 z-10" />
             <img 
-              src="https://picsum.photos/seed/architecture-about/1000/1250" 
+              src="https://images.unsplash.com/photo-1487958449943-2429e8be8625?auto=format&fit=crop&w=1200&q=80" 
               alt="Architecture"
               className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000"
               referrerPolicy="no-referrer"

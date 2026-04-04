@@ -204,7 +204,7 @@ export default function CyberPortal({ onRequestConsult }: PortalProps) {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-24 items-center">
             <div className="aspect-square bg-surface overflow-hidden relative">
               <img 
-                src="https://picsum.photos/seed/cyber-security/1000/1000" 
+                src="https://images.unsplash.com/photo-1563986768711-b3bde3dc821e?auto=format&fit=crop&w=1200&q=80" 
                 alt="Cyber Security" 
                 className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-1000"
                 referrerPolicy="no-referrer"

@@ -18,19 +18,19 @@ export default function Portfolio({ onConsultation }: PortfolioProps) {
       title: 'Global Infrastructure Audit',
       category: 'CIVIL',
       description: 'A comprehensive structural audit of a major European transportation hub, identifying and mitigating critical load failures.',
-      image: 'https://picsum.photos/seed/infra-audit/800/500',
+      image: 'https://images.unsplash.com/photo-1479839672679-a46483c0e7c8?auto=format&fit=crop&w=900&q=80',
     },
     {
       title: 'Zero-Trust Framework',
       category: 'CYBER',
       description: 'Architecting a proprietary zero-trust security framework for a leading financial institution, protecting over $50B in assets.',
-      image: 'https://picsum.photos/seed/cyber-framework/800/500',
+      image: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=900&q=80',
     },
     {
       title: 'Edge Computing Network',
       category: 'WEB',
       description: 'Designing a globally distributed edge computing network to handle peak traffic of 1M+ requests per second.',
-      image: 'https://picsum.photos/seed/edge-network/800/500',
+      image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=900&q=80',
     },
   ];
 
@@ -55,7 +55,7 @@ export default function Portfolio({ onConsultation }: PortfolioProps) {
           </div>
           <div className="aspect-[4/5] bg-surface overflow-hidden relative group">
             <img 
-              src="https://ais-dev-zttiyvyn745ymuoejdgpvb-100788071949.europe-west1.run.app/input_file_2.png" 
+              src="https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=900&q=80" 
               alt="EliTechWiz"
               className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
               referrerPolicy="no-referrer"
