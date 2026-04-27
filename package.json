@@ -1,0 +1,43 @@
+{
+  "name": "professional-business-portfolio",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "node ./scripts/generate-sitemap.mjs && vite build",
+    "preview": "vite preview",
+    "firebase:setup": "node scripts/setup-firebase.mjs",
+    "server:dev": "cd server && npm run dev",
+    "server:install": "cd server && npm install",
+    "server:build": "cd server && npm run build",
+    "server:start": "cd server && npm start",
+    "build:all": "npm run build && cd server && npm run build",
+    "start": "cd server && npm start"
+  },
+  "dependencies": {
+    "@google/genai": "^1.27.0",
+    "@mdx-js/react": "^3.0.1",
+    "firebase": "^10.11.0",
+    "framer-motion": "^11.3.19",
+    "lucide-react": "^0.400.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "react-markdown": "^9.0.3",
+    "react-router-dom": "^7.9.5",
+    "rehype-raw": "^7.0.0",
+    "rehype-sanitize": "^6.0.0",
+    "remark-gfm": "^4.0.0"
+  },
+  "devDependencies": {
+    "@mdx-js/rollup": "^3.0.1",
+    "@types/node": "^22.14.0",
+    "@vitejs/plugin-react": "^5.0.0",
+    "autoprefixer": "^10.4.19",
+    "firebase-admin": "^12.0.0",
+    "postcss": "^8.4.39",
+    "tailwindcss": "^3.4.4",
+    "typescript": "~5.8.2",
+    "vite": "^6.2.0"
+  }
+}

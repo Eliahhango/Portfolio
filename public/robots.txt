@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://www.elitechwiz.site/sitemap.xml
+
+

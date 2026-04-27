@@ -1,0 +1,100 @@
+// Prisma schema for PostgreSQL support
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Admin {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  name      String
+  role      String   @default("admin") // 'main' or 'admin'
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("admins")
+}
+
+model Service {
+  id            String   @id @default(uuid())
+  title         String
+  description   String
+  longDescription String?
+  category      String
+  features      String[] @default([])
+  pricing       Json     // { startingAt: number, currency: string }
+  imageUrl      String?
+  isActive      Boolean  @default(true)
+  order         Int      @default(0)
+  createdBy     String?
+  updatedBy     String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@map("services")
+}
+
+model Content {
+  id        String   @id @default(uuid())
+  key       String   @unique
+  value     String   @db.Text
+  type      String   @default("text") // 'text', 'html', 'json'
+  section   String
+  updatedBy String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("content")
+}
+
+model ContactMessage {
+  id        String    @id @default(uuid())
+  name      String
+  email     String
+  phone     String?
+  subject   String
+  message   String    @db.Text
+  ip        String?
+  userAgent String?
+  status    String    @default("new") // 'new', 'read', 'replied', 'archived'
+  repliedAt DateTime?
+  repliedBy String?
+  notes     String?   @db.Text
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([email, createdAt])
+  @@index([status, createdAt])
+  @@map("contact_messages")
+}
+
+model Visitor {
+  id           String    @id @default(uuid())
+  ip           String
+  userAgent    String
+  referer      String?
+  path         String
+  country      String?
+  city         String?
+  device       String?
+  browser      String?
+  os           String?
+  isNewVisitor Boolean   @default(true)
+  sessionId    String
+  visitedAt    DateTime  @default(now())
+  duration     Int?      // in seconds
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  @@index([visitedAt])
+  @@index([ip, visitedAt])
+  @@index([sessionId])
+  @@map("visitors")
+}
+
